@@ -8,6 +8,7 @@ import { describe, expect, it } from "vitest"
 
 import * as tsxCalendar from "@/components/ui/calendar"
 import * as tsxCarousel from "@/components/ui/carousel"
+import * as tsxChart from "@/components/ui/chart"
 import * as tsxCodeBlock from "@/components/ui/code-block"
 import * as tsxCombobox from "@/components/ui/combobox"
 import * as tsxField from "@/components/ui/field"
@@ -21,6 +22,8 @@ import { TooltipProvider } from "@/components/ui/tooltip"
 import * as pyCalendar from "@/components/ui/calendar.py"
 // @ts-expect-error a Python module
 import * as pyCarousel from "@/components/ui/carousel.py"
+// @ts-expect-error a Python module
+import * as pyChart from "@/components/ui/chart.py"
 // @ts-expect-error a Python module
 import * as pyCodeBlock from "@/components/ui/code_block.py"
 // @ts-expect-error a Python module
@@ -240,6 +243,43 @@ scene("Calendar", tsxCalendar, pyCalendar, (k, seen) =>
 )
 scene("Calendar dropdown", tsxCalendar, pyCalendar, (k) =>
   h(k.Calendar, { mode: "range", captionLayout: "dropdown", defaultMonth: new Date(2026, 5, 1), buttonVariant: "outline", numberOfMonths: 2 })
+)
+
+const config = {
+  desktop: { label: "Desktop", color: "#2563eb" },
+  mobile: { label: "Mobile", theme: { light: "#60a5fa", dark: "#1e3a8a" } },
+  other: { label: "Other" }
+}
+const payload = [
+  { dataKey: "desktop", name: "desktop", value: 1280, color: "#2563eb", payload: { fill: "#111" } },
+  { dataKey: "mobile", name: "mobile", value: 3.5, type: "line" },
+  { dataKey: "hidden", name: "hidden", value: 1, type: "none" }
+]
+scene("ChartContainer", tsxChart, pyChart, (k) =>
+  h(k.ChartContainer, { id: "sales", config, className: "h-40" }, h("div", null, "plot"))
+)
+scene("ChartStyle", tsxChart, pyChart, (k) => h("div", null, h(k.ChartStyle, { id: "x", config }), h(k.ChartStyle, { id: "y", config: { other: {} } })))
+for (const indicator of ["dot", "line", "dashed"]) {
+  scene(`ChartTooltipContent ${indicator}`, tsxChart, pyChart, (k) =>
+    h(k.ChartContainer, { config },
+      h(k.ChartTooltipContent, { active: true, payload, indicator, label: "desktop", labelKey: undefined, className: "w-40" }))
+  )
+}
+scene("ChartTooltipContent one, formatted", tsxChart, pyChart, (k) =>
+  h(k.ChartContainer, { config },
+    h(k.ChartTooltipContent, {
+      active: true,
+      payload: payload.slice(0, 1),
+      indicator: "line",
+      labelFormatter: (value: unknown) => `label ${String(value)}`,
+      formatter: (value: unknown, name: unknown) => `${String(name)} = ${String(value)}`
+    }))
+)
+scene("ChartTooltipContent hidden", tsxChart, pyChart, (k) =>
+  h(k.ChartContainer, { config }, h("div", null, h(k.ChartTooltipContent, { active: false, payload }), h(k.ChartTooltipContent, { active: true, payload, hideLabel: true, hideIndicator: true })))
+)
+scene("ChartLegendContent", tsxChart, pyChart, (k) =>
+  h(k.ChartContainer, { config }, h(k.ChartLegendContent, { payload, verticalAlign: "top" }))
 )
 
 scene("Combobox", tsxCombobox, pyCombobox, (k) =>

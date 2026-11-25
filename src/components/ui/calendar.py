@@ -16,12 +16,12 @@ def Calendar(className=None, classNames=None, showOutsideDays=True, captionLayou
 
     def Chevron(className=None, orientation=None, **props):
         if orientation == "left":
-            return t'<{ChevronLeftIcon} class={cn("size-4", className)} ...{props} />'
+            return t"<{ChevronLeftIcon} class={cn("size-4", className)} ...{props} />"
 
         if orientation == "right":
-            return t'<{ChevronRightIcon} class={cn("size-4", className)} ...{props} />'
+            return t"<{ChevronRightIcon} class={cn("size-4", className)} ...{props} />"
 
-        return t'<{ChevronDownIcon} class={cn("size-4", className)} ...{props} />'
+        return t"<{ChevronDownIcon} class={cn("size-4", className)} ...{props} />"
 
     def DayButton(**props):
         return t"<{CalendarDayButton} locale={locale} ...{props} />"

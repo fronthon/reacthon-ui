@@ -126,13 +126,38 @@ function jsxText(raw) {
     return text;
 }
 
-// The quotes of a t-string: ones its text does not hold, and not the ones of
-// the t-string it stands in.
+// The quotes of a t-string: ones its text does not hold, and where they can be,
+// not the ones of the t-string it stands in, which Python 3.12 allows them to be.
 function quotes(text, multiline, around) {
-    const single = multiline ? undefined : ['"', "'"].find((one) => one !== around && !text.includes(one));
-    const triple = ['"""', "'''"].find((one) => one[0] !== around && !text.includes(one) && !text.endsWith(one[0]));
+    const bare = literal(text);
+    const pick = (avoid) =>
+        (multiline ? undefined : ['"', "'"].find((one) => one !== avoid && !bare.includes(one))) ??
+        ['"""', "'''"].find((one) => one[0] !== avoid && !bare.includes(one) && !bare.endsWith(one[0]));
 
-    return single ?? triple ?? unsupported({ getText: () => text }, 'a t-string no quotes can hold');
+    return pick(around) ?? pick(null) ?? unsupported({ getText: () => text }, 'a t-string no quotes can hold');
+}
+
+// A t-string's text without its fields, where its quotes end it.
+function literal(text) {
+    let out = '';
+    let depth = 0;
+
+    for (let at = 0; at < text.length; at += 1) {
+        const one = text[at];
+
+        if (depth === 0 && (text.startsWith('{{', at) || text.startsWith('}}', at))) {
+            out += one;
+            at += 1;
+        } else if (one === '{') {
+            depth += 1;
+        } else if (one === '}' && depth > 0) {
+            depth -= 1;
+        } else if (depth === 0) {
+            out += one;
+        }
+    }
+
+    return out;
 }
 
 // A regular expression's replace as Python's str methods do it: every `:` of
@@ -239,7 +264,17 @@ function moduleTranslator(source, checker, program) {
     };
 
     const typeOf = (node) => checker.getTypeAtLocation(node);
-    const isDict = (node) => plain(checker.getNonNullableType(typeOf(node)));
+    // What TypeScript does not type, read from plain data, is plain data too:
+    // Brython hands it over whole.
+    const isDict = (node) => {
+        const type = checker.getNonNullableType(typeOf(node));
+        const one = unwrap(node);
+
+        if (type.flags & (ts.TypeFlags.Any | ts.TypeFlags.Unknown)) {
+            return (ts.isPropertyAccessExpression(one) || ts.isElementAccessExpression(one)) && isDict(one.expression);
+        }
+        return plain(type);
+    };
     const nullable = (node) => {
         const type = typeOf(node);
 
@@ -344,15 +379,26 @@ function moduleTranslator(source, checker, program) {
                     CONDITIONAL
                 ];
             case k.TemplateExpression: {
-                let text = braces(node.head.text);
+                // The text escaped, the fields as they are, which Python 3.12
+                // lets hold quotes of their own.
+                const text = (one) =>
+                    one
+                        .replace(/\\/g, '\\\\')
+                        .replace(/"/g, '\\"')
+                        .replace(/\n/g, '\\n')
+                        .replace(/\r/g, '\\r')
+                        .replace(/\t/g, '\\t')
+                        .replace(/\{/g, '{{')
+                        .replace(/\}/g, '}}');
+                let out = text(node.head.text);
 
                 // A boolean as JavaScript writes it: `true`, not `True`.
                 for (const span of node.templateSpans) {
                     const value = boolean(span.expression) ? `str(${expr(span.expression, inner)}).lower()` : expr(span.expression, inner);
 
-                    text += `{${value}}${braces(span.literal.text)}`;
+                    out += `{${value.startsWith('{') ? ` ${value} ` : value}}${text(span.literal.text)}`;
                 }
-                return [`f${string(text).replace(/\\\\/g, '\\')}`, PRIMARY];
+                return [`f"${out}"`, PRIMARY];
             }
             case k.TaggedTemplateExpression: {
                 const raw = node.template.rawText;
@@ -396,7 +442,11 @@ function moduleTranslator(source, checker, program) {
         const guards = [];
 
         for (let link = node; link && link.flags & ts.NodeFlags.OptionalChain; link = link.expression) {
-            if (link.questionDotToken && nullable(link.expression)) guards.unshift(expr(link.expression, { ...cx, inChain: true }, AND + 1));
+            // A dict's `.get()` can hand back None where TypeScript's index says not.
+            const read = unwrap(link.expression);
+            const missing = nullable(link.expression) || (ts.isElementAccessExpression(read) && isDict(read.expression));
+
+            if (link.questionDotToken && missing) guards.unshift(expr(link.expression, { ...cx, inChain: true }, AND + 1));
             if (!(ts.isPropertyAccessExpression(link) || ts.isElementAccessExpression(link) || ts.isCallExpression(link) || ts.isNonNullExpression(link))) break;
         }
 
@@ -674,7 +724,7 @@ function moduleTranslator(source, checker, program) {
             if (same) {
                 const loop = comprehension(iterable, fn, cx);
 
-                return `[${element_(fn, loop.cx)} ${loop.text} if ${expr(test(filter), loop.cx)}]`;
+                return `[${element_(fn, loop.cx)} ${loop.text} if ${expr(test(filter), loop.cx, OR)}]`;
             }
 
             const loop = comprehensionOver(filtered(iterable, filter, cx, true), fn, cx);
@@ -693,7 +743,7 @@ function moduleTranslator(source, checker, program) {
         const loop = comprehension(iterable, fn, cx);
         const params = fn.parameters[0] ? target(fn.parameters[0].name, new Set()) : '_';
         const item = params.includes(',') ? `(${params})` : params;
-        const text = `${item} ${loop.text} if ${expr(test(fn), loop.cx)}`;
+        const text = `${item} ${loop.text} if ${expr(test(fn), loop.cx, OR)}`;
 
         return generator ? text : `[${text}]`;
     };
@@ -708,14 +758,44 @@ function moduleTranslator(source, checker, program) {
         return null;
     };
 
+    // A callback of statements becomes `def render_item(item, index)`, called
+    // with the loop's names: a pair `[key, value]` as two parameters.
     const element_ = (fn, cx) => {
         const value = body(fn);
 
         if (value) return expr(value, cx);
 
-        const local = callable(fn, { ...cx, hoistAs: `render_${snake(fn.parameters[0]?.name.getText() ?? 'item')}` }, 'render', true);
+        const first = fn.parameters[0]?.name;
+        const outer = loopNames(fn, cx);
+        const local = callable(fn, { ...cx, hoistAs: first && ts.isIdentifier(first) ? `render_${snake(first.text)}` : 'render', flatParams: true, extraParams: outer }, 'render', true);
+        const args = fn.parameters.flatMap((one) =>
+            ts.isArrayBindingPattern(one.name) ? one.name.elements.map((item) => (ts.isOmittedExpression(item) ? '_' : target(item.name, new Set()))) : [target(one.name, new Set())]
+        );
 
-        return `${local}(${fn.parameters.map((one) => target(one.name, new Set())).join(', ')})`;
+        return `${local}(${[...args, ...outer].join(', ')})`;
+    };
+
+    // The names of the loops around a callback that it reads: a def taken out of
+    // them is handed them.
+    const loopNames = (fn, cx) => {
+        const bound = new Set();
+        const names = (binding) => {
+            if (ts.isIdentifier(binding)) bound.add(binding.text);
+            else binding.elements?.forEach((one) => !ts.isOmittedExpression(one) && names(one.name));
+        };
+
+        for (let up = fn.parent; up && up !== cx.statement; up = up.parent) {
+            if (ts.isArrowFunction(up) || ts.isFunctionExpression(up)) up.parameters.forEach((one) => names(one.name));
+        }
+
+        const read = new Set();
+        const visit = (node) => {
+            if (ts.isIdentifier(node) && bound.has(node.text)) read.add(node.text);
+            ts.forEachChild(node, visit);
+        };
+
+        visit(fn.body);
+        return [...read].map(snake);
     };
 
     const hookArguments = (hook, args, cx) => {
@@ -755,6 +835,7 @@ function moduleTranslator(source, checker, program) {
         }
         if (!cx.hoists) unsupported(fn, 'a function outside a function');
         if (cx.hoisted.has(fn)) return cx.hoisted.get(fn);
+        if (!cx.extraParams && loopNames(fn, cx).length) unsupported(fn, "a function of statements reading a callback's names");
 
         const local = fresh(cx.hoistAs ?? base, cx);
 
@@ -1070,6 +1151,10 @@ function moduleTranslator(source, checker, program) {
             taken.add(first.name.text);
         } else {
             for (const one of fn.parameters) {
+                if (cx.flatParams && ts.isArrayBindingPattern(one.name)) {
+                    for (const item of one.name.elements) params.push(ts.isOmittedExpression(item) ? fresh('_', { taken }) : target(item.name, scope));
+                    continue;
+                }
                 if (!ts.isIdentifier(one.name)) {
                     const local = fresh('pair', { taken });
 
@@ -1081,6 +1166,7 @@ function moduleTranslator(source, checker, program) {
                 taken.add(snake(one.name.text));
                 params.push(one.initializer ? `${snake(one.name.text)}=${expr(one.initializer, { ...cx, scope })}` : snake(one.name.text));
             }
+            params.push(...(cx.extraParams ?? []));
         }
 
         const inner = {
@@ -1094,6 +1180,8 @@ function moduleTranslator(source, checker, program) {
             inField: false,
             quote: null,
             forceDef: false,
+            flatParams: false,
+            extraParams: undefined,
             effect: Boolean(cx.effectBody),
             effectBody: false
         };
@@ -1215,8 +1303,8 @@ function moduleTranslator(source, checker, program) {
             }
             if (isJsx(value)) return [`${indent}${local} = ${tstring(value, cx, indent.length + local.length + 3)}`];
 
-            // `x = a ?? b` of an expression: a, then b where a is None.
-            if (ts.isBinaryExpression(unwrap(value)) && unwrap(value).operatorToken.kind === k.QuestionQuestionToken && !pure(unwrap(value).left)) {
+            // `x = a ?? b` of more than a name: a, then b where a is None.
+            if (ts.isBinaryExpression(unwrap(value)) && unwrap(value).operatorToken.kind === k.QuestionQuestionToken && !ts.isIdentifier(unwrap(unwrap(value).left))) {
                 return [`${indent}${local} = ${expr(unwrap(value).left, cx)}`, `${indent}if ${local} is None:`, `${pad(cx.level + 1)}${local} = ${expr(unwrap(value).right, cx)}`];
             }
             return [`${indent}${local} = ${pretty(value, cx, cx.level, indent.length + local.length + 3)}`];
