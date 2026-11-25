@@ -6,6 +6,7 @@ import { act, createElement, type ComponentType } from "react"
 import { createRoot } from "react-dom/client"
 import { describe, expect, it } from "vitest"
 
+import * as tsxCalendar from "@/components/ui/calendar"
 import * as tsxCarousel from "@/components/ui/carousel"
 import * as tsxCodeBlock from "@/components/ui/code-block"
 import * as tsxCombobox from "@/components/ui/combobox"
@@ -16,6 +17,8 @@ import * as tsxSidebar from "@/components/ui/sidebar"
 import * as tsxSlider from "@/components/ui/slider"
 import * as tsxToggleGroup from "@/components/ui/toggle-group"
 import { TooltipProvider } from "@/components/ui/tooltip"
+// @ts-expect-error a Python module
+import * as pyCalendar from "@/components/ui/calendar.py"
 // @ts-expect-error a Python module
 import * as pyCarousel from "@/components/ui/carousel.py"
 // @ts-expect-error a Python module
@@ -219,6 +222,24 @@ scene("InputGroup", tsxInputGroup, pyInputGroup, (k) =>
     ["addon", (page) => click(page, "[data-slot=input-group-addon]")],
     ["focused", () => void document.body.setAttribute("data-focus", document.activeElement?.getAttribute("data-slot") ?? "none")]
   ]
+)
+
+scene("Calendar", tsxCalendar, pyCalendar, (k, seen) =>
+  h(k.Calendar, {
+    mode: "single",
+    defaultMonth: new Date(2026, 0, 1),
+    selected: new Date(2026, 0, 10),
+    onSelect: (day?: Date) => seen.push(`picked ${day?.getDate()}`),
+    showWeekNumber: true,
+    className: "rounded-md border"
+  }),
+  [
+    ["pick the 15th", (page) => click(page, "[data-day]", 18)],
+    ["next month", (page) => click(page, ".rdp-button_next")]
+  ]
+)
+scene("Calendar dropdown", tsxCalendar, pyCalendar, (k) =>
+  h(k.Calendar, { mode: "range", captionLayout: "dropdown", defaultMonth: new Date(2026, 5, 1), buttonVariant: "outline", numberOfMonths: 2 })
 )
 
 scene("Combobox", tsxCombobox, pyCombobox, (k) =>

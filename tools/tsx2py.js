@@ -432,7 +432,13 @@ function moduleTranslator(source, checker, program) {
 
     const entry = (one, cx) => {
         if (ts.isShorthandPropertyAssignment(one)) return `${string(one.name.text)}: ${name(one.name, cx)}`;
-        if (ts.isPropertyAssignment(one)) return `${key(one.name)}: ${expr(one.initializer, cx)}`;
+        if (ts.isPropertyAssignment(one)) {
+            // A function of a dict is named after its key: `Root`, a component
+            // a library renders with.
+            const at = isFunction(one.initializer) && ts.isIdentifier(one.name) ? { ...cx, hoistAs: one.name.text } : cx;
+
+            return `${key(one.name)}: ${expr(one.initializer, at)}`;
+        }
         if (ts.isSpreadAssignment(one)) return `**${spreadable(one.expression, cx)}`;
         return unsupported(one, 'an object member');
     };
