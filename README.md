@@ -1,21 +1,76 @@
-# React + TypeScript + Vite + shadcn/ui
+# Reacthon UI
 
-This is a template for a new Vite project with React, TypeScript, and shadcn/ui.
+**shadcn/ui's components, written in Python, for Reacthon.**
 
-## Adding components
+```python
+from utils import cva
 
-To add components to your app, run the following command:
+__js__ = {"radix-ui": ["Slot"]}
 
-```bash
-npx shadcn@latest add button
+button_variants = cva("inline-flex items-center …", {"variant": {"default": "…", "outline": "…"}})
+
+
+def Button(className=None, variant="default", size="default", asChild=False, **props):
+    Comp = Slot.Root if asChild else "button"
+
+    return t"""
+        <{Comp}
+            data-slot="button"
+            class={button_variants(variant=variant, size=size, className=className)}
+            ...{props}
+        />
+    """
 ```
 
-This will place the ui components in the `src/components` directory.
+shadcn/ui hands you the source of each component rather than a library, so that
+you read it and change it. Here that source is Python: the same Radix parts
+underneath, the same Tailwind classes, the same props, and a component a
+Python developer owns.
 
-## Using components
+## Add a component
 
-To use the components in your app, import them as follows:
+In a React project with shadcn/ui and [Reacthon](https://github.com/svelthon/reacthon):
 
-```tsx
-import { Button } from "@/components/ui/button"
+```sh
+npx shadcn add <registry>/r/dialog.json
 ```
+
+copies `dialog.py`, and the `button.py` and `lib/utils.py` it needs, as
+`npx shadcn add dialog` copies `dialog.tsx`. Reacthon finds them by the folders it
+is given:
+
+```js
+// vite.config.ts
+plugins: [reacthon({ path: ["src/lib", "src/components/ui"] }), react(), tailwindcss()]
+```
+
+```python
+from dialog import Dialog, DialogTrigger, DialogContent, DialogTitle
+```
+
+## Written so far
+
+Button, Card, Input, Label, Checkbox, Dialog, Tabs, Select, Dropdown menu and
+Accordion, each line for line from shadcn/ui's own (style `radix-nova`).
+`lib/utils.py` holds `cn()`, shadcn/ui's own package, and `cva()`, written in
+Python.
+
+## Tested against shadcn/ui's own
+
+`tests/twin.test.tsx` renders each component written in Python and shadcn/ui's
+TSX one with the same props, open and closed, every variant and size, and
+compares the two pages to the character: 87 of them. The demo, `src/App.py`,
+runs on the Python ones alone; in Chrome, Radix's focus, keyboard and portals
+behave as with the TSX ones.
+
+```sh
+npm install
+npm test           # the twin
+npm run dev        # the demo
+npm run registry   # the registry, built into public/r/
+```
+
+## Licence
+
+Reacthon UI is MIT, the licence of shadcn/ui, whose components it writes in
+Python. See `LICENSE`.
