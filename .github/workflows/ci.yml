@@ -1,0 +1,108 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+# Only the deploy job needs Pages write / id-token; the others just read the
+# repo (same split as the other repos).
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Reacthon UI is developed against ../reacthon, itself developed against
+  # ../brycomp, ../bryntime and ../bryvend: they are checked out beside it, each
+  # installed with its own links.
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          path: reacthon-ui
+
+      - name: Checkout the neighbours
+        run: |
+          git clone --depth 1 https://github.com/svelthon/bryvend.git
+          git clone --depth 1 https://github.com/svelthon/bryntime.git
+          git clone --depth 1 https://github.com/svelthon/brycomp.git
+          git clone --depth 1 https://github.com/svelthon/reacthon.git
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Install
+        run: |
+          npm ci --prefix bryntime
+          npm ci --prefix brycomp
+          npm ci --prefix reacthon
+          npm ci --prefix reacthon-ui
+
+      - name: Test
+        working-directory: reacthon-ui
+        run: npm test
+
+  # The demo, src/App.py, is built with paths relative to its page, so it is
+  # served as well under the repository's name. Only from main, and only once
+  # the tests pass.
+  build:
+    needs: test
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          path: reacthon-ui
+
+      - name: Checkout the neighbours
+        run: |
+          git clone --depth 1 https://github.com/svelthon/bryvend.git
+          git clone --depth 1 https://github.com/svelthon/bryntime.git
+          git clone --depth 1 https://github.com/svelthon/brycomp.git
+          git clone --depth 1 https://github.com/svelthon/reacthon.git
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Install
+        run: |
+          npm ci --prefix bryntime
+          npm ci --prefix brycomp
+          npm ci --prefix reacthon
+          npm ci --prefix reacthon-ui
+
+      - name: Build the demo
+        working-directory: reacthon-ui
+        run: npm run build
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: reacthon-ui/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
