@@ -32,12 +32,13 @@ Python developer owns.
 In a React project with shadcn/ui and [Reacthon](https://github.com/svelthon/reacthon):
 
 ```sh
-npx shadcn add <registry>/r/dialog.json
+npx reacthon-ui add dialog
 ```
 
 copies `dialog.py`, and the `button.py` and `lib/utils.py` it needs, as
-`npx shadcn add dialog` copies `dialog.tsx`. Reacthon finds them by the folders it
-is given:
+`npx shadcn add dialog` copies `dialog.tsx`: shadcn's own CLI does the copying,
+from the registry the package carries. Reacthon finds them by the folders it is
+given:
 
 ```js
 // vite.config.ts
