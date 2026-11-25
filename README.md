@@ -58,9 +58,11 @@ React's hooks as Reacthon's, its handlers and effects as functions of their
 own, its own names in snake_case. TypeScript's types tell it what each value
 is: plain data, which Brython hands Python as a dict, or an object. What it
 cannot translate it names, and leaves the file out. `lib/utils.py` holds
-`cn()`, shadcn/ui's own package, and `cva()`, written in Python.
+`cn()`, shadcn/ui's own package, `cva()`, written in Python, and `closest()`,
+the DOM's, which Brython's raises where it finds nothing.
 
-Of the 63 components of `npx shadcn add --all`, 61 are translated.
+All 63 components of `npx shadcn add --all` are translated, the sidebar, the
+carousel, the calendar and the chart included.
 
 ## Tested against shadcn/ui's own
 
@@ -69,6 +71,11 @@ Of the 63 components of `npx shadcn add --all`, 61 are translated.
   pages to the character: 87 of them.
 - `tests/alone.test.tsx` renders every component alone against its TSX one:
   the same page wherever the TSX one renders by itself.
+- `tests/hooks.test.tsx` renders the ones of React's hooks in their trees, then
+  clicks and types in both alike: the sidebar's trigger, rail and Ctrl+B and
+  its cookie, the carousel's keys and `setApi`, the toggle group, the OTP
+  input, the calendar's days and months, the chart's tooltip and legend, the
+  code block's copy button: the same page after each step, 26 scenes.
 - The demo, `src/App.py`, runs on the Python ones alone; in Chrome, Radix's
   focus, keyboard and portals behave as with the TSX ones.
 

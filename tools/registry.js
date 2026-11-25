@@ -1,7 +1,8 @@
 // registry.json, the shadcn registry of the components written in Python:
 //   node tools/registry.js
-// One item a component, with the Python files it imports, and the npm packages
-// its `__js__` and theirs name.
+// One item a component, with the Python files it imports, the npm packages its
+// `__js__` and theirs name, and the project's own JavaScript they import, a
+// hook of shadcn/ui's own registry: `@/hooks/use-mobile` is its `use-mobile`.
 import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 
 const UI = 'src/components/ui';
@@ -10,20 +11,23 @@ const UTILS = 'src/lib/utils.py';
 const pathOf = (module) => (module === 'utils' ? UTILS : `${UI}/${module}.py`);
 const packageOf = (from) => (from.startsWith('@') ? from.split('/').slice(0, 2) : from.split('/').slice(0, 1)).join('/');
 
-// A Python file's own imports and npm packages.
+// A Python file's own imports, npm packages and shadcn/ui items.
 function read(path) {
     const text = readFileSync(path, 'utf8');
     const js = text.match(/^__js__ = \{[\s\S]*?\}$/m)?.[0] ?? '';
+    const froms = [...js.matchAll(/"([^"]+)": \[/g)].map((match) => match[1]);
 
     return {
-        modules: [...text.matchAll(/^from (\w+) import /gm)].map((match) => match[1]),
-        packages: [...js.matchAll(/"([^"]+)": \[/g)].map((match) => packageOf(match[1]))
+        modules: [...text.matchAll(/^from (\w+) import /gm)].map((match) => match[1]).filter((one) => !['browser', 'javascript', 'reacthon'].includes(one)),
+        packages: froms.filter((from) => !from.startsWith('@/')).map(packageOf),
+        items: froms.filter((from) => from.startsWith('@/')).map((from) => from.split('/').pop())
     };
 }
 
 function item(name) {
     const files = [];
     const packages = new Set();
+    const items = new Set();
     const visit = (path) => {
         if (files.includes(path)) return;
         if (!existsSync(path)) throw new Error(`it imports ${path}, not written in Python yet`);
@@ -32,6 +36,7 @@ function item(name) {
         const own = read(path);
 
         own.packages.forEach((one) => packages.add(one));
+        own.items.forEach((one) => items.add(one));
         own.modules.forEach((module) => visit(pathOf(module)));
     };
 
@@ -44,6 +49,7 @@ function item(name) {
         type: 'registry:ui',
         title: `${title[0].toUpperCase()}${title.slice(1)}, in Python`,
         dependencies: [...packages].sort(),
+        ...(items.size ? { registryDependencies: [...items].sort() } : {}),
         files: files.map((path) => ({ path, type: 'registry:file', target: path }))
     };
 }

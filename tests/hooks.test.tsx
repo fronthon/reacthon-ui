@@ -100,8 +100,11 @@ async function pages(tree: Tree, kit: Kit, steps: Step[]) {
     await act(() => root.render(tree(kit, seen)))
     out.push(numbered(document.body.innerHTML))
     for (const [, step] of steps) {
+      // What the step sets off later, input-otp's selection, lands before the
+      // page is read, however long a render takes.
       await act(async () => {
         await step(container)
+        await new Promise((resolve) => setTimeout(resolve, 30))
       })
       out.push(numbered(document.body.innerHTML))
     }
