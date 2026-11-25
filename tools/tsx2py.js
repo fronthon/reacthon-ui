@@ -1592,6 +1592,20 @@ function moduleTranslator(source, checker, program) {
         const cx = { scope: moduleScope, taken, level: 0, statementLevel: 0, quote: null };
 
         for (const node of source.statements) {
+            // `export { DirectionProvider } from "…"`, names of the module's
+            // own taken from JavaScript.
+            if (ts.isExportDeclaration(node) && node.moduleSpecifier && node.exportClause && ts.isNamedExports(node.exportClause) && !node.isTypeOnly) {
+                for (const one of node.exportClause.elements) {
+                    if (one.isTypeOnly) continue;
+
+                    const from = (one.propertyName ?? one.name).text;
+                    const local = snake(one.name.text);
+
+                    add(js, node.moduleSpecifier.text, { local, entry: from === local ? from : `${from} as ${local}` });
+                    used.add(local);
+                }
+                continue;
+            }
             if (ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) continue;
             if (ts.isExpressionStatement(node) && ts.isStringLiteral(node.expression)) continue;
             if (ts.isTypeAliasDeclaration(node) || ts.isInterfaceDeclaration(node)) continue;
