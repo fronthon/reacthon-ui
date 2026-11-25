@@ -58,11 +58,17 @@ React's hooks as Reacthon's, its handlers and effects as functions of their
 own, its own names in snake_case. TypeScript's types tell it what each value
 is: plain data, which Brython hands Python as a dict, or an object. What it
 cannot translate it names, and leaves the file out. `lib/utils.py` holds
-`cn()`, shadcn/ui's own package, `cva()`, written in Python, and `closest()`,
-the DOM's, which Brython's raises where it finds nothing.
+`cn()`, shadcn/ui's own package, `cva()`, written in Python, `closest()`, the
+DOM's, which Brython's raises where it finds nothing, and `sort()`,
+JavaScript's, by a function that compares two items.
 
 All 63 components of `npx shadcn add --all` are translated, the sidebar, the
 carousel, the calendar and the chart included.
+
+So are shadcn/ui's blocks, whole pages made of its components: `tools/blocks.js`
+fetches each into its own folder of `src/blocks`, its page beside its own
+components, as shadcn's CLI writes them. 26 of the 27 are translated, the
+logins, the signups and the 16 sidebars; the dashboard's data table is not yet.
 
 ## Tested against shadcn/ui's own
 
@@ -76,6 +82,8 @@ carousel, the calendar and the chart included.
   its cookie, the carousel's keys and `setApi`, the toggle group, the OTP
   input, the calendar's days and months, the chart's tooltip and legend, the
   code block's copy button: the same page after each step, 26 scenes.
+- `tests/blocks.test.tsx` renders each translated block's page against its TSX
+  one: the same page, to the character.
 - The demo, `src/App.py`, runs on the Python ones alone; in Chrome, Radix's
   focus, keyboard and portals behave as with the TSX ones.
 
@@ -83,6 +91,8 @@ carousel, the calendar and the chart included.
 npm install
 npm test               # the twins
 npm run translate      # src/components/ui/*.tsx into their .py
+npm run blocks         # shadcn/ui's blocks into src/blocks/
+npm run translate:blocks
 npm run dev            # the demo
 npm run registry       # the registry, built into public/r/
 ```

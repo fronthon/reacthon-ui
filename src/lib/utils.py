@@ -1,6 +1,7 @@
 """The helpers the components share: cn() merges Tailwind classes, a later one
 winning over an earlier one it conflicts with, cva() names a component's
-classes after its variants, and closest() finds an element's ancestor."""
+classes after its variants, closest() finds an element's ancestor and sort()
+sorts by a function that compares two items."""
 
 __js__ = {"cn": ["cn"]}
 
@@ -39,3 +40,18 @@ def closest(element, selector):
         return element.closest(selector)
     except KeyError:
         return None
+
+
+def sort(items, compare):
+    """JavaScript's sort(): the list sorted in place by a function that compares
+    two items, negative where the first comes first, and handed back."""
+
+    class Key:
+        def __init__(self, item):
+            self.item = item
+
+        def __lt__(self, other):
+            return compare(self.item, other.item) < 0
+
+    items.sort(key=Key)
+    return items

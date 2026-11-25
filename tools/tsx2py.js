@@ -20,10 +20,16 @@ const unsupported = (node, what) => {
 const WIDTH = 120;
 const pad = (level) => '    '.repeat(level);
 
-// Python modules for the JavaScript ones shadcn/ui's sources name.
+// Python modules for the JavaScript ones shadcn/ui's sources name: a component
+// of its own, or one beside the file, as a block's page imports its form.
 const PYTHON_MODULES = { cn: 'utils', '@/lib/utils': 'utils', 'class-variance-authority': 'utils' };
 const pythonModule = (from) =>
-    PYTHON_MODULES[from] ?? (from.startsWith('@/components/ui/') ? from.slice('@/components/ui/'.length).replace(/-/g, '_') : null);
+    PYTHON_MODULES[from] ??
+    (from.startsWith('@/components/ui/')
+        ? from.slice('@/components/ui/'.length).replace(/-/g, '_')
+        : /^\.\/[\w-]+$/.test(from)
+          ? from.slice(2).replace(/-/g, '_')
+          : null);
 
 // React's API under Reacthon's names.
 const HOOKS = {
@@ -40,7 +46,7 @@ const HOOKS = {
 };
 
 // The page's own names, from Brython's modules.
-const GLOBALS = { window: ['browser', 'window'], document: ['browser', 'document'], Math: ['javascript', 'Math'] };
+const GLOBALS = { window: ['browser', 'window'], document: ['browser', 'document'], Math: ['javascript', 'Math'], Date: ['javascript', 'Date'] };
 const ON_WINDOW = new Set(['navigator', 'setTimeout', 'clearTimeout', 'matchMedia', 'innerWidth']);
 
 // A name the Python modules make, as Python spells it: buttonVariants is
@@ -109,6 +115,18 @@ const isFunction = (node) => {
     return Boolean(one) && (ts.isArrowFunction(one) || ts.isFunctionExpression(one));
 };
 
+// JSX's character references, which its compiler reads as their characters and
+// htm leaves as they are written.
+const ENTITIES = { amp: '&', apos: "'", quot: '"', gt: '>', nbsp: ' ' };
+
+function decoded(text) {
+    return text.replace(/&(?:#x([\da-f]+)|#(\d+)|(\w+));/gi, (whole, hex, decimal, name) => {
+        const one = hex ? String.fromCodePoint(parseInt(hex, 16)) : decimal ? String.fromCodePoint(Number(decimal)) : ENTITIES[name];
+
+        return one === undefined || one === '<' ? unsupported({ getText: () => whole }, 'a character reference') : one;
+    });
+}
+
 // JSX's text as React reads it: each line trimmed where it meets another, the
 // lines left empty dropped, the rest joined by a space.
 function jsxText(raw) {
@@ -123,7 +141,7 @@ function jsxText(raw) {
         if (one) text += (text && at !== 0 ? ' ' : '') + one;
     });
 
-    return text;
+    return decoded(text);
 }
 
 // The quotes of a t-string: ones its text does not hold, and where they can be,
@@ -186,6 +204,11 @@ function moduleTranslator(source, checker, program) {
     let reactNamespace = null;
 
     const add = (map, from, entry) => map.set(from, [...(map.get(from) ?? []), entry]);
+    // One of utils.py's own, for what Python's or Brython's does otherwise.
+    const helper = (local) => {
+        if (!python.get('utils')?.some((one) => one.local === local)) add(python, 'utils', { local });
+        used.add(local);
+    };
     const need = (module, name) => brython.set(module, new Set([...(brython.get(module) ?? []), name]));
 
     for (const node of source.statements) {
@@ -297,6 +320,20 @@ function moduleTranslator(source, checker, program) {
         const property = checker.getPropertyOfType(checker.getNonNullableType(typeOf(object)), name);
 
         return !property || Boolean(property.flags & ts.SymbolFlags.Optional);
+    };
+    // The default a component gives a prop it destructures, `isActive = false`:
+    // JavaScript applies it to a prop handed as undefined, Python not to one
+    // handed None.
+    const propDefault = (tag, prop, cx) => {
+        let symbol = checker.getSymbolAtLocation(tag);
+
+        if (symbol && symbol.flags & ts.SymbolFlags.Alias) symbol = checker.getAliasedSymbol(symbol);
+
+        const declaration = symbol?.valueDeclaration;
+        const pattern = declaration && ts.isFunctionDeclaration(declaration) ? declaration.parameters[0]?.name : undefined;
+        const one = pattern && ts.isObjectBindingPattern(pattern) ? pattern.elements.find((element) => (element.propertyName ?? element.name).getText() === prop) : undefined;
+
+        return one?.initializer && constant(one.initializer) ? expr(one.initializer, cx) : null;
     };
 
     // --- Names ---------------------------------------------------------------
@@ -460,11 +497,11 @@ function moduleTranslator(source, checker, program) {
         if (ts.isIdentifier(object) && object.text === reactNamespace) unsupported(node, "React's own API");
         if (field === 'length' && role === 'read' && sized(object)) return [`len(${expr(object, { ...cx, inChain: cx.inChain }, WHOLE)})`, PRIMARY];
 
-        const base = expr(object, cx, PRIMARY);
+        const base = expr(object, { ...cx, fallback: null }, PRIMARY);
 
         if (!imported.has(object.getText()) && isDict(object)) {
             if (role !== 'read' || !optional(object, field)) return [`${base}[${string(field)}]`, PRIMARY];
-            return [`${base}.get(${string(field)})`, PRIMARY];
+            return [`${base}.get(${string(field)}${cx.fallback ? `, ${cx.fallback}` : ''})`, PRIMARY];
         }
         return [`${base}.${field}`, PRIMARY];
     };
@@ -697,12 +734,19 @@ function moduleTranslator(source, checker, program) {
                     : [`${expr(object, inner, PRIMARY)}.removesuffix(${string(done[1])})`, PRIMARY];
             }
             if (method === 'toLocaleString' && args.length === 0 && numeric(object)) return [`format(${expr(object, inner)}, ",")`, PRIMARY];
+            if (method === 'slice' && args.length <= 2 && sized(object)) {
+                return [`${expr(object, inner, PRIMARY)}[${args.map((one) => expr(one, inner)).join(':')}${args.length === 1 ? ':' : ''}]`, PRIMARY];
+            }
             // Brython's DOMNode.closest() raises KeyError where the DOM's is null.
             if (method === 'closest' && args.length === 1 && domElement(object)) {
-                if (!python.has('utils')) python.set('utils', []);
-                if (!python.get('utils').some((one) => one.local === 'closest')) python.get('utils').push({ local: 'closest' });
-                used.add('closest');
+                helper('closest');
                 return [`closest(${expr(object, inner)}, ${expr(args[0], inner)})`, PRIMARY];
+            }
+            // Python's sort() takes a key, not a function that compares two
+            // items, which JavaScript's hands both of them.
+            if (method === 'sort' && args.length === 1 && isFunction(args[0]) && sized(object)) {
+                helper('sort');
+                return [`sort(${expr(object, inner)}, ${callable(unwrap(args[0]), { ...inner, arity: 2 }, 'compare')})`, PRIMARY];
             }
         }
 
@@ -715,6 +759,15 @@ function moduleTranslator(source, checker, program) {
     // filtered items where the map counts them.
     const mapped = (object, fn, cx) => {
         const inner = unwrap(object);
+
+        // `Array.from({ length: n }).map((_, i) => ...)`, over range(n).
+        if (ts.isCallExpression(inner) && inner.expression.getText() === 'Array.from' && inner.arguments.length === 1 && ts.isObjectLiteralExpression(unwrap(inner.arguments[0]))) {
+            const length = unwrap(inner.arguments[0]).properties.find((one) => one.name?.text === 'length');
+            const scope = new Set(cx.scope);
+            const index = fn.parameters[1] ? target(fn.parameters[1].name, scope) : '_';
+
+            return `[${element_(fn, { ...cx, scope, inChain: false })} for ${index} in range(${expr(length.initializer, cx)})]`;
+        }
 
         if (ts.isCallExpression(inner) && ts.isPropertyAccessExpression(inner.expression) && inner.expression.name.text === 'filter' && isFunction(inner.arguments[0])) {
             const filter = unwrap(inner.arguments[0]);
@@ -739,11 +792,13 @@ function moduleTranslator(source, checker, program) {
 
     const test = (fn) => body(fn) ?? unsupported(fn, 'a filter of statements');
 
+    // A filter of statements keeps the items its def `keep` keeps.
     const filtered = (iterable, fn, cx, generator = false) => {
         const loop = comprehension(iterable, fn, cx);
         const params = fn.parameters[0] ? target(fn.parameters[0].name, new Set()) : '_';
         const item = params.includes(',') ? `(${params})` : params;
-        const text = `${item} ${loop.text} if ${expr(test(fn), loop.cx, OR)}`;
+        const kept = body(fn) ? expr(body(fn), loop.cx, OR) : `${callable(fn, { ...cx, hoistAs: 'keep' }, 'keep', true)}(${params})`;
+        const text = `${item} ${loop.text} if ${kept}`;
 
         return generator ? text : `[${text}]`;
     };
@@ -763,7 +818,7 @@ function moduleTranslator(source, checker, program) {
     const element_ = (fn, cx) => {
         const value = body(fn);
 
-        if (value) return expr(value, cx);
+        if (value && !holdsHandler(value, fn)) return expr(value, cx);
 
         const first = fn.parameters[0]?.name;
         const outer = loopNames(fn, cx);
@@ -773,6 +828,19 @@ function moduleTranslator(source, checker, program) {
         );
 
         return `${local}(${[...args, ...outer].join(', ')})`;
+    };
+
+    // A handler of statements in the item's element that reads the item: the
+    // element becomes a def, which the handler is defined in.
+    const holdsHandler = (node, fn) => {
+        const names = new Set();
+        const bind = (binding) => (ts.isIdentifier(binding) ? names.add(binding.text) : binding.elements?.forEach((one) => !ts.isOmittedExpression(one) && bind(one.name)));
+        const reads = (one) => (ts.isIdentifier(one) && names.has(one.text)) || Boolean(ts.forEachChild(one, reads));
+        const handler = (one) => isFunction(one) && ts.isBlock(one.body) && ts.isJsxExpression(one.parent) && ts.isJsxAttribute(one.parent.parent);
+        const holds = (one) => (handler(one) && reads(one.body)) || Boolean(ts.forEachChild(one, holds));
+
+        fn.parameters.forEach((one) => bind(one.name));
+        return holds(node);
     };
 
     // The names of the loops around a callback that it reads: a def taken out of
@@ -831,7 +899,9 @@ function moduleTranslator(source, checker, program) {
             const scope = new Set(cx.scope);
             const params = fn.parameters.map((one) => target(one.name, scope));
 
-            return `lambda${params.length ? ` ${params.join(', ')}` : ''}: ${expr(value, { ...cx, scope }, LAMBDA)}`;
+            // The arguments a JavaScript function leaves unread.
+            if (params.length < (cx.arity ?? 0)) params.push('*_');
+            return `lambda${params.length ? ` ${params.join(', ')}` : ''}: ${expr(value, { ...cx, scope, arity: undefined }, LAMBDA)}`;
         }
         if (!cx.hoists) unsupported(fn, 'a function outside a function');
         if (cx.hoisted.has(fn)) return cx.hoisted.get(fn);
@@ -856,6 +926,12 @@ function moduleTranslator(source, checker, program) {
 
     const tagName = (tag, cx) => {
         if (ts.isIdentifier(tag) && /^[a-z]/.test(tag.text) && !tag.text.includes('.')) return tag.text;
+        // A fragment with a key, React's own component.
+        if (tag.getText() === `${reactNamespace}.Fragment` || (ts.isIdentifier(tag) && react.get(tag.text) === 'Fragment')) {
+            if (!js.get('react')?.some((one) => one.local === 'Fragment')) add(js, 'react', { local: 'Fragment', entry: 'Fragment' });
+            used.add('Fragment');
+            return '{Fragment}';
+        }
         if (ts.isIdentifier(tag) || ts.isPropertyAccessExpression(tag)) return `{${expr(tag, cx, PRIMARY)}}`;
         return unsupported(tag, 'a tag');
     };
@@ -865,6 +941,9 @@ function moduleTranslator(source, checker, program) {
     const field = (node, cx) => {
         const value = expr(node, { ...cx, inField: true });
 
+        // A lambda's colon would start the field's format: Python asks for
+        // its parentheses.
+        if (/^lambda\b/.test(value)) return `{(${value})}`;
         return value.startsWith('{') ? `{ ${value} }` : `{${value}}`;
     };
 
@@ -881,7 +960,7 @@ function moduleTranslator(source, checker, program) {
 
         const attr = DOM_NAMES[one.name.getText()] ?? one.name.getText();
         const value = one.initializer;
-        const text = value && (ts.isStringLiteral(value) ? value.text : value.expression && ts.isStringLiteral(value.expression) ? value.expression.text : null);
+        const text = value && (ts.isStringLiteral(value) ? decoded(value.text) : value.expression && ts.isStringLiteral(value.expression) ? value.expression.text : null);
 
         if (value === undefined) return attr;
         if (text !== null && !text.includes('"')) return `${attr}="${braces(text)}"`;
@@ -889,10 +968,13 @@ function moduleTranslator(source, checker, program) {
         if (value.expression === undefined) return unsupported(one, 'an empty attribute');
 
         const inner = unwrap(value.expression);
-        const at = { ...cx, level, hoistAs: /^on[A-Z]/.test(attr) ? snake(attr) : cx.hoistAs };
+        const fallback = ts.isPropertyAccessExpression(inner) ? propDefault(one.parent.parent.tagName, one.name.getText(), cx) : null;
+        const at = { ...cx, level, hoistAs: /^on[A-Z]/.test(attr) || isFunction(inner) ? snake(attr) : cx.hoistAs, fallback };
         const line = `${attr}=${field(value.expression, at)}`;
 
         if (flat || line.includes('\n') || pad(level).length + line.length <= WIDTH) return line;
+        // A lambda too long for its line, a def of its own.
+        if (isFunction(inner) && cx.hoists) return `${attr}={${callable(inner, at, snake(attr), true)}}`;
         if (ts.isObjectLiteralExpression(inner)) return `${attr}={ ${pretty(inner, { ...at, inField: true }, level)} }`;
 
         const long = ts.isCallExpression(inner) && inner.arguments.filter((arg) => expr(arg, cx).length > 40).length > 1;
@@ -964,7 +1046,11 @@ function moduleTranslator(source, checker, program) {
         const tag = tagName(opening.tagName, cx);
         let attributes = opening.attributes.properties.map((one) => attribute(one, cx, level + 1, flat));
         let head = [tag, ...attributes].join(' ');
-        const split = !flat && attributes.length > 1 && (spread || pad(level).length + head.length > WIDTH || head.includes('\n'));
+        const long = pad(level).length + head.length > WIDTH;
+        // A lone dict too long for the tag's line goes on its own, as Prettier puts it.
+        const [lone] = opening.attributes.properties;
+        const dict = attributes.length === 1 && ts.isJsxAttribute(lone) && lone.initializer?.expression && ts.isObjectLiteralExpression(unwrap(lone.initializer.expression));
+        const split = !flat && (attributes.length > 1 ? spread || long || head.includes('\n') : dict && pad(level).length + head.length + 2 > WIDTH && !head.includes('\n'));
 
         // A lone attribute of several lines stays on the tag's own.
         if (!split && head.includes('\n')) {
@@ -1312,10 +1398,11 @@ function moduleTranslator(source, checker, program) {
 
         if (ts.isArrayBindingPattern(binding)) {
             const names = binding.elements.map((item) => (ts.isOmittedExpression(item) ? '_' : target(item.name, cx.scope)));
+            const targets = binding.elements.map((item, at) => (item.dotDotDotToken ? `*${names[at]}` : names[at])).join(', ');
 
             names.forEach((item) => cx.taken.add(item));
-            if (names.length === 1) return [`${indent}${names[0]} = ${expr(value, cx, PRIMARY)}[0]`];
-            return [`${indent}${names.join(', ')} = ${pretty(value, cx, cx.level, indent.length + names.join(', ').length + 3)}`];
+            if (names.length === 1 && !binding.elements[0].dotDotDotToken) return [`${indent}${names[0]} = ${expr(value, cx, PRIMARY)}[0]`];
+            return [`${indent}${targets} = ${pretty(value, cx, cx.level, indent.length + targets.length + 3)}`];
         }
 
         // `const { a, b = 1 } = value`: each read as a dict's, missing as None.
@@ -1439,8 +1526,12 @@ function moduleTranslator(source, checker, program) {
         if (hooks.size) head.push(`from reacthon import ${[...hooks].sort().join(', ')}`);
         for (const [from, names] of python) {
             const kept = names.filter(usedEntry).map((one) => snake(one.local)).sort();
+            const line = `from ${from} import ${kept.join(', ')}`;
+            const wrapped = `    ${kept.join(', ')},`;
 
-            if (kept.length) head.push(`from ${from} import ${kept.join(', ')}`);
+            if (!kept.length) continue;
+            if (line.length <= WIDTH) head.push(line);
+            else head.push(`from ${from} import (`, ...(wrapped.length <= WIDTH ? [wrapped] : kept.map((one) => `    ${one},`)), ')');
         }
 
         const jsEntries = [...js].map(([from, names]) => [from, names.filter(usedEntry)]).filter(([, names]) => names.length);
@@ -1448,9 +1539,14 @@ function moduleTranslator(source, checker, program) {
         if (jsEntries.length) {
             const listed = ([from, names]) => `${string(from)}: [${names.map((one) => string(one.entry)).join(', ')}]`;
             const flat = `__js__ = {${jsEntries.map(listed).join(', ')}}`;
+            // An entry too long for its line, one name a line.
+            const entry = ([from, names]) =>
+                `    ${listed([from, names])},`.length <= WIDTH
+                    ? `    ${listed([from, names])},`
+                    : `    ${string(from)}: [\n${names.map((one) => `        ${string(one.entry)},`).join('\n')}\n    ],`;
 
             if (head.length) head.push('');
-            head.push(flat.length <= WIDTH ? flat : `__js__ = {\n${jsEntries.map((one) => `    ${listed(one)},`).join('\n')}\n}`);
+            head.push(flat.length <= WIDTH ? flat : `__js__ = {\n${jsEntries.map(entry).join('\n')}\n}`);
         }
 
         // Two blank lines around a function, one between two assignments.
