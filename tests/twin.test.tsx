@@ -26,6 +26,22 @@ import * as tsxTabs from "@/components/ui/tabs"
 import * as pyDialog from "@/components/ui/dialog.py"
 // @ts-expect-error a Python module
 import * as pyTabs from "@/components/ui/tabs.py"
+import * as tsxAccordion from "@/components/ui/accordion"
+import * as tsxSelect from "@/components/ui/select"
+import * as tsxMenu from "@/components/ui/dropdown-menu"
+// @ts-expect-error a Python module
+import * as pyAccordion from "@/components/ui/accordion.py"
+// @ts-expect-error a Python module
+import * as pySelect from "@/components/ui/select.py"
+// @ts-expect-error a Python module
+import * as pyMenu from "@/components/ui/dropdown_menu.py"
+
+// What Radix's select asks of the page and jsdom does not have.
+Object.assign(Element.prototype, {
+  scrollIntoView() {},
+  hasPointerCapture: () => false,
+  releasePointerCapture() {},
+})
 
 ;(globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true
 
@@ -101,6 +117,45 @@ for (const variant of ["default", "line", undefined]) {
       h(k.TabsContent, { value: "b" }, "second"))
   )
 }
+for (const value of ["one", undefined]) {
+  pair(`Accordion ${value ?? "closed"}`, tsxAccordion, pyAccordion, (k) =>
+    h(k.Accordion, { type: "single", collapsible: true, defaultValue: value, className: "w-80" },
+      h(k.AccordionItem, { value: "one" }, h(k.AccordionTrigger, null, "One?"), h(k.AccordionContent, { className: "px-2" }, "Yes.")),
+      h(k.AccordionItem, { value: "two", className: "x" }, h(k.AccordionTrigger, { className: "t" }, "Two?"), h(k.AccordionContent, null, "No.")))
+  )
+}
+for (const open of [false, true]) {
+  for (const position of ["item-aligned", "popper"]) {
+    pair(`Select ${open ? "open" : "closed"} ${position}`, tsxSelect, pySelect, (k) =>
+      h(k.Select, { defaultValue: "pro", defaultOpen: open },
+        h(k.SelectTrigger, { size: "sm", className: "w-40" }, h(k.SelectValue, { placeholder: "plan" })),
+        h(k.SelectContent, { position },
+          h(k.SelectGroup, null,
+            h(k.SelectLabel, null, "Plans"),
+            h(k.SelectItem, { value: "free" }, "Free"),
+            h(k.SelectItem, { value: "pro" }, "Pro")),
+          h(k.SelectSeparator),
+          h(k.SelectItem, { value: "team", disabled: true }, "Team")))
+    )
+  }
+}
+pair("DropdownMenu open", tsxMenu, pyMenu, (k) =>
+  h(k.DropdownMenu, { defaultOpen: true },
+    h(k.DropdownMenuTrigger, null, "menu"),
+    h(k.DropdownMenuContent, { className: "w-56", align: "end" },
+      h(k.DropdownMenuLabel, { inset: true }, "Account"),
+      h(k.DropdownMenuGroup, null,
+        h(k.DropdownMenuItem, null, "Profile", h(k.DropdownMenuShortcut, null, "⇧⌘P")),
+        h(k.DropdownMenuItem, { variant: "destructive", disabled: true }, "Delete")),
+      h(k.DropdownMenuSeparator),
+      h(k.DropdownMenuCheckboxItem, { checked: true }, "Bar"),
+      h(k.DropdownMenuCheckboxItem, { checked: false, inset: true }, "Panel"),
+      h(k.DropdownMenuRadioGroup, { value: "b" },
+        h(k.DropdownMenuRadioItem, { value: "a" }, "A"),
+        h(k.DropdownMenuRadioItem, { value: "b" }, "B")),
+      h(k.DropdownMenuSub, null, h(k.DropdownMenuSubTrigger, { inset: true }, "More"), h(k.DropdownMenuSubContent, null, h(k.DropdownMenuItem, null, "x")))))
+)
+pair("DropdownMenu closed", tsxMenu, pyMenu, (k) => h(k.DropdownMenu, null, h(k.DropdownMenuTrigger, { className: "t" }, "menu")))
 pair("Tabs vertical", tsxTabs, pyTabs, (k) =>
   h(k.Tabs, { defaultValue: "b", orientation: "vertical", className: "w-60" },
     h(k.TabsList, null, h(k.TabsTrigger, { value: "a" }, "A"), h(k.TabsTrigger, { value: "b" }, "B")),
@@ -113,6 +168,7 @@ describe("shadcn/ui's components written in Python", () => {
     const got = await html(tree, py)
     let at = 0
 
+    expect(expected.length).toBeGreaterThan(100)
     while (at < expected.length && expected[at] === got[at]) at++
     // Where the two first part, with what leads to it.
     expect(got.slice(Math.max(0, at - 60), at + 80)).toBe(expected.slice(Math.max(0, at - 60), at + 80))

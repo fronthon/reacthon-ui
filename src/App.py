@@ -5,15 +5,11 @@ from label import Label
 from checkbox import Checkbox
 from tabs import Tabs, TabsList, TabsTrigger, TabsContent
 from dialog import Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter
-
-__js__ = {
-    "@/components/ui/select": ["Select", "SelectTrigger", "SelectValue", "SelectContent", "SelectItem"],
-    "@/components/ui/dropdown-menu": [
-        "DropdownMenu", "DropdownMenuTrigger", "DropdownMenuContent", "DropdownMenuItem", "DropdownMenuLabel",
-        "DropdownMenuSeparator",
-    ],
-    "@/components/ui/accordion": ["Accordion", "AccordionItem", "AccordionTrigger", "AccordionContent"],
-}
+from select import Select, SelectTrigger, SelectValue, SelectContent, SelectItem
+from dropdown_menu import (
+    DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator,
+)
+from accordion import Accordion, AccordionItem, AccordionTrigger, AccordionContent
 
 FRUITS = ["apple", "pear", "plum"]
 
