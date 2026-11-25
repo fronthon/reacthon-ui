@@ -49,7 +49,7 @@ def DialogContent(className=None, children=None, showCloseButton=True, **props):
                 ...{props}
             >
                 {children}
-                {close if showCloseButton else None}
+                {showCloseButton and close}
             </{DialogPrimitive.Content}>
         </{DialogPortal}>
     """
@@ -73,7 +73,7 @@ def DialogFooter(className=None, showCloseButton=False, children=None, **props):
             ...{props}
         >
             {children}
-            {close if showCloseButton else None}
+            {showCloseButton and close}
         </div>
     """
 

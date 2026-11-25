@@ -11,7 +11,7 @@ node_modules
 dist
 dist-ssr
 public/r
-generated
+registry.json
 *.local
 
 # Editor directories and files

@@ -1,9 +1,6 @@
 from utils import cn
 
-__js__ = {
-    "radix-ui": ["Select as SelectPrimitive"],
-    "lucide-react": ["ChevronDownIcon", "CheckIcon", "ChevronUpIcon"],
-}
+__js__ = {"radix-ui": ["Select as SelectPrimitive"], "lucide-react": ["ChevronDownIcon", "CheckIcon", "ChevronUpIcon"]}
 
 
 def Select(**props):
@@ -40,7 +37,11 @@ def SelectContent(className=None, children=None, position="item-aligned", align=
             <{SelectPrimitive.Content}
                 data-slot="select-content"
                 data-align-trigger={position == "item-aligned"}
-                class={cn("relative z-50 max-h-(--radix-select-content-available-height) min-w-36 origin-(--radix-select-content-transform-origin) overflow-x-hidden overflow-y-auto rounded-lg bg-popover text-popover-foreground shadow-md ring-1 ring-foreground/10 duration-100 data-[align-trigger=true]:animate-none data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95", position == "popper" and "data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1", className)}
+                class={cn(
+                    "relative z-50 max-h-(--radix-select-content-available-height) min-w-36 origin-(--radix-select-content-transform-origin) overflow-x-hidden overflow-y-auto rounded-lg bg-popover text-popover-foreground shadow-md ring-1 ring-foreground/10 duration-100 data-[align-trigger=true]:animate-none data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
+                    position == "popper" and "data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1",
+                    className,
+                )}
                 position={position}
                 align={align}
                 ...{props}
@@ -59,7 +60,13 @@ def SelectContent(className=None, children=None, position="item-aligned", align=
 
 
 def SelectLabel(className=None, **props):
-    return t'<{SelectPrimitive.Label} data-slot="select-label" class={cn("px-1.5 py-1 text-xs text-muted-foreground", className)} ...{props} />'
+    return t"""
+        <{SelectPrimitive.Label}
+            data-slot="select-label"
+            class={cn("px-1.5 py-1 text-xs text-muted-foreground", className)}
+            ...{props}
+        />
+    """
 
 
 def SelectItem(className=None, children=None, **props):
@@ -80,7 +87,13 @@ def SelectItem(className=None, children=None, **props):
 
 
 def SelectSeparator(className=None, **props):
-    return t'<{SelectPrimitive.Separator} data-slot="select-separator" class={cn("pointer-events-none -mx-1 my-1 h-px bg-border", className)} ...{props} />'
+    return t"""
+        <{SelectPrimitive.Separator}
+            data-slot="select-separator"
+            class={cn("pointer-events-none -mx-1 my-1 h-px bg-border", className)}
+            ...{props}
+        />
+    """
 
 
 def SelectScrollUpButton(className=None, **props):

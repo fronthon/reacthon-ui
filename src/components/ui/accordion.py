@@ -1,17 +1,26 @@
 from utils import cn
 
-__js__ = {
-    "radix-ui": ["Accordion as AccordionPrimitive"],
-    "lucide-react": ["ChevronDownIcon", "ChevronUpIcon"],
-}
+__js__ = {"radix-ui": ["Accordion as AccordionPrimitive"], "lucide-react": ["ChevronDownIcon", "ChevronUpIcon"]}
 
 
 def Accordion(className=None, **props):
-    return t'<{AccordionPrimitive.Root} data-slot="accordion" class={cn("flex w-full flex-col", className)} ...{props} />'
+    return t"""
+        <{AccordionPrimitive.Root}
+            data-slot="accordion"
+            class={cn("flex w-full flex-col", className)}
+            ...{props}
+        />
+    """
 
 
 def AccordionItem(className=None, **props):
-    return t'<{AccordionPrimitive.Item} data-slot="accordion-item" class={cn("not-last:border-b", className)} ...{props} />'
+    return t"""
+        <{AccordionPrimitive.Item}
+            data-slot="accordion-item"
+            class={cn("not-last:border-b", className)}
+            ...{props}
+        />
+    """
 
 
 def AccordionTrigger(className=None, children=None, **props):
@@ -23,8 +32,14 @@ def AccordionTrigger(className=None, children=None, **props):
                 ...{props}
             >
                 {children}
-                <{ChevronDownIcon} data-slot="accordion-trigger-icon" class="pointer-events-none shrink-0 group-aria-expanded/accordion-trigger:hidden" />
-                <{ChevronUpIcon} data-slot="accordion-trigger-icon" class="pointer-events-none hidden shrink-0 group-aria-expanded/accordion-trigger:inline" />
+                <{ChevronDownIcon}
+                    data-slot="accordion-trigger-icon"
+                    class="pointer-events-none shrink-0 group-aria-expanded/accordion-trigger:hidden"
+                />
+                <{ChevronUpIcon}
+                    data-slot="accordion-trigger-icon"
+                    class="pointer-events-none hidden shrink-0 group-aria-expanded/accordion-trigger:inline"
+                />
             </{AccordionPrimitive.Trigger}>
         </{AccordionPrimitive.Header}>
     """

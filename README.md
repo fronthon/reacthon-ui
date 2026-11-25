@@ -49,39 +49,33 @@ plugins: [reacthon({ path: ["src/lib", "src/components/ui"] }), react(), tailwin
 from dialog import Dialog, DialogTrigger, DialogContent, DialogTitle
 ```
 
-## Written so far
+## Translated from shadcn/ui's own
 
-Button, Card, Input, Label, Checkbox, Dialog, Tabs, Select, Dropdown menu and
-Accordion, each line for line from shadcn/ui's own (style `radix-nova`).
-`lib/utils.py` holds `cn()`, shadcn/ui's own package, and `cva()`, written in
-Python.
+`tools/tsx2py.js` writes each component file's Python from shadcn/ui's TSX
+(style `radix-nova`), with TypeScript's own parser and checker, as one writes
+it by hand: its imports, its `cva` tables, its props, its JSX as a t-string,
+React's hooks as Reacthon's, its handlers and effects as functions of their
+own, its own names in snake_case. TypeScript's types tell it what each value
+is: plain data, which Brython hands Python as a dict, or an object. What it
+cannot translate it names, and leaves the file out. `lib/utils.py` holds
+`cn()`, shadcn/ui's own package, and `cva()`, written in Python.
+
+Of the 63 components of `npx shadcn add --all`, 61 are translated.
 
 ## Tested against shadcn/ui's own
 
-`tests/twin.test.tsx` renders each component written in Python and shadcn/ui's
-TSX one with the same props, open and closed, every variant and size, and
-compares the two pages to the character: 87 of them. The demo, `src/App.py`,
-runs on the Python ones alone; in Chrome, Radix's focus, keyboard and portals
-behave as with the TSX ones.
-
-## Translated from TSX
-
-`tools/tsx2py.js` writes a component file's Python from shadcn/ui's TSX, with
-TypeScript's own parser: its imports, its `cva` tables, its props, its JSX as a
-t-string. What it cannot translate it names, and leaves the file out.
-
-- The ten above, translated, pass the same twin: 87 of 87.
-- Of the 63 components of `npx shadcn add --all`, 50 are translated. Rendered
-  alone against their TSX ones, 154 components give the same page; the others
-  need their context to render, in TSX as well.
-- The 13 left out use React's hooks, block-bodied functions or JavaScript's own
-  library (`Array.from`, `.map`, a context read as an object): the next step.
+- `tests/twin.test.tsx` renders ten of them and shadcn/ui's TSX ones with the
+  same props, open and closed, every variant and size, and compares the two
+  pages to the character: 87 of them.
+- `tests/alone.test.tsx` renders every component alone against its TSX one:
+  the same page wherever the TSX one renders by itself.
+- The demo, `src/App.py`, runs on the Python ones alone; in Chrome, Radix's
+  focus, keyboard and portals behave as with the TSX ones.
 
 ```sh
 npm install
-npm test               # the twin
-npm run translate      # src/components/ui/*.tsx into generated/
-npm run test:translated
+npm test               # the twins
+npm run translate      # src/components/ui/*.tsx into their .py
 npm run dev            # the demo
 npm run registry       # the registry, built into public/r/
 ```

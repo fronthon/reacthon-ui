@@ -1,9 +1,6 @@
 from utils import cn
 
-__js__ = {
-    "radix-ui": ["DropdownMenu as DropdownMenuPrimitive"],
-    "lucide-react": ["CheckIcon", "ChevronRightIcon"],
-}
+__js__ = {"radix-ui": ["DropdownMenu as DropdownMenuPrimitive"], "lucide-react": ["CheckIcon", "ChevronRightIcon"]}
 
 
 def DropdownMenu(**props):
@@ -57,7 +54,10 @@ def DropdownMenuCheckboxItem(className=None, children=None, checked=None, inset=
             checked={checked}
             ...{props}
         >
-            <span class="pointer-events-none absolute right-2 flex items-center justify-center" data-slot="dropdown-menu-checkbox-item-indicator">
+            <span
+                class="pointer-events-none absolute right-2 flex items-center justify-center"
+                data-slot="dropdown-menu-checkbox-item-indicator"
+            >
                 <{DropdownMenuPrimitive.ItemIndicator}>
                     <{CheckIcon} />
                 </{DropdownMenuPrimitive.ItemIndicator}>
@@ -79,7 +79,10 @@ def DropdownMenuRadioItem(className=None, children=None, inset=None, **props):
             class={cn("relative flex cursor-default items-center gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground data-inset:pl-7 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4", className)}
             ...{props}
         >
-            <span class="pointer-events-none absolute right-2 flex items-center justify-center" data-slot="dropdown-menu-radio-item-indicator">
+            <span
+                class="pointer-events-none absolute right-2 flex items-center justify-center"
+                data-slot="dropdown-menu-radio-item-indicator"
+            >
                 <{DropdownMenuPrimitive.ItemIndicator}>
                     <{CheckIcon} />
                 </{DropdownMenuPrimitive.ItemIndicator}>
@@ -101,7 +104,13 @@ def DropdownMenuLabel(className=None, inset=None, **props):
 
 
 def DropdownMenuSeparator(className=None, **props):
-    return t'<{DropdownMenuPrimitive.Separator} data-slot="dropdown-menu-separator" class={cn("-mx-1 my-1 h-px bg-border", className)} ...{props} />'
+    return t"""
+        <{DropdownMenuPrimitive.Separator}
+            data-slot="dropdown-menu-separator"
+            class={cn("-mx-1 my-1 h-px bg-border", className)}
+            ...{props}
+        />
+    """
 
 
 def DropdownMenuShortcut(className=None, **props):
