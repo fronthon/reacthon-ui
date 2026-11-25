@@ -21,11 +21,11 @@ document.elementFromPoint ??= () => null
 // The sidebar's skeleton draws its width at random.
 Math.random = () => 0.5
 
-const tsx = import.meta.glob("/src/blocks/*/page.tsx")
-const py = import.meta.glob("/src/blocks/*/page.py")
+const tsx = import.meta.glob("@/blocks/*/page.tsx")
+const py = import.meta.glob("@/blocks/*/page.py")
 // A block is written in Python once each of its files is: login-form.tsx as login_form.py.
-const sources = Object.keys(import.meta.glob("/src/blocks/*/*.tsx"))
-const written = new Set(Object.keys(import.meta.glob("/src/blocks/*/*.py")))
+const sources = Object.keys(import.meta.glob("@/blocks/*/*.tsx"))
+const written = new Set(Object.keys(import.meta.glob("@/blocks/*/*.py")))
 const python = (path: string) => path.replace(/[^/]+$/, (file) => file.replace(/-/g, "_").replace(/\.tsx$/, ".py"))
 const whole = (name: string) => sources.filter((path) => path.split("/").at(-2) === name).every((path) => written.has(python(path)))
 
@@ -67,7 +67,7 @@ const blocks = Object.keys(py)
 
 describe.each(blocks)("%s", (name, path) => {
   it("renders its page as the TSX one does", async () => {
-    const Page = ((await tsx[`/src/blocks/${name}/page.tsx`]()) as { default: ComponentType }).default
+    const Page = ((await tsx[path.replace(/page\.py$/, "page.tsx")]()) as { default: ComponentType }).default
     const pyModule = (await py[path]()) as Record<string, ComponentType>
 
     expect(await html(pyModule[Page.name])).toBe(await html(Page))

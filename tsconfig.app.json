@@ -23,7 +23,8 @@
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
     "paths": {
-      "@/*": ["./src/*"]
+      "@/lib/utils": ["./src/lib/utils"],
+      "@/*": ["./src/presets/radix-nova/*"]
     }
   },
   "include": ["src"]

@@ -19,8 +19,8 @@ window.matchMedia ??= (() => ({ matches: false, addEventListener() {}, removeEve
 // The sidebar's skeleton draws its width at random.
 Math.random = () => 0.5
 
-const tsx = import.meta.glob("/src/components/ui/*.tsx")
-const py = import.meta.glob("/src/components/ui/*.py")
+const tsx = import.meta.glob("@/components/ui/*.tsx")
+const py = import.meta.glob("@/components/ui/*.py")
 
 // React's ids count every root the page has rendered: each one is named by the
 // order it first appears in. input-otp marks the selection of the second input
@@ -61,7 +61,7 @@ const files = Object.keys(py).map((path) => [path.split("/").pop()!.replace(/\.p
 describe.each(files)("%s", (name, path) => {
   it("renders each component alone as the TSX one does", async () => {
     const pyModule = (await py[path]()) as Record<string, ComponentType>
-    const tsxModule = (await tsx[`/src/components/ui/${name.replace(/_/g, "-")}.tsx`]()) as Record<string, ComponentType>
+    const tsxModule = (await tsx[path.replace(/[^/]+$/, `${name.replace(/_/g, "-")}.tsx`)]()) as Record<string, ComponentType>
 
     for (const [key, Comp] of Object.entries(tsxModule)) {
       if (!/^[A-Z]/.test(key) || typeof Comp !== "function") continue

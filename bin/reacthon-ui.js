@@ -1,14 +1,29 @@
 #!/usr/bin/env node
 import { spawnSync } from "node:child_process"
-import { existsSync, readdirSync } from "node:fs"
+import { existsSync, readdirSync, readFileSync } from "node:fs"
+import { join } from "node:path"
 import { fileURLToPath } from "node:url"
 
-const registry = fileURLToPath(new URL("../public/r/", import.meta.url))
+const registries = fileURLToPath(new URL("../public/r/", import.meta.url))
 const valued = new Set(["-c", "--cwd", "-p", "--path"])
 
 const [command, ...args] = process.argv.slice(2)
 if (command !== "add") {
   console.error("Usage: reacthon-ui add <component>...")
+  process.exit(1)
+}
+
+// The components of the project's preset, which its components.json names.
+const at = args.findIndex((arg) => arg === "-c" || arg === "--cwd")
+const config = join(at === -1 ? process.cwd() : args[at + 1], "components.json")
+if (!existsSync(config)) {
+  console.error("reacthon-ui: no components.json: npx shadcn init makes it")
+  process.exit(1)
+}
+const { style } = JSON.parse(readFileSync(config, "utf8"))
+const registry = join(registries, style, "/")
+if (!existsSync(registry)) {
+  console.error(`reacthon-ui: no preset ${style} yet, only ${readdirSync(registries).join(", ")}`)
   process.exit(1)
 }
 

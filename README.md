@@ -37,8 +37,8 @@ npx reacthon-ui add dialog
 
 copies `dialog.py`, and the `button.py` and `lib/utils.py` it needs, as
 `npx shadcn add dialog` copies `dialog.tsx`: shadcn's own CLI does the copying,
-from the registry the package carries. Reacthon finds them by the folders it is
-given:
+from the registry the package carries for the project's preset, which its
+`components.json` names. Reacthon finds them by the folders it is given:
 
 ```js
 // vite.config.ts
@@ -51,8 +51,14 @@ from dialog import Dialog, DialogTrigger, DialogContent, DialogTitle
 
 ## Translated from shadcn/ui's own
 
-`tools/tsx2py.js` writes each component file's Python from shadcn/ui's TSX
-(style `radix-nova`), with TypeScript's own parser and checker, as one writes
+Each preset of shadcn/ui, a style on a base, `radix-nova` the Nova style on
+Radix, stands in its own folder of `src/presets`, laid out as a project of
+that preset: `components/ui`, `hooks`, `lib` and the blocks, the helpers of
+`src/lib` aside, which every preset shares. `tools/preset.js` fetches its TSX
+as shadcn's CLI writes it.
+
+`tools/tsx2py.js` writes each component file's Python from shadcn/ui's TSX,
+with TypeScript's own parser and checker, as one writes
 it by hand: its imports, its `cva` tables, its props, its JSX as a t-string,
 React's hooks as Reacthon's, its handlers and effects as functions of their
 own, its own names in snake_case. TypeScript's types tell it what each value
@@ -65,13 +71,16 @@ JavaScript's, by a function that compares two items.
 All 63 components of `npx shadcn add --all` are translated, the sidebar, the
 carousel, the calendar and the chart included.
 
-So are shadcn/ui's blocks, whole pages made of its components: `tools/blocks.js`
-fetches each into its own folder of `src/blocks`, its page beside its own
-components, as shadcn's CLI writes them. All 27 are translated: the logins,
+So are shadcn/ui's blocks, whole pages made of its components, each in its own
+folder of the preset's `blocks`, its page beside its own components, as
+shadcn's CLI writes them. All 27 are translated: the logins,
 the signups, the 16 sidebars and the dashboard, its chart, and its table on
 TanStack's with rows dragged by dnd-kit.
 
 ## Tested against shadcn/ui's own
+
+The twins run on each preset, a Vitest project of its own, where `@` is the
+preset's folder.
 
 - `tests/twin.test.tsx` renders ten of them and shadcn/ui's TSX ones with the
   same props, open and closed, every variant and size, and compares the two
@@ -90,12 +99,12 @@ TanStack's with rows dragged by dnd-kit.
 
 ```sh
 npm install
-npm test               # the twins
-npm run translate      # src/components/ui/*.tsx into their .py
-npm run blocks         # shadcn/ui's blocks into src/blocks/
+npm test               # the twins, on each preset
+npm run preset radix-nova   # its components and blocks, from shadcn/ui
+npm run translate      # each preset's components/ui/*.tsx into their .py
 npm run translate:blocks
-npm run dev            # the demo
-npm run registry       # the registry, built into public/r/
+npm run dev            # the demo, on radix-nova
+npm run registry       # a registry a preset, built into public/r/<preset>/
 ```
 
 ## Licence

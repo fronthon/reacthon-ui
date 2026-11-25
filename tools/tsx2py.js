@@ -1697,8 +1697,11 @@ function makeProgram(files) {
     const options = config
         ? ts.parseJsonConfigFileContent(ts.readConfigFile(config, ts.sys.readFile).config, ts.sys, dirname(config)).options
         : { jsx: ts.JsxEmit.Preserve, strict: true, skipLibCheck: true, moduleResolution: ts.ModuleResolutionKind.Bundler, module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 };
+    // A preset's files read `@` as its folder, as Vite has them.
+    const preset = files.map((file) => /[\\/]src[\\/]presets[\\/]([^\\/]+)[\\/]/.exec(file)?.[1]).find(Boolean);
+    const paths = preset ? { '@/lib/utils': ['./src/lib/utils'], '@/*': [`./src/presets/${preset}/*`] } : options.paths;
 
-    return ts.createProgram(files, { ...options, noEmit: true });
+    return ts.createProgram(files, { ...options, paths, noEmit: true });
 }
 
 export function translateFiles(files) {
