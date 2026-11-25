@@ -30,20 +30,20 @@ def Carousel(orientation="horizontal", opts=None, setApi=None, plugins=None, cla
     def on_select(api):
         if not api:
             return
-        set_can_scroll_prev(api["canScrollPrev"]())
-        set_can_scroll_next(api["canScrollNext"]())
+        set_can_scroll_prev(api.canScrollPrev())
+        set_can_scroll_next(api.canScrollNext())
 
     on_select = use_callback(on_select, [])
 
     def scroll_prev():
         if api:
-            api["scrollPrev"]()
+            api.scrollPrev()
 
     scroll_prev = use_callback(scroll_prev, [api])
 
     def scroll_next():
         if api:
-            api["scrollNext"]()
+            api.scrollNext()
 
     scroll_next = use_callback(scroll_next, [api])
 
@@ -68,11 +68,11 @@ def Carousel(orientation="horizontal", opts=None, setApi=None, plugins=None, cla
         if not api:
             return
         on_select(api)
-        api["on"]("reInit", on_select)
-        api["on"]("select", on_select)
+        api.on("reInit", on_select)
+        api.on("select", on_select)
 
         def cleanup():
-            api["off"]("select", on_select)
+            api.off("select", on_select)
 
         return cleanup
 

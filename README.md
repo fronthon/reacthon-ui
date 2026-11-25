@@ -67,8 +67,9 @@ carousel, the calendar and the chart included.
 
 So are shadcn/ui's blocks, whole pages made of its components: `tools/blocks.js`
 fetches each into its own folder of `src/blocks`, its page beside its own
-components, as shadcn's CLI writes them. 26 of the 27 are translated, the
-logins, the signups and the 16 sidebars; the dashboard's data table is not yet.
+components, as shadcn's CLI writes them. All 27 are translated: the logins,
+the signups, the 16 sidebars and the dashboard, its chart, and its table on
+TanStack's with rows dragged by dnd-kit.
 
 ## Tested against shadcn/ui's own
 

@@ -6,7 +6,7 @@ __js__ = {
 
 
 def Toaster(**props):
-    theme = useTheme().get("theme")
+    theme = getattr(useTheme(), "theme", None)
     if theme is None:
         theme = "system"
 

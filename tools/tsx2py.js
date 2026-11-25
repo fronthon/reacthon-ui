@@ -47,7 +47,7 @@ const HOOKS = {
 
 // The page's own names, from Brython's modules.
 const GLOBALS = { window: ['browser', 'window'], document: ['browser', 'document'], Math: ['javascript', 'Math'], Date: ['javascript', 'Date'] };
-const ON_WINDOW = new Set(['navigator', 'setTimeout', 'clearTimeout', 'matchMedia', 'innerWidth']);
+const ON_WINDOW = new Set(['navigator', 'setTimeout', 'clearTimeout', 'matchMedia', 'innerWidth', 'Promise']);
 
 // A name the Python modules make, as Python spells it: buttonVariants is
 // button_variants; a component's, a constant's and a prop's stay as they are.
@@ -286,6 +286,47 @@ function moduleTranslator(source, checker, program) {
         return true;
     };
 
+    // A type of a package's own with methods: what its JavaScript makes is an
+    // object to Python, `table.getAllColumns()`, wherever Reacthon has not
+    // copied it. Its data alone, a dict's reads read it, and the dict Python
+    // handed the package and reads back as well: `table.state.pagination`.
+    const packaged = (type) => {
+        const symbol = type.aliasSymbol ?? type.getSymbol();
+        const declared = symbol?.getDeclarations()?.some((one) => /[\\/]node_modules[\\/]/.test(one.getSourceFile().fileName) && !fromLibrary(one));
+
+        return Boolean(declared) && type.getProperties().some((one) => checker.getTypeOfSymbol(one).getCallSignatures().length);
+    };
+
+    const isComponent = (fn) => {
+        const named = fn.name ?? (ts.isVariableDeclaration(fn.parent) || ts.isPropertyAssignment(fn.parent) ? fn.parent.name : undefined);
+
+        return Boolean(named) && /^[A-Z]/.test(named.getText()) && fn.parameters.length <= 1;
+    };
+
+    // Whether Reacthon copied a value into Python's dicts and lists: a
+    // component's props, and what is read off them, an item of a list of them.
+    const copied = (node) => {
+        let one = unwrap(node);
+
+        while (ts.isPropertyAccessExpression(one) || ts.isElementAccessExpression(one)) one = unwrap(one.expression);
+        if (ts.isCallExpression(one) && ts.isPropertyAccessExpression(one.expression) && ['filter', 'slice', 'find', 'at'].includes(one.expression.name.text)) {
+            return copied(one.expression.expression);
+        }
+        if (!ts.isIdentifier(one)) return false;
+
+        let holder = checker.getSymbolAtLocation(one)?.valueDeclaration;
+
+        while (holder && (ts.isBindingElement(holder) || ts.isObjectBindingPattern(holder) || ts.isArrayBindingPattern(holder))) holder = holder.parent;
+        if (holder && ts.isVariableDeclaration(holder)) return Boolean(holder.initializer) && copied(holder.initializer);
+        if (!holder || !ts.isParameter(holder)) return false;
+
+        const fn = holder.parent;
+        const call = fn.parent;
+
+        if (isComponent(fn)) return fn.parameters[0] === holder;
+        return ts.isCallExpression(call) && call.arguments.includes(fn) && ts.isPropertyAccessExpression(call.expression) && copied(call.expression.expression);
+    };
+
     const typeOf = (node) => checker.getTypeAtLocation(node);
     // What TypeScript does not type, read from plain data, is plain data too:
     // Brython hands it over whole.
@@ -296,7 +337,7 @@ function moduleTranslator(source, checker, program) {
         if (type.flags & (ts.TypeFlags.Any | ts.TypeFlags.Unknown)) {
             return (ts.isPropertyAccessExpression(one) || ts.isElementAccessExpression(one)) && isDict(one.expression);
         }
-        return plain(type);
+        return plain(type) && (!packaged(type) || copied(node));
     };
     const nullable = (node) => {
         const type = typeOf(node);
@@ -347,6 +388,7 @@ function moduleTranslator(source, checker, program) {
     const name = (node, cx) => {
         const text = node.text;
 
+        if (cx.aliases?.has(text)) return cx.aliases.get(text);
         if (text === 'undefined') return 'None';
         if (cx.scope.has(text)) {
             used.add(text);
@@ -503,6 +545,10 @@ function moduleTranslator(source, checker, program) {
             if (role !== 'read' || !optional(object, field)) return [`${base}[${string(field)}]`, PRIMARY];
             return [`${base}.get(${string(field)}${cx.fallback ? `, ${cx.fallback}` : ''})`, PRIMARY];
         }
+        // What a JavaScript object may not have, read as None where it has not.
+        if (role === 'read' && optional(object, field) && packaged(checker.getNonNullableType(typeOf(object)))) {
+            return [`getattr(${base}, ${string(field)}, ${cx.fallback ?? 'None'})`, PRIMARY];
+        }
         return [`${base}.${field}`, PRIMARY];
     };
 
@@ -517,12 +563,24 @@ function moduleTranslator(source, checker, program) {
 
     const key = (one) => (ts.isIdentifier(one) || ts.isStringLiteral(one) ? string(one.text) : unsupported(one, 'a computed key'));
 
+    const owner = (dict) => {
+        const id = dict.properties.find((one) => ts.isPropertyAssignment(one) && one.name.getText() === 'id' && ts.isStringLiteral(one.initializer));
+        const call = ts.isCallExpression(dict.parent) ? dict.parent : null;
+        const before = call && call.arguments.indexOf(dict) > 0 ? call.arguments[call.arguments.indexOf(dict) - 1] : null;
+        const text = id ? id.initializer.text : before && ts.isStringLiteral(before) ? before.text : '';
+
+        return /^[a-z]\w*$/i.test(text) ? `${snake(text)}_` : '';
+    };
+
     const entry = (one, cx) => {
         if (ts.isShorthandPropertyAssignment(one)) return `${string(one.name.text)}: ${name(one.name, cx)}`;
         if (ts.isPropertyAssignment(one)) {
             // A function of a dict is named after its key: `Root`, a component
-            // a library renders with.
-            const at = isFunction(one.initializer) && ts.isIdentifier(one.name) ? { ...cx, hoistAs: one.name.text } : cx;
+            // a library renders with; and after what the dict is of where a
+            // string names it, its `id` or the argument before it, a table's
+            // column: `target_cell`.
+            const named = ts.isIdentifier(one.name) ? (/^[a-z]/.test(one.name.text) ? owner(one.parent) : '') + one.name.text : null;
+            const at = isFunction(one.initializer) && named ? { ...cx, hoistAs: named } : cx;
 
             return `${key(one.name)}: ${expr(one.initializer, at)}`;
         }
@@ -655,10 +713,28 @@ function moduleTranslator(source, checker, program) {
 
     const comprehensionOver = (source, fn, cx) => {
         const scope = new Set(cx.scope);
-        const targets = fn.parameters.map((one) => target(one.name, scope));
+        const aliases = new Map(cx.aliases);
+        const targets = fn.parameters.map((one) => (ts.isObjectBindingPattern(one.name) ? item(one, scope, aliases) : target(one.name, scope)));
         const text = targets.length > 1 ? `for ${targets[1]}, ${targets[0]} in enumerate(${source})` : `for ${targets[0] ?? '_'} in ${source}`;
 
-        return { text, cx: { ...cx, scope, inChain: false } };
+        return { text, cx: { ...cx, scope, aliases, inChain: false } };
+    };
+
+    // `({ id }) => id`: the item, each name it destructures read off it where
+    // it is named.
+    const item = (parameter, scope, aliases) => {
+        let local = 'item';
+
+        for (let n = 2; scope.has(local); n += 1) local = `item_${n}`;
+        scope.add(local);
+        for (const one of parameter.name.elements) {
+            if (one.dotDotDotToken || one.initializer || !ts.isIdentifier(one.name)) unsupported(one, 'a destructured item');
+
+            const prop = (one.propertyName ?? one.name).getText();
+
+            aliases.set(one.name.text, isDict(parameter) ? `${local}[${string(prop)}]` : `${local}.${prop}`);
+        }
+        return local;
     };
 
     const target = (binding, scope) => {
@@ -707,6 +783,7 @@ function moduleTranslator(source, checker, program) {
 
         if (text === 'Array.isArray') return [`isinstance(${expr(args[0], inner)}, list)`, PRIMARY];
         if (text === 'String') return [`str(${expr(args[0], inner)})`, PRIMARY];
+        if (text === 'Number' && args.length === 1) return [`float(${expr(args[0], inner)})`, PRIMARY];
         if (text === 'Object.entries') return [`${expr(args[0], inner, PRIMARY)}.items()`, PRIMARY];
         if (text === 'Array.from' && args.length === 2 && ts.isObjectLiteralExpression(unwrap(args[0]))) {
             // `Array.from({ length: n }, (_, i) => ...)`, a list over range(n).
@@ -734,6 +811,14 @@ function moduleTranslator(source, checker, program) {
                     : [`${expr(object, inner, PRIMARY)}.removesuffix(${string(done[1])})`, PRIMARY];
             }
             if (method === 'toLocaleString' && args.length === 0 && numeric(object)) return [`format(${expr(object, inner)}, ",")`, PRIMARY];
+            if (method === 'toString' && args.length === 0) return [`str(${expr(object, inner)})`, PRIMARY];
+            // A string's find() is -1 where it finds nothing, as indexOf is; a
+            // list's index() raises.
+            if (method === 'indexOf' && args.length === 1 && sized(object)) {
+                const text = Boolean(checker.getNonNullableType(typeOf(object)).flags & ts.TypeFlags.StringLike);
+
+                return [`${expr(object, inner, PRIMARY)}.${text ? 'find' : 'index'}(${expr(args[0], inner)})`, PRIMARY];
+            }
             if (method === 'slice' && args.length <= 2 && sized(object)) {
                 return [`${expr(object, inner, PRIMARY)}[${args.map((one) => expr(one, inner)).join(':')}${args.length === 1 ? ':' : ''}]`, PRIMARY];
             }
@@ -1241,6 +1326,15 @@ function moduleTranslator(source, checker, program) {
                     for (const item of one.name.elements) params.push(ts.isOmittedExpression(item) ? fresh('_', { taken }) : target(item.name, scope));
                     continue;
                 }
+                // `({ row }) => ...`, the props a library hands, read as a
+                // declaration reads them.
+                if (ts.isObjectBindingPattern(one.name)) {
+                    const local = fresh('props', { taken });
+
+                    params.push(local);
+                    head.push(...unpacked(one.name, local, one, { ...cx, scope, taken, level: level + 1 }));
+                    continue;
+                }
                 if (!ts.isIdentifier(one.name)) {
                     const local = fresh('pair', { taken });
 
@@ -1324,7 +1418,7 @@ function moduleTranslator(source, checker, program) {
 
     const statement = (node, cx) => {
         const hoists = [];
-        const at = { ...cx, hoists, hoisted: new Map(), statement: node };
+        const at = { ...cx, hoists, hoisted: new Map(), statement: node, statementLevel: cx.level };
         const indent = pad(cx.level);
         let lines;
 
@@ -1435,7 +1529,18 @@ function moduleTranslator(source, checker, program) {
             }
         }
 
-        const dict = isDict(value);
+        // `slots[index] ?? {}`, an object or an empty dict, read by getattr().
+        const either = ts.isBinaryExpression(unwrap(value)) && unwrap(value).operatorToken.kind === k.QuestionQuestionToken && ts.isObjectLiteralExpression(unwrap(unwrap(value).right));
+
+        return [...lines, ...unpacked(binding, source_, value, cx, either)];
+    };
+
+    // `{ a, b = 1 }` read off `source_`, the value of `node`: a dict's keys,
+    // missing as None, or an object's attributes, one it may not have by
+    // getattr().
+    const unpacked = (binding, source_, node, cx, either = false) => {
+        const dict = isDict(node);
+        const indent = pad(cx.level);
         const names = [];
         const reads = [];
         const defaults = [];
@@ -1448,13 +1553,14 @@ function moduleTranslator(source, checker, program) {
 
             cx.taken.add(local);
             names.push(local);
-            reads.push(dict ? `${source_}.get(${string(prop)})` : `${source_}.${prop}`);
+            reads.push(dict ? `${source_}.get(${string(prop)})` : either || optional(node, prop) ? `getattr(${source_}, ${string(prop)}, None)` : `${source_}.${prop}`);
             if (item.initializer) defaults.push([local, expr(item.initializer, cx)]);
         }
 
-        lines.push(`${indent}${names.join(', ')} = ${reads.join(', ')}`);
-        for (const [local, fallback] of defaults) lines.push(`${indent}if ${local} is None:`, `${pad(cx.level + 1)}${local} = ${fallback}`);
-        return lines;
+        return [
+            `${indent}${names.join(', ')} = ${reads.join(', ')}`,
+            ...defaults.flatMap(([local, fallback]) => [`${indent}if ${local} is None:`, `${pad(cx.level + 1)}${local} = ${fallback}`])
+        ];
     };
 
     const expressionStatement = (node, cx) => {
@@ -1509,7 +1615,12 @@ function moduleTranslator(source, checker, program) {
                         variantMakers.add(one.name.text);
                         items.push({ def: false, lines: [`${title} = cva(`, ...parts.map((part) => `    ${part},`), ')'] });
                     } else {
-                        items.push({ def: false, lines: [`${title} = ${pretty(value, { ...cx, hoists: null }, 0, title.length + 3)}`] });
+                        // Its functions, defs of the module's before it.
+                        const hoists = [];
+                        const line = `${title} = ${pretty(value, { ...cx, hoists, hoisted: new Map(), statement: one }, 0, title.length + 3)}`;
+
+                        for (const lines of hoists) items.push({ def: true, lines });
+                        items.push({ def: false, lines: [line] });
                     }
                 }
             } else {

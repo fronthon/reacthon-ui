@@ -29,12 +29,12 @@ const written = new Set(Object.keys(import.meta.glob("/src/blocks/*/*.py")))
 const python = (path: string) => path.replace(/[^/]+$/, (file) => file.replace(/-/g, "_").replace(/\.tsx$/, ".py"))
 const whole = (name: string) => sources.filter((path) => path.split("/").at(-2) === name).every((path) => written.has(python(path)))
 
-// React's ids count every root the page has rendered: each one is named by the
-// order it first appears in.
+// React's ids count every root the page has rendered, and dnd-kit's every
+// context: each one is named by the order it first appears in.
 function numbered(page: string) {
   const ids = new Map<string, number>()
 
-  return page.replace(/_r_[0-9a-z]+_/g, (id) => {
+  return page.replace(/_r_[0-9a-z]+_|\bDnd\w+-\d+/g, (id) => {
     if (!ids.has(id)) ids.set(id, ids.size)
     return `_id${ids.get(id)}_`
   })
