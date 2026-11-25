@@ -8,6 +8,8 @@
     "build": "vite build",
     "test": "vitest run",
     "registry": "shadcn build",
+    "translate": "node tools/tsx2py.js generated src/components/ui/*.tsx",
+    "test:translated": "vitest run --config vitest.generated.config.ts",
     "lint": "eslint .",
     "format": "prettier --write \"**/*.{ts,tsx}\"",
     "typecheck": "tsc --noEmit",

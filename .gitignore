@@ -11,6 +11,7 @@ node_modules
 dist
 dist-ssr
 public/r
+generated
 *.local
 
 # Editor directories and files
