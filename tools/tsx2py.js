@@ -251,6 +251,13 @@ function moduleTranslator(source, checker, program) {
         return checker.isArrayType(type) || checker.isTupleType(type) || Boolean(type.flags & ts.TypeFlags.StringLike);
     };
     const numeric = (node) => Boolean(checker.getNonNullableType(typeOf(node)).flags & ts.TypeFlags.NumberLike);
+    const boolean = (node) => Boolean(checker.getNonNullableType(typeOf(node)).flags & ts.TypeFlags.BooleanLike);
+    // An element of the page, which Brython hands over as its DOMNode.
+    const domElement = (node) => {
+        const symbol = checker.getNonNullableType(typeOf(node)).getSymbol();
+
+        return Boolean(symbol && /Element$/.test(symbol.name) && symbol.getDeclarations()?.some(fromLibrary));
+    };
     const optional = (object, name) => {
         const property = checker.getPropertyOfType(checker.getNonNullableType(typeOf(object)), name);
 
@@ -339,7 +346,12 @@ function moduleTranslator(source, checker, program) {
             case k.TemplateExpression: {
                 let text = braces(node.head.text);
 
-                for (const span of node.templateSpans) text += `{${expr(span.expression, inner)}}${braces(span.literal.text)}`;
+                // A boolean as JavaScript writes it: `true`, not `True`.
+                for (const span of node.templateSpans) {
+                    const value = boolean(span.expression) ? `str(${expr(span.expression, inner)}).lower()` : expr(span.expression, inner);
+
+                    text += `{${value}}${braces(span.literal.text)}`;
+                }
                 return [`f${string(text).replace(/\\\\/g, '\\')}`, PRIMARY];
             }
             case k.TaggedTemplateExpression: {
@@ -629,6 +641,13 @@ function moduleTranslator(source, checker, program) {
                     : [`${expr(object, inner, PRIMARY)}.removesuffix(${string(done[1])})`, PRIMARY];
             }
             if (method === 'toLocaleString' && args.length === 0 && numeric(object)) return [`format(${expr(object, inner)}, ",")`, PRIMARY];
+            // Brython's DOMNode.closest() raises KeyError where the DOM's is null.
+            if (method === 'closest' && args.length === 1 && domElement(object)) {
+                if (!python.has('utils')) python.set('utils', []);
+                if (!python.get('utils').some((one) => one.local === 'closest')) python.get('utils').push({ local: 'closest' });
+                used.add('closest');
+                return [`closest(${expr(object, inner)}, ${expr(args[0], inner)})`, PRIMARY];
+            }
         }
 
         const callText = ts.isPropertyAccessExpression(callee) ? property(callee, cx, 'call')[0] : ts.isElementAccessExpression(callee) ? element(callee, cx, 'call')[0] : expr(callee, cx, PRIMARY);

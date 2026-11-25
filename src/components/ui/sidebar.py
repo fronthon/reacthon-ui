@@ -54,7 +54,7 @@ def SidebarProvider(defaultOpen=True, open=None, onOpenChange=None, className=No
             _set_open(open_state)
 
         # This sets the cookie to keep the sidebar state.
-        document.cookie = f"{SIDEBAR_COOKIE_NAME}={open_state}; path=/; max-age={SIDEBAR_COOKIE_MAX_AGE}"
+        document.cookie = f"{SIDEBAR_COOKIE_NAME}={str(open_state).lower()}; path=/; max-age={SIDEBAR_COOKIE_MAX_AGE}"
 
     set_open = use_callback(set_open, [set_open_prop, open])
 

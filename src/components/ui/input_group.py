@@ -1,4 +1,4 @@
-from utils import cn, cva
+from utils import closest, cn, cva
 from button import Button
 from input import Input
 from textarea import Textarea
@@ -31,7 +31,7 @@ input_group_addon_variants = cva(
 
 def InputGroupAddon(className=None, align="inline-start", **props):
     def on_click(e):
-        if e.target.closest("button"):
+        if closest(e.target, "button"):
             return
         if e.currentTarget.parentElement and e.currentTarget.parentElement.querySelector("input"):
             e.currentTarget.parentElement.querySelector("input").focus()

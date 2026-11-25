@@ -1,6 +1,6 @@
-"""The two helpers the components share: cn() merges Tailwind classes, a later
-one winning over an earlier one it conflicts with, and cva() names a
-component's classes after its variants."""
+"""The helpers the components share: cn() merges Tailwind classes, a later one
+winning over an earlier one it conflicts with, cva() names a component's
+classes after its variants, and closest() finds an element's ancestor."""
 
 __js__ = {"cn": ["cn"]}
 
@@ -29,3 +29,13 @@ def cva(base, variants=None, default_variants=None, compound_variants=None):
         return cn(base, *picked, className)
 
     return classes
+
+
+def closest(element, selector):
+    """The DOM's closest(): the element or its nearest ancestor that matches the
+    selector, None where none does, as JavaScript's null; Brython's raises
+    KeyError."""
+    try:
+        return element.closest(selector)
+    except KeyError:
+        return None
