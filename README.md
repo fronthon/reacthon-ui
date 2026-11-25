@@ -51,9 +51,11 @@ from dialog import Dialog, DialogTrigger, DialogContent, DialogTitle
 
 ## Translated from shadcn/ui's own
 
-Each preset of shadcn/ui, a style on a base, `radix-nova` the Nova style on
-Radix, stands in its own folder of `src/presets`, laid out as a project of
-that preset: `components/ui`, `hooks`, `lib` and the blocks, the helpers of
+A preset of shadcn/ui is a style on a base, the library its components behave
+by. Two so far: `radix-nova`, the Nova style on Radix, and `base-nova`, the
+Nova style on Base UI, the preset `npx shadcn init --defaults` makes. Each
+stands in its own folder of `src/presets`, laid out as a project of that
+preset: `components/ui`, `hooks`, `lib` and the blocks, the helpers of
 `src/lib` aside, which every preset shares. `tools/preset.js` fetches its TSX
 as shadcn's CLI writes it.
 
@@ -68,12 +70,12 @@ cannot translate it names, and leaves the file out. `lib/utils.py` holds
 DOM's, which Brython's raises where it finds nothing, and `sort()`,
 JavaScript's, by a function that compares two items.
 
-All 63 components of `npx shadcn add --all` are translated, the sidebar, the
-carousel, the calendar and the chart included.
+In each preset, all 63 components of `npx shadcn add --all` are translated, the
+sidebar, the carousel, the calendar and the chart included.
 
 So are shadcn/ui's blocks, whole pages made of its components, each in its own
 folder of the preset's `blocks`, its page beside its own components, as
-shadcn's CLI writes them. All 27 are translated: the logins,
+shadcn's CLI writes them. All 27 of each preset are translated: the logins,
 the signups, the 16 sidebars and the dashboard, its chart, and its table on
 TanStack's with rows dragged by dnd-kit.
 

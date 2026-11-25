@@ -43,8 +43,8 @@ import * as pyToggleGroup from "@/components/ui/toggle_group.py"
 
 ;(globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true
 
-// What Radix, embla and the media queries ask of the page and jsdom does not have.
-Object.assign(Element.prototype, { scrollIntoView() {}, hasPointerCapture: () => false, releasePointerCapture() {} })
+// What Radix, Base UI, embla and the media queries ask of the page and jsdom does not have.
+Object.assign(Element.prototype, { scrollIntoView() {}, hasPointerCapture: () => false, releasePointerCapture() {}, getAnimations: () => [] })
 ;(globalThis as { ResizeObserver?: unknown }).ResizeObserver ??= class {
   observe() {}
   unobserve() {}

@@ -1,0 +1,18 @@
+from label import Label
+from sidebar import SidebarGroup, SidebarGroupContent, SidebarInput
+
+__js__ = {"lucide-react": ["SearchIcon"]}
+
+
+def SearchForm(**props):
+    return t"""
+        <form ...{props}>
+            <{SidebarGroup} class="py-0">
+                <{SidebarGroupContent} class="relative">
+                    <{Label} for="search" class="sr-only">Search</{Label}>
+                    <{SidebarInput} id="search" placeholder="Search the docs..." class="pl-8" />
+                    <{SearchIcon} class="pointer-events-none absolute top-1/2 left-2 size-4 -translate-y-1/2 opacity-50 select-none" />
+                </{SidebarGroupContent}>
+            </{SidebarGroup}>
+        </form>
+    """

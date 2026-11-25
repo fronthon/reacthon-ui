@@ -92,7 +92,8 @@ function block(project, name) {
         files.set(basename(path), text.replace(/"@\/components\/(?!ui\/)([\w-]+)"/g, '"./$1"'));
     }
 
-    // shadcn/ui's previews import cards its CLI does not write.
+    // shadcn/ui's previews, showcases of its site, have no page, and import
+    // cards its CLI does not write.
     const resolves = (from) =>
         from.startsWith('./')
             ? files.has(`${from.slice(2)}.tsx`) || files.has(from.slice(2))
@@ -102,6 +103,10 @@ function block(project, name) {
         .filter((from) => !resolves(from));
 
     rmSync(folder, { recursive: true, force: true });
+    if (!files.has('page.tsx')) {
+        console.log(`left out ${name}: it has no page`);
+        return;
+    }
     if (missing.length) {
         console.log(`left out ${name}: it imports ${missing[0]}, which shadcn's CLI does not write`);
         return;

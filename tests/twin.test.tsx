@@ -36,11 +36,12 @@ import * as pySelect from "@/components/ui/select.py"
 // @ts-expect-error a Python module
 import * as pyMenu from "@/components/ui/dropdown_menu.py"
 
-// What Radix's select asks of the page and jsdom does not have.
+// What Radix's select and Base UI's animations ask of the page and jsdom does not have.
 Object.assign(Element.prototype, {
   scrollIntoView() {},
   hasPointerCapture: () => false,
   releasePointerCapture() {},
+  getAnimations: () => [],
 })
 
 ;(globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true
@@ -143,8 +144,8 @@ pair("DropdownMenu open", tsxMenu, pyMenu, (k) =>
   h(k.DropdownMenu, { defaultOpen: true },
     h(k.DropdownMenuTrigger, null, "menu"),
     h(k.DropdownMenuContent, { className: "w-56", align: "end" },
-      h(k.DropdownMenuLabel, { inset: true }, "Account"),
       h(k.DropdownMenuGroup, null,
+        h(k.DropdownMenuLabel, { inset: true }, "Account"),
         h(k.DropdownMenuItem, null, "Profile", h(k.DropdownMenuShortcut, null, "⇧⌘P")),
         h(k.DropdownMenuItem, { variant: "destructive", disabled: true }, "Delete")),
       h(k.DropdownMenuSeparator),
