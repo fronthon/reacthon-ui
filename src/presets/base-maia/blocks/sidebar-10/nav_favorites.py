@@ -8,7 +8,7 @@ from sidebar import (
 __js__ = {"lucide-react": ["MoreHorizontalIcon", "StarOffIcon", "LinkIcon", "ArrowUpRightIcon", "Trash2Icon"]}
 
 
-def NavFavorites(favorites=None):
+def NavFavorites(favorites=None, **_):
     is_mobile = use_sidebar().get("isMobile")
     return t"""
         <{SidebarGroup} class="group-data-[collapsible=icon]:hidden">

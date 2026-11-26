@@ -145,7 +145,7 @@ def ChartAreaInteractive():
         date = Date.new(value)
         return date.toLocaleDateString("en-US", {"month": "short", "day": "numeric"})
 
-    def label_formatter(value):
+    def label_formatter(value, *_):
         return Date.new(value).toLocaleDateString("en-US", {"month": "short", "day": "numeric"})
 
     return t"""

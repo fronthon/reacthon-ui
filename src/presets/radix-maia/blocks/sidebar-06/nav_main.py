@@ -4,7 +4,7 @@ from sidebar import SidebarGroup, SidebarMenu, SidebarMenuButton, SidebarMenuIte
 __js__ = {"lucide-react": ["MoreHorizontalIcon"]}
 
 
-def NavMain(items=None):
+def NavMain(items=None, **_):
     is_mobile = use_sidebar().get("isMobile")
 
     return t"""

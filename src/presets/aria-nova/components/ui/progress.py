@@ -15,7 +15,7 @@ def use_progress():
     return context
 
 
-def ProgressContent(children=None, percentage=None, isIndeterminate=None, valueText=None):
+def ProgressContent(children=None, percentage=None, isIndeterminate=None, valueText=None, **_):
     context = use_memo(
         lambda: {"percentage": percentage, "isIndeterminate": isIndeterminate, "valueText": valueText},
         [percentage, isIndeterminate, valueText],

@@ -1,7 +1,7 @@
 from sidebar import SidebarMenu, SidebarMenuButton, SidebarMenuItem
 
 
-def NavMain(items=None):
+def NavMain(items=None, **_):
     return t"""
         <{SidebarMenu}>
             {[t'''

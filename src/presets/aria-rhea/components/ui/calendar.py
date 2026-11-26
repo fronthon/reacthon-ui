@@ -150,7 +150,7 @@ def CalendarInner(captionLayout="label", buttonVariant="ghost", numberOfMonths=1
     """
 
 
-def MonthDropdown(format=None):
+def MonthDropdown(format=None, **_):
     return t"""
         <{CalendarMonthPicker} format={format.month if format else None}>
             {(lambda props: t'''
@@ -176,7 +176,7 @@ def MonthDropdown(format=None):
     """
 
 
-def YearDropdown(format=None):
+def YearDropdown(format=None, **_):
     return t"""
         <{CalendarYearPicker} format={format}>
             {(lambda props: t'''

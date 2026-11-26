@@ -70,7 +70,7 @@ def AppSidebar(**props):
     """
 
 
-def Tree(item=None):
+def Tree(item=None, **_):
     name, *items = item if isinstance(item, list) else [item]
 
     if not items:

@@ -12,7 +12,7 @@ from sidebar import (
 __js__ = {"lucide-react": ["ChevronRightIcon", "CheckIcon"], "react": ["Fragment"]}
 
 
-def Calendars(calendars=None):
+def Calendars(calendars=None, **_):
     return t"""
         {[t'''
             <{Fragment} key={calendar["name"]}>

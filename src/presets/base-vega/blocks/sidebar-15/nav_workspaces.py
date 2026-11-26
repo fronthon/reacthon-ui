@@ -15,7 +15,7 @@ from sidebar import (
 __js__ = {"lucide-react": ["ChevronRightIcon", "PlusIcon", "MoreHorizontalIcon"]}
 
 
-def NavWorkspaces(workspaces=None):
+def NavWorkspaces(workspaces=None, **_):
     return t"""
         <{SidebarGroup}>
             <{SidebarGroupLabel}>Workspaces</{SidebarGroupLabel}>

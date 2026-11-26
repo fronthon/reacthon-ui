@@ -5,7 +5,7 @@ from sidebar import SidebarMenu, SidebarMenuButton, SidebarMenuItem
 __js__ = {"lucide-react": ["GalleryVerticalEndIcon", "ChevronsUpDownIcon", "CheckIcon"]}
 
 
-def VersionSwitcher(versions=None, defaultVersion=None):
+def VersionSwitcher(versions=None, defaultVersion=None, **_):
     selected_version, set_selected_version = use_state(defaultVersion)
     sidebar_menu_button = t"""
         <{SidebarMenuButton}

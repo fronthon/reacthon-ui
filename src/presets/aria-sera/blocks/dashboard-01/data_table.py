@@ -251,7 +251,7 @@ columns = column_helper.columns(
 )
 
 
-def DataTable(data=None):
+def DataTable(data=None, **_):
     initial_data = data
 
     list_ = useListData({"initialItems": initial_data, "getKey": lambda item: str(item["id"])})
@@ -482,7 +482,7 @@ chart_config = {
 }
 
 
-def TableCellViewer(item=None):
+def TableCellViewer(item=None, **_):
     is_mobile = useIsMobile()
     return t"""
         <{Drawer} swipeDirection={"down" if is_mobile else "right"}>

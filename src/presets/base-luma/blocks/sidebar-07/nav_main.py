@@ -13,7 +13,7 @@ from sidebar import (
 __js__ = {"lucide-react": ["ChevronRightIcon"]}
 
 
-def NavMain(items=None):
+def NavMain(items=None, **_):
     return t"""
         <{SidebarGroup}>
             <{SidebarGroupLabel}>Platform</{SidebarGroupLabel}>

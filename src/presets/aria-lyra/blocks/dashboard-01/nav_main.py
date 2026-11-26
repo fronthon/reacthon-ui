@@ -4,7 +4,7 @@ from sidebar import SidebarGroup, SidebarGroupContent, SidebarMenu, SidebarMenuB
 __js__ = {"lucide-react": ["CirclePlusIcon", "MailIcon"]}
 
 
-def NavMain(items=None):
+def NavMain(items=None, **_):
     return t"""
         <{SidebarGroup}>
             <{SidebarGroupContent} class="flex flex-col gap-2">

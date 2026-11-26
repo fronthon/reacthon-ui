@@ -234,16 +234,6 @@ function moduleTranslator(source, checker, program) {
     const used = new Set();
     const own = new Set();
     let reactNamespace = null;
-    // The components the file renders with props spread on them.
-    const spreadInto = new Set();
-    const spreads = (node) => {
-        if ((ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)) && ts.isIdentifier(node.tagName) && node.attributes.properties.some(ts.isJsxSpreadAttribute)) {
-            spreadInto.add(node.tagName.text);
-        }
-        ts.forEachChild(node, spreads);
-    };
-
-    spreads(source);
 
     const add = (map, from, entry) => map.set(from, [...(map.get(from) ?? []), entry]);
     // React's own value, `Children`, imported by `__js__` as a library's is.
@@ -353,6 +343,54 @@ function moduleTranslator(source, checker, program) {
         const named = fn.name ?? (ts.isVariableDeclaration(fn.parent) || ts.isPropertyAssignment(fn.parent) ? fn.parent.name : undefined);
 
         return Boolean(named) && /^[A-Z]/.test(named.getText()) && fn.parameters.length <= 1;
+    };
+
+    // How many arguments Python may hand a function a prop of the project's
+    // own component holds, where that component calls it itself, as its TSX
+    // does, with as many as the prop's type says: `labelFormatter(value,
+    // payload)` of a function that reads one. One it hands on to JavaScript,
+    // `onClick` to Radix, is cut to the function's arguments at Bryntime's door.
+    const calledProp = (component, prop) => {
+        const fn = ts.isFunctionDeclaration(component) ? component : ts.isVariableDeclaration(component) ? unwrap(component.initializer ?? component) : null;
+        const first = fn && ts.isFunctionLike(fn) ? fn.parameters?.[0] : null;
+
+        if (!first || !fn.body) return false;
+
+        const element = ts.isObjectBindingPattern(first.name) ? first.name.elements.find((one) => (one.propertyName ?? one.name).getText() === prop) : null;
+        const local = element && !element.dotDotDotToken ? element.name.getText() : null;
+        let called = false;
+        const look = (node) => {
+            if (ts.isCallExpression(node)) {
+                const callee = unwrap(node.expression);
+
+                called ||= local !== null ? ts.isIdentifier(callee) && callee.text === local : ts.isPropertyAccessExpression(callee) && callee.name.text === prop && ts.isIdentifier(first.name);
+            }
+            if (!called) ts.forEachChild(node, look);
+        };
+
+        look(fn.body);
+        return called;
+    };
+    const pythonArity = (fn) => {
+        let at = fn;
+
+        while (ts.isParenthesizedExpression(at.parent)) at = at.parent;
+        if (!ts.isJsxExpression(at.parent) || !ts.isJsxAttribute(at.parent.parent)) return 0;
+
+        const attribute = at.parent.parent;
+        const tag = attribute.parent.parent.tagName;
+        let symbol = ts.isIdentifier(tag) && checker.getSymbolAtLocation(tag);
+
+        if (symbol && symbol.flags & ts.SymbolFlags.Alias) symbol = checker.getAliasedSymbol(symbol);
+
+        const own = symbol?.getDeclarations()?.filter((one) => !/[\\/]node_modules[\\/]/.test(one.getSourceFile().fileName)) ?? [];
+
+        if (!own.some((one) => calledProp(one, attribute.name.getText()))) return 0;
+
+        const type = checker.getContextualType(fn);
+        const signatures = type ? checker.getNonNullableType(type).getCallSignatures() : [];
+
+        return Math.max(0, ...signatures.map((one) => (one.getDeclaration()?.parameters?.some((param) => param.dotDotDotToken) ? Infinity : one.getParameters().length)));
     };
 
     // Whether React renders this `null`: a child of the markup, or what a
@@ -1184,7 +1222,7 @@ function moduleTranslator(source, checker, program) {
             const params = fn.parameters.map((one) => target(one.name, scope));
 
             // The arguments a JavaScript function leaves unread.
-            if (params.length < (cx.arity ?? 0)) params.push('*_');
+            if (params.length < (cx.arity ?? pythonArity(fn))) params.push('*_');
             return `lambda${params.length ? ` ${params.join(', ')}` : ''}: ${expr(value, { ...cx, scope, arity: undefined }, LAMBDA)}`;
         }
         if (!cx.hoists) unsupported(fn, 'a function outside a function');
@@ -1532,11 +1570,9 @@ function moduleTranslator(source, checker, program) {
                 }
             }
             // Handed props it does not take, as `<CalendarInner {...props} />`
-            // hands them, a component leaves them, as JavaScript's does.
-            if (!first.name.elements.some((one) => one.dotDotDotToken)) {
-                if (quoted.length) params.push(`**${rest}`);
-                else if (spreadInto.has(title)) params.push('**_');
-            }
+            // hands them or recharts its tooltip's content, a component leaves
+            // them, as JavaScript's does.
+            if (!first.name.elements.some((one) => one.dotDotDotToken)) params.push(quoted.length ? `**${rest}` : '**_');
         } else if (component && first && ts.isIdentifier(first.name)) {
             params.push(`**${first.name.text}`);
             taken.add(first.name.text);
@@ -1567,6 +1603,7 @@ function moduleTranslator(source, checker, program) {
                 params.push(one.initializer ? `${snake(one.name.text)}=${expr(one.initializer, { ...cx, scope })}` : snake(one.name.text));
             }
             params.push(...(cx.extraParams ?? []));
+            if (fn.parameters.length < pythonArity(fn)) params.push('*_');
         }
 
         const inner = {

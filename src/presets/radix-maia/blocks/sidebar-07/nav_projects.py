@@ -8,7 +8,7 @@ from sidebar import (
 __js__ = {"lucide-react": ["MoreHorizontalIcon", "FolderIcon", "ArrowRightIcon", "Trash2Icon"]}
 
 
-def NavProjects(projects=None):
+def NavProjects(projects=None, **_):
     is_mobile = use_sidebar().get("isMobile")
 
     return t"""

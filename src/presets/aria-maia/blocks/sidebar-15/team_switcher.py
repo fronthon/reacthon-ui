@@ -13,7 +13,7 @@ from sidebar import SidebarMenu, SidebarMenuButton, SidebarMenuItem
 __js__ = {"lucide-react": ["ChevronDownIcon", "PlusIcon"]}
 
 
-def TeamSwitcher(teams=None):
+def TeamSwitcher(teams=None, **_):
     active_team, set_active_team = use_state(teams[0])
     if not active_team:
         return None

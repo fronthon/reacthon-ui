@@ -13,7 +13,7 @@ from sidebar import SidebarMenu, SidebarMenuButton, SidebarMenuItem, use_sidebar
 __js__ = {"lucide-react": ["EllipsisVerticalIcon", "CircleUserRoundIcon", "CreditCardIcon", "BellIcon", "LogOutIcon"]}
 
 
-def NavUser(user=None):
+def NavUser(user=None, **_):
     is_mobile = use_sidebar().get("isMobile")
 
     return t"""

@@ -104,7 +104,7 @@ def ToastClose(className=None, children=None, render=t'<{Button} variant="ghost"
     """
 
 
-def ToastIcon(type=None):
+def ToastIcon(type=None, **_):
     icon = NULL
 
     if type == "success":

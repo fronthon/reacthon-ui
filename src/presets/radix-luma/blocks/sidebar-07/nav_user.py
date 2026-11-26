@@ -22,7 +22,7 @@ __js__ = {
 }
 
 
-def NavUser(user=None):
+def NavUser(user=None, **_):
     is_mobile = use_sidebar().get("isMobile")
 
     return t"""

@@ -43,7 +43,7 @@ def ChartContainer(id=None, className=None, children=None, config=None, initialD
     """
 
 
-def ChartStyle(id=None, config=None):
+def ChartStyle(id=None, config=None, **_):
     color_config = [(_, config) for _, config in config.items() if (config.get("theme") if config.get("theme") not in (None, NULL) else config.get("color"))]
 
     if not color_config:
@@ -65,7 +65,7 @@ def ChartStyle(id=None, config=None):
 ChartTooltip = RechartsPrimitive.Tooltip
 
 
-def ChartTooltipContent(active=None, payload=None, className=None, indicator="dot", hideLabel=False, hideIndicator=False, label=None, labelFormatter=None, labelClassName=None, formatter=None, color=None, nameKey=None, labelKey=None):
+def ChartTooltipContent(active=None, payload=None, className=None, indicator="dot", hideLabel=False, hideIndicator=False, label=None, labelFormatter=None, labelClassName=None, formatter=None, color=None, nameKey=None, labelKey=None, **_):
     config = use_chart().get("config")
 
     def tooltip_label():
@@ -152,7 +152,7 @@ def ChartTooltipContent(active=None, payload=None, className=None, indicator="do
 ChartLegend = RechartsPrimitive.Legend
 
 
-def ChartLegendContent(className=None, hideIcon=False, payload=None, verticalAlign="bottom", nameKey=None):
+def ChartLegendContent(className=None, hideIcon=False, payload=None, verticalAlign="bottom", nameKey=None, **_):
     config = use_chart().get("config")
 
     if not payload:

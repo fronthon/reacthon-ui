@@ -98,7 +98,7 @@ schema = z.object(
 )
 
 
-def DragHandle(id=None):
+def DragHandle(id=None, **_):
     sortable = useSortable({"id": id})
     attributes, listeners = sortable.attributes, sortable.listeners
     return t"""
@@ -304,7 +304,7 @@ columns = column_helper.columns(
 )
 
 
-def DraggableRow(row=None):
+def DraggableRow(row=None, **_):
     sortable = useSortable({"id": row["original"]["id"]})
     transform, transition, set_node_ref, is_dragging = sortable.transform, sortable.transition, sortable.setNodeRef, sortable.isDragging
     return t"""
@@ -327,7 +327,7 @@ def DraggableRow(row=None):
     """
 
 
-def DataTable(data=None):
+def DataTable(data=None, **_):
     initial_data = data
 
     data, set_data = use_state(lambda: initial_data)
@@ -585,7 +585,7 @@ chart_config = {
 }
 
 
-def TableCellViewer(item=None):
+def TableCellViewer(item=None, **_):
     is_mobile = useIsMobile()
     return t"""
         <{Drawer} swipeDirection={"down" if is_mobile else "right"}>
