@@ -37,20 +37,32 @@ export function convert(args) {
   }
 
   let left = 0
+  // The `.py` the Python imports and the project has not yet, each with what
+  // names it: a component of components/ui, which `reacthon-ui add` writes.
+  const needed = new Map()
 
-  for (const { file, python, error } of convertFiles(paths.flatMap(tsx))) {
+  for (const { file, python, error, missing } of convertFiles(paths.flatMap(tsx))) {
     const out = join(dirname(file), `${basename(file).replace(/\.tsx?$/, "").replace(/-/g, "_")}.py`)
     const shown = relative(process.cwd(), out)
 
     if (error) {
       left += 1
       console.log(`left out ${relative(process.cwd(), file)}: ${error}`)
-    } else if (existsSync(out) && !overwrite) {
+      continue
+    }
+    for (const one of missing) needed.set(relative(process.cwd(), one.file), one.from)
+    if (existsSync(out) && !overwrite) {
       console.log(`kept ${shown}, which is there: --overwrite writes it again`)
     } else {
       writeFileSync(out, python)
       console.log(`written ${shown}`)
     }
+  }
+
+  if (needed.size > 0) {
+    const names = [...new Set([...needed.values()].filter((from) => from.includes("/components/ui/")).map((from) => from.split("/").at(-1)))]
+
+    console.log(`needs ${[...needed.keys()].join(", ")}, which the project has not yet${names.length ? `: npx reacthon-ui add ${names.join(" ")}` : ""}`)
   }
 
   return left === 0 ? 0 : 1

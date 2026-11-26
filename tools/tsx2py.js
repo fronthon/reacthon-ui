@@ -2076,15 +2076,41 @@ function makeProgram(files) {
     return ts.createProgram(files, { ...options, paths, noEmit: true });
 }
 
+const pythonFile = (file) => join(dirname(file), `${basename(file).replace(/\.tsx?$/, '').replace(/-/g, '_')}.py`);
+
+// The `.py` an import of Python names, where the project holds it: beside the
+// file for `./card`, and for `@/components/ui/button` where the tsconfig's
+// paths put it, as TypeScript reads them.
+function pythonFileOf(from, source, options) {
+    if (from.startsWith('./')) return pythonFile(resolve(dirname(source), from));
+
+    for (const [pattern, [target] = []] of Object.entries(options.paths ?? {})) {
+        const [head, tail = ''] = pattern.split('*');
+
+        if (target === undefined || !from.startsWith(head) || !from.endsWith(tail) || (!pattern.includes('*') && from !== pattern)) continue;
+        return pythonFile(resolve(options.pathsBasePath ?? options.baseUrl ?? process.cwd(), target.replace('*', from.slice(head.length, from.length - tail.length))));
+    }
+    return undefined;
+}
+
+// Each file's Python, or why it is left out; and the `.py` it imports that the
+// project has not, `button.py` before `reacthon-ui add button`.
 export function convertFiles(files) {
     const paths = files.map((file) => resolve(file));
     const program = makeProgram(paths);
     const checker = program.getTypeChecker();
     const translated = new Set(paths);
+    const written = new Set(paths.map(pythonFile));
 
     return paths.map((path) => {
+        const source = program.getSourceFile(path);
+        const missing = source.statements
+            .filter((one) => ts.isImportDeclaration(one) && !one.importClause?.isTypeOnly && pythonModule(one.moduleSpecifier.text))
+            .map((one) => ({ from: one.moduleSpecifier.text, file: pythonFileOf(one.moduleSpecifier.text, path, program.getCompilerOptions()) }))
+            .filter(({ file }) => file !== undefined && !written.has(file) && !existsSync(file));
+
         try {
-            return { file: path, python: moduleTranslator(program.getSourceFile(path), checker, program, translated)() };
+            return { file: path, python: moduleTranslator(source, checker, program, translated)(), missing };
         } catch (error) {
             if (!(error instanceof Unsupported)) throw error;
             return { file: path, error: error.message };

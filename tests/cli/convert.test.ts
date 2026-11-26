@@ -49,9 +49,23 @@ describe("npx reacthon-ui convert", () => {
   it("writes a folder's components and pages in Python beside them", () => {
     const { status, stdout } = run("src")
 
-    expect([status, stdout.trim().split("\n").sort()]).toEqual([0, ["written src/app/page.py", "written src/components/team_card.py"]])
+    expect([status, stdout.trim().split("\n").sort()]).toEqual([
+      0,
+      [
+        "needs src/components/ui/button.py, which the project has not yet: npx reacthon-ui add button",
+        "written src/app/page.py",
+        "written src/components/team_card.py",
+      ],
+    ])
     expect(read("src/components/team_card.py")).toContain('from button import Button\n\n__js__ = {"lucide-react": ["StarIcon"]}')
     expect(read("src/app/page.py")).toContain("\nfrom team_card import TeamCard\n")
+  })
+
+  it("says nothing of a component's .py the project has", () => {
+    mkdirSync(join(project, "src/components/ui"), { recursive: true })
+    writeFileSync(join(project, "src/components/ui/button.py"), "def Button(**props):\n    return None\n")
+
+    expect(run("src/components/team-card.tsx", "--overwrite").stdout.trim()).toBe("written src/components/team_card.py")
   })
 
   it("keeps a .py already there, and writes it again with --overwrite", () => {

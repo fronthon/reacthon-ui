@@ -78,8 +78,9 @@ in Python beside it, `team_card.py`, by the converter that writes Reacthon UI's
 components from shadcn/ui's, with the project's own `tsconfig`. An import of a
 file of the project that is Python, converted with it or before it, is
 Python's, `from team_card import TeamCard`, and `@/components/ui/dialog` the
-`dialog.py` that `reacthon-ui add` writes; a library's stays JavaScript's, in
-`__js__`. A `.py` already there is kept, as one may have changed it, unless
+`dialog.py` that `reacthon-ui add` writes, which it names if the project has
+not added it yet, with the command that does; a library's stays JavaScript's,
+in `__js__`. A `.py` already there is kept, as one may have changed it, unless
 `--overwrite` says. What it cannot convert it names, and leaves the file out.
 
 ## Translated from shadcn/ui's own
