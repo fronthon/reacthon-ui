@@ -27,11 +27,13 @@ export default defineConfig({
   // The demo, on the preset the project was made with.
   ...preset("radix-nova"),
   // The twins, on each preset, which they are told: a tree is written with
-  // the parts of its base, as one writes it there; and the CLI, once.
+  // the parts of its base, as one writes it there; the CLI, once; and the
+  // demo's blocks in Chrome, each page a minute at most.
   test: {
     projects: [
       ...readdirSync("src/presets").map((name) => ({ ...preset(name), test: { name, include: ["tests/*.test.tsx"], env: { PRESET: name } } })),
       { test: { name: "cli", include: ["tests/cli/*.test.ts"], environment: "node" } },
+      { test: { name: "browser", include: ["tests/browser/*.test.ts"], environment: "node", testTimeout: 60_000, hookTimeout: 120_000 } },
     ],
   },
 })

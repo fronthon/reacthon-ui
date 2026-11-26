@@ -167,9 +167,12 @@ that none passes by rendering nothing on either side.
   the same pages.
 - The demo, `src/App.py`, runs on the Python ones alone; in Chrome, Radix's
   focus, keyboard and portals behave as with the TSX ones. Its 27 blocks are
-  each at `#/<name>`, and its TSX twin at `#/<name>/tsx`: in Chrome, each page
-  is the TSX one, as it loads and after a mouse collapses the sidebar, hovers
-  a menu's button and the chart, and drags a row of the dashboard's table.
+  each at `#/<name>`, and its TSX twin at `#/<name>/tsx`.
+- `tests/browser/blocks.test.ts` builds the demo and opens each block in
+  Chrome, where a page is laid out, its Python page against its TSX twin:
+  the same page as it loads and after a mouse collapses the sidebar, hovers a
+  menu's button and the chart, and drags a row of the dashboard's table, and
+  nothing thrown. jsdom renders neither recharts' tooltip nor a drag.
 
 ```sh
 npm install
