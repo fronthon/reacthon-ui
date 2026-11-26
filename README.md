@@ -1,5 +1,9 @@
 # Reacthon UI
 
+<div align="center">
+    <img src="img/reacthon-ui-512.png" alt="Reacthon UI" width="172"/>
+</div>
+
 **shadcn/ui's components, written in Python, for Reacthon.**
 
 ```python
