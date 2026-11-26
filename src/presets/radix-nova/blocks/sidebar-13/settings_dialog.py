@@ -49,10 +49,10 @@ data = {
 
 
 def SettingsDialog():
-    open, set_open = use_state(True)
+    open_, set_open = use_state(True)
 
     return t"""
-        <{Dialog} open={open} onOpenChange={set_open}>
+        <{Dialog} open={open_} onOpenChange={set_open}>
             <{DialogTrigger} asChild>
                 <{Button} size="sm">Open Dialog</{Button}>
             </{DialogTrigger}>

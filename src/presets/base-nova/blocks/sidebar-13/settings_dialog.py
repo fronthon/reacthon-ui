@@ -49,9 +49,9 @@ data = {
 
 
 def SettingsDialog():
-    open, set_open = use_state(True)
+    open_, set_open = use_state(True)
     return t"""
-        <{Dialog} open={open} onOpenChange={set_open}>
+        <{Dialog} open={open_} onOpenChange={set_open}>
             <{DialogTrigger} render={t'<{Button} size="sm" />'}>Open Dialog</{DialogTrigger}>
             <{DialogContent} class="overflow-hidden p-0 md:max-h-[500px] md:max-w-[700px] lg:max-w-[800px]">
                 <{DialogTitle} class="sr-only">Settings</{DialogTitle}>

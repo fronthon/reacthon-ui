@@ -52,19 +52,39 @@ const REACT_VALUES = new Set(['Children', 'Fragment', 'cloneElement', 'isValidEl
 const GLOBALS = { window: ['browser', 'window'], document: ['browser', 'document'], Math: ['javascript', 'Math'], Date: ['javascript', 'Date'] };
 const ON_WINDOW = new Set(['navigator', 'setTimeout', 'clearTimeout', 'matchMedia', 'innerWidth', 'Promise']);
 
-// Python's own functions the translation calls, which a name of the module's
-// would hide: `list` is list_.
-const BUILTINS = new Set(['bool', 'dict', 'enumerate', 'float', 'format', 'getattr', 'isinstance', 'len', 'list', 'range', 'str']);
+// Python's keywords, which no name can be, `from` of a date range, and its own
+// functions, which a name would hide: CPython 3.14's keyword.kwlist and the
+// lowercase names of dir(builtins). And utils.py's, which the translation calls.
+const KEYWORDS = new Set(
+    'False None True and as assert async await break class continue def del elif else except finally for from global if import in is lambda nonlocal not or pass raise return try while with yield'.split(' ')
+);
+const BUILTINS = new Set(
+    [
+        'abs aiter all anext any ascii bin bool breakpoint bytearray bytes callable chr classmethod compile complex copyright credits',
+        'delattr dict dir divmod enumerate eval exec exit filter float format frozenset getattr globals hasattr hash help hex id input',
+        'int isinstance issubclass iter len license list locals map max memoryview min next object oct open ord pow print property',
+        'quit range repr reversed round set setattr slice sorted staticmethod str sum super tuple type vars zip',
+        'closest sort'
+    ]
+        .join(' ')
+        .split(' ')
+);
 
 // A name the Python modules make, as Python spells it: buttonVariants is
 // button_variants; a component's, a constant's and a prop's stay as they are.
-const snake = (name) => {
+const spell = (name) => {
     const [, lead, rest] = /^(_*)(.*)$/.exec(name);
-    const spelled = /^[a-z]/.test(rest) && /[A-Z]/.test(rest)
+
+    return /^[a-z]/.test(rest) && /[A-Z]/.test(rest)
         ? lead + rest.replace(/([a-z0-9])([A-Z])/g, '$1_$2').replace(/([A-Z])([A-Z][a-z])/g, '$1_$2').toLowerCase()
         : name;
+};
 
-    return BUILTINS.has(spelled) ? `${spelled}_` : spelled;
+// And one that is Python's own takes a trailing underscore: `list` is list_.
+const snake = (name) => {
+    const spelled = spell(name);
+
+    return KEYWORDS.has(spelled) || BUILTINS.has(spelled) ? `${spelled}_` : spelled;
 };
 
 // Python's precedence, lowest first: an operand goes in parentheses where its
@@ -228,9 +248,10 @@ function moduleTranslator(source, checker, program) {
         used.add(local);
         return local;
     };
-    // One of utils.py's own, for what Python's or Brython's does otherwise.
+    // One of utils.py's own, for what Python's or Brython's does otherwise,
+    // imported under its own name, which a name of the module's gives way to.
     const helper = (local) => {
-        if (!python.get('utils')?.some((one) => one.local === local)) add(python, 'utils', { local });
+        if (!python.get('utils')?.some((one) => one.local === local)) add(python, 'utils', { local, own: true });
         used.add(local);
     };
     const need = (module, name) => brython.set(module, new Set([...(brython.get(module) ?? []), name]));
@@ -578,6 +599,11 @@ function moduleTranslator(source, checker, program) {
         if (role === 'read' && optional(object, field) && packaged(checker.getNonNullableType(typeOf(object)))) {
             return [`getattr(${base}, ${string(field)}, ${cx.fallback ?? 'None'})`, PRIMARY];
         }
+        // `range.from`, an attribute Python's syntax cannot name.
+        if (KEYWORDS.has(field)) {
+            if (role === 'write') unsupported(node, 'a write to an attribute named as a Python keyword');
+            return [`getattr(${base}, ${string(field)})`, PRIMARY];
+        }
         return [`${base}.${field}`, PRIMARY];
     };
 
@@ -598,7 +624,7 @@ function moduleTranslator(source, checker, program) {
         const before = call && call.arguments.indexOf(dict) > 0 ? call.arguments[call.arguments.indexOf(dict) - 1] : null;
         const text = id ? id.initializer.text : before && ts.isStringLiteral(before) ? before.text : '';
 
-        return /^[a-z]\w*$/i.test(text) ? `${snake(text)}_` : '';
+        return /^[a-z]\w*$/i.test(text) ? `${spell(text)}_` : '';
     };
 
     const entry = (one, cx) => {
@@ -807,9 +833,11 @@ function moduleTranslator(source, checker, program) {
         }
 
         if (isVariantCall(node) && args.length === 1 && ts.isObjectLiteralExpression(args[0])) {
+            // A variant named as a Python keyword, `in`, handed in a dict.
+            const keyword = (key, value) => (KEYWORDS.has(key) ? `**{${string(key)}: ${value}}` : `${key}=${value}`);
             const keywords = args[0].properties.map((one) => {
-                if (ts.isShorthandPropertyAssignment(one)) return `${one.name.text}=${name(one.name, inner)}`;
-                if (ts.isPropertyAssignment(one) && ts.isIdentifier(one.name)) return `${one.name.text}=${expr(one.initializer, inner)}`;
+                if (ts.isShorthandPropertyAssignment(one)) return keyword(one.name.text, name(one.name, inner));
+                if (ts.isPropertyAssignment(one) && ts.isIdentifier(one.name)) return keyword(one.name.text, expr(one.initializer, inner));
                 // React Aria's render props, `{ ...renderProps, showWeekNumber }`:
                 // keywords take a dict, not the object JavaScript made.
                 if (ts.isSpreadAssignment(one)) {
@@ -872,7 +900,7 @@ function moduleTranslator(source, checker, program) {
                 return [`${expr(object, inner, PRIMARY)}.${text ? 'find' : 'index'}(${expr(args[0], inner)})`, PRIMARY];
             }
             if (method === 'slice' && args.length <= 2 && sized(object)) {
-                return [`${expr(object, inner, PRIMARY)}[${args.map((one) => expr(one, inner)).join(':')}${args.length === 1 ? ':' : ''}]`, PRIMARY];
+                return [`${expr(object, inner, PRIMARY)}[${args.map((one) => expr(one, inner)).join(':')}${args.length < 2 ? ':' : ''}]`, PRIMARY];
             }
             // Brython's DOMNode.closest() raises KeyError where the DOM's is null.
             if (method === 'closest' && args.length === 1 && domElement(object)) {
@@ -1351,9 +1379,11 @@ function moduleTranslator(source, checker, program) {
 
         if (component && first && ts.isObjectBindingPattern(first.name)) {
             const rest = first.name.elements.find((one) => one.dotDotDotToken)?.name.text ?? 'props';
-            // `"data-slot": dataSlot`, a prop no keyword can name, taken out of
-            // the others as JavaScript's rest leaves it out.
-            const quoted = first.name.elements.filter((one) => one.propertyName && ts.isStringLiteral(one.propertyName));
+            // `"data-slot": dataSlot` and `from`, props no keyword argument can
+            // name, taken out of the others as JavaScript's rest leaves them out.
+            const quoted = first.name.elements.filter(
+                (one) => (one.propertyName && ts.isStringLiteral(one.propertyName)) || (!one.dotDotDotToken && KEYWORDS.has((one.propertyName ?? one.name).getText()))
+            );
 
             for (const one of first.name.elements) {
                 const prop = (one.propertyName ?? one.name).getText();
@@ -1361,9 +1391,11 @@ function moduleTranslator(source, checker, program) {
                 // A prop keeps the name its callers hand it under.
                 scope.delete(one.name.text);
                 if (quoted.includes(one)) {
+                    const named = string((one.propertyName ?? one.name).text);
+
                     scope.add(one.name.text);
                     taken.add(snake(one.name.text));
-                    head.push(`${pad(level + 1)}${snake(one.name.text)} = ${rest}.pop(${prop}${one.initializer ? `, ${expr(one.initializer, { ...cx, scope })}` : ', None'})`);
+                    head.push(`${pad(level + 1)}${snake(one.name.text)} = ${rest}.pop(${named}${one.initializer ? `, ${expr(one.initializer, { ...cx, scope })}` : ', None'})`);
                     continue;
                 }
                 if (one.dotDotDotToken) {
@@ -1435,7 +1467,11 @@ function moduleTranslator(source, checker, program) {
         };
         const lines = ts.isBlock(fn.body) ? block(fn.body.statements, inner) : [...returned(fn.body, inner)];
         const bodyLines = [...head, ...(head.length && lines.length ? [''] : []), ...lines];
+        // A prop keeps its name, and one named as a function the translation
+        // calls in the body, `format`, would hide it: named, not written.
+        const hidden = params.map((one) => one.split('=')[0]).find((one) => BUILTINS.has(one) && bodyLines.some((line) => new RegExp(`(?<![\\w.])${one}\\(`).test(line)));
 
+        if (hidden) unsupported(fn, `a prop named as ${hidden}(), which the body calls`);
         return [...decorated, `${pad(level)}def ${title}(${params.join(', ')}):`, ...(bodyLines.length ? bodyLines : [`${pad(level + 1)}pass`])];
     };
 
@@ -1623,7 +1659,15 @@ function moduleTranslator(source, checker, program) {
 
             cx.taken.add(local);
             names.push(local);
-            reads.push(dict ? `${source_}.get(${string(prop)})` : either || optional(node, prop) ? `getattr(${source_}, ${string(prop)}, None)` : `${source_}.${prop}`);
+            reads.push(
+                dict
+                    ? `${source_}.get(${string(prop)})`
+                    : either || optional(node, prop)
+                      ? `getattr(${source_}, ${string(prop)}, None)`
+                      : KEYWORDS.has(prop)
+                        ? `getattr(${source_}, ${string(prop)})`
+                        : `${source_}.${prop}`
+            );
             if (item.initializer) defaults.push([local, expr(item.initializer, cx)]);
         }
 
@@ -1729,7 +1773,7 @@ function moduleTranslator(source, checker, program) {
         }
         if (hooks.size) head.push(`from reacthon import ${[...hooks].sort().join(', ')}`);
         for (const [from, names] of python) {
-            const kept = names.filter(usedEntry).map((one) => snake(one.local)).sort();
+            const kept = names.filter(usedEntry).map((one) => (one.own ? one.local : snake(one.local))).sort();
             const line = `from ${from} import ${kept.join(', ')}`;
             const wrapped = `    ${kept.join(', ')},`;
 

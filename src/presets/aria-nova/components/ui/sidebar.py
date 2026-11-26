@@ -48,10 +48,10 @@ def SidebarProvider(defaultOpen=True, open=None, onOpenChange=None, className=No
     # This is the internal state of the sidebar.
     # We use openProp and setOpenProp for control from outside the component.
     _open, _set_open = use_state(defaultOpen)
-    open = open_prop if open_prop is not None else _open
+    open_ = open_prop if open_prop is not None else _open
 
     def set_open(value):
-        open_state = value(open) if callable(value) else value
+        open_state = value(open_) if callable(value) else value
         if set_open_prop:
             set_open_prop(open_state)
         else:
@@ -60,11 +60,11 @@ def SidebarProvider(defaultOpen=True, open=None, onOpenChange=None, className=No
         # This sets the cookie to keep the sidebar state.
         document.cookie = f"{SIDEBAR_COOKIE_NAME}={str(open_state).lower()}; path=/; max-age={SIDEBAR_COOKIE_MAX_AGE}"
 
-    set_open = use_callback(set_open, [set_open_prop, open])
+    set_open = use_callback(set_open, [set_open_prop, open_])
 
     # Helper to toggle the sidebar.
     toggle_sidebar = use_callback(
-        lambda: set_open_mobile(lambda open: not open) if is_mobile else set_open(lambda open: not open),
+        lambda: set_open_mobile(lambda open_: not open_) if is_mobile else set_open(lambda open_: not open_),
         [is_mobile, set_open, set_open_mobile],
     )
 
@@ -82,19 +82,19 @@ def SidebarProvider(defaultOpen=True, open=None, onOpenChange=None, className=No
 
     # We add a state so that we can do data-state="expanded" or "collapsed".
     # This makes it easier to style the sidebar with Tailwind classes.
-    state = "expanded" if open else "collapsed"
+    state = "expanded" if open_ else "collapsed"
 
     context_value = use_memo(
         lambda: {
             "state": state,
-            "open": open,
+            "open": open_,
             "setOpen": set_open,
             "isMobile": is_mobile,
             "openMobile": open_mobile,
             "setOpenMobile": set_open_mobile,
             "toggleSidebar": toggle_sidebar,
         },
-        [state, open, set_open, is_mobile, open_mobile, set_open_mobile, toggle_sidebar],
+        [state, open_, set_open, is_mobile, open_mobile, set_open_mobile, toggle_sidebar],
     )
 
     return t"""
