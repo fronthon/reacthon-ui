@@ -24,16 +24,21 @@ const preset = (name: string) => ({
 export default defineConfig({
   // Relative paths, so that Pages serves the demo under the repository's name.
   base: "./",
-  // The demo, on the preset the project was made with.
-  ...preset("radix-nova"),
+  // The demo, on the preset the project was made with, or the one DEMO_PRESET
+  // names.
+  ...preset(process.env.DEMO_PRESET ?? "radix-nova"),
   // The twins, on each preset, which they are told: a tree is written with
   // the parts of its base, as one writes it there; the CLI, once; and the
-  // demo's blocks in Chrome, each page a minute at most.
+  // demo's blocks in Chrome, on one preset of each base, whose parts the
+  // browser sees behave: a style is the same parts in other classes, which the
+  // twins compare. Each page a minute at most.
   test: {
     projects: [
       ...readdirSync("src/presets").map((name) => ({ ...preset(name), test: { name, include: ["tests/*.test.tsx"], env: { PRESET: name } } })),
       { test: { name: "cli", include: ["tests/cli/*.test.ts"], environment: "node" } },
-      { test: { name: "browser", include: ["tests/browser/*.test.ts"], environment: "node", testTimeout: 60_000, hookTimeout: 120_000 } },
+      ...["radix-nova", "base-nova", "aria-nova"].map((name) => ({
+        test: { name: `browser ${name}`, include: ["tests/browser/*.test.ts"], environment: "node", env: { DEMO_PRESET: name }, testTimeout: 60_000, hookTimeout: 120_000 },
+      })),
     ],
   },
 })

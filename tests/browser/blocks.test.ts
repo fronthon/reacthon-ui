@@ -12,8 +12,10 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest"
 
 import { chrome } from "./chrome"
 
-const blocks = readdirSync("src/presets/radix-nova/blocks").sort()
-const outDir = join(tmpdir(), `reacthon-ui-demo-${process.pid}`)
+// The preset the demo is built on, one of each base, as the project says.
+const preset = process.env.DEMO_PRESET ?? "radix-nova"
+const blocks = readdirSync(`src/presets/${preset}/blocks`).sort()
+const outDir = join(tmpdir(), `reacthon-ui-demo-${preset}-${process.pid}`)
 const SEEDED = "{ let seed = 1; Math.random = () => (seed = (seed * 16807) % 2147483647) / 2147483647 }"
 // The page, its ids numbered as they first appear; the span recharts measures
 // a text in holds the last it measured, which the order of its measures
@@ -111,7 +113,7 @@ afterAll(async () => {
   rmSync(outDir, { recursive: true, force: true })
 })
 
-describe("the demo's blocks in Chrome", () => {
+describe(`the demo's blocks in Chrome, on ${preset}`, () => {
   it.for(blocks)("%s is its TSX twin, loaded and after a mouse's gestures", async (name) => {
     const python = await played(`#/${name}`)
     const tsx = await played(`#/${name}/tsx`)
