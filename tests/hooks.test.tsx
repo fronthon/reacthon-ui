@@ -2,6 +2,7 @@
 // The components written with React's hooks, against shadcn/ui's own: the same
 // tree rendered from TSX and from Python, then the same clicks and keys on
 // each, and the same page after every one.
+import { CalendarDate } from "@internationalized/date"
 import { act, createElement, Fragment, type ComponentType } from "react"
 import { createRoot } from "react-dom/client"
 import { describe, expect, it } from "vitest"
@@ -93,8 +94,8 @@ function type(input: HTMLInputElement, value: string) {
   input.dispatchEvent(new Event("input", { bubbles: true }))
 }
 
-// Each page of the scene: rendered, then after each step. What the tree saw
-// through its callbacks comes last.
+// Each page of the scene: rendered, then after each step, each with what the
+// tree saw through its callbacks so far; then the cookie.
 async function pages(tree: Tree, kit: Kit, steps: Step[]) {
   const container = document.createElement("div")
   const root = createRoot(container)
@@ -105,18 +106,27 @@ async function pages(tree: Tree, kit: Kit, steps: Step[]) {
   document.body.append(container)
   seed = 1
   try {
+    const page = () => `${numbered(document.body.innerHTML)}\nseen: ${seen.join(" | ")}`
+
     await act(() => root.render(tree(kit, seen)))
-    out.push(numbered(document.body.innerHTML))
+    out.push(page())
     for (const [, step] of steps) {
       // What the step sets off later, input-otp's selection, lands before the
-      // page is read, however long a render takes.
+      // page is read: the page held still, however long a render takes under
+      // the load of the whole suite.
       await act(async () => {
         await step(container)
-        await new Promise((resolve) => setTimeout(resolve, 30))
+        let before = ""
+
+        for (let tries = 0; tries < 20; tries++) {
+          await new Promise((resolve) => setTimeout(resolve, 30))
+          if (document.body.innerHTML === before) break
+          before = document.body.innerHTML
+        }
       })
-      out.push(numbered(document.body.innerHTML))
+      out.push(page())
     }
-    out.push(`seen: ${seen.join(" | ")}`, `cookie: ${document.cookie}`)
+    out.push(`cookie: ${document.cookie}`)
   } finally {
     await act(() => root.unmount())
     container.remove()
@@ -125,13 +135,35 @@ async function pages(tree: Tree, kit: Kit, steps: Step[]) {
   return out
 }
 
-const scenes: [string, Kit, Kit, Tree, Step[]][] = []
-const scene = (name: string, tsx: object, py: object, tree: Tree, steps: Step[] = []) =>
-  scenes.push([name, tsx as Kit, py as Kit, tree, steps])
+// A scene is written with the parts of the preset's base, as shadcn's own
+// examples write it there.
+const ARIA = process.env.PRESET!.startsWith("aria-")
+
+// What the TSX page must show once rendered, so that a scene renders the
+// state it is named after; and each step changes that page, or it plays
+// nothing both sides could differ in.
+const scenes: [string, Kit, Kit, Tree, Step[], string[]][] = []
+const scene = (name: string, tsx: object, py: object, tree: Tree, steps: Step[] = [], shows: string[] = []) =>
+  scenes.push([name, tsx as Kit, py as Kit, tree, steps, shows])
 const h = createElement
 
+// jsdom lays nothing out, so embla moves nothing on the page: what the
+// carousel asks of it is seen instead.
+type Api = Record<"canScrollNext" | "scrollNext" | "scrollPrev", (...args: unknown[]) => unknown>
+const WATCHED = new WeakSet<Api>()
+const watched = (seen: string[]) => (api: Api) => {
+  seen.push(`api ${typeof api?.canScrollNext}`)
+  if (!api || WATCHED.has(api)) return
+  WATCHED.add(api)
+  for (const name of ["scrollNext", "scrollPrev"] as const) {
+    const own = api[name]
+
+    api[name] = (...args) => (seen.push(name), own.apply(api, args))
+  }
+}
+
 scene("Carousel", tsxCarousel, pyCarousel, (k, seen) =>
-  h(k.Carousel, { opts: { loop: true }, setApi: (api: { canScrollNext?: unknown }) => seen.push(`api ${typeof api?.canScrollNext}`), className: "w-60" },
+  h(k.Carousel, { opts: { loop: true }, setApi: watched(seen), className: "w-60" },
     h(k.CarouselContent, null, ...["one", "two", "three"].map((text) => h(k.CarouselItem, { key: text }, text))),
     h(k.CarouselPrevious),
     h(k.CarouselNext)),
@@ -173,11 +205,16 @@ scene("Sidebar none", tsxSidebar, pySidebar, (k) =>
   h(k.SidebarProvider, null, h(k.Sidebar, { collapsible: "none" }, "fixed"))
 )
 
-for (const type_ of ["single", "multiple"]) {
-  scene(`ToggleGroup ${type_}`, tsxToggleGroup, pyToggleGroup, (k) =>
-    h(k.ToggleGroup, { type: type_, variant: "outline", size: "sm", spacing: 0 },
-      h(k.ToggleGroupItem, { value: "bold" }, "B"),
-      h(k.ToggleGroupItem, { value: "italic", variant: "default" }, "I")),
+// React Aria's keys are its items' `id`, the others' their `value`; its toggle
+// group says `selectionMode` where the others say `type`.
+const key = (one: string) => (ARIA ? { id: one } : { value: one })
+const toggles = (mode: string) => (ARIA ? { selectionMode: mode } : { type: mode })
+
+for (const mode of ["single", "multiple"]) {
+  scene(`ToggleGroup ${mode}`, tsxToggleGroup, pyToggleGroup, (k) =>
+    h(k.ToggleGroup, { ...toggles(mode), variant: "outline", size: "sm", spacing: 0 },
+      h(k.ToggleGroupItem, key("bold"), "B"),
+      h(k.ToggleGroupItem, { ...key("italic"), variant: "default" }, "I")),
     [
       ["bold", (page) => click(page, "[data-slot=toggle-group-item]", 0)],
       ["italic", (page) => click(page, "[data-slot=toggle-group-item]", 1)]
@@ -185,7 +222,9 @@ for (const type_ of ["single", "multiple"]) {
   )
 }
 scene("ToggleGroup default", tsxToggleGroup, pyToggleGroup, (k) =>
-  h(k.ToggleGroup, { type: "single", orientation: "vertical" }, h(k.ToggleGroupItem, { value: "a" }, "A"))
+  h(k.ToggleGroup, { ...toggles("single"), orientation: "vertical" }, h(k.ToggleGroupItem, key("a"), "A")),
+  [],
+  ["vertical"]
 )
 
 scene("InputOTP", tsxInputOtp, pyInputOtp, (k) =>
@@ -209,9 +248,12 @@ scene("CodeBlock", tsxCodeBlock, pyCodeBlock, (k) =>
   [["copy", (page) => click(page, "[data-slot=code-block-copy-button]")]]
 )
 
-scene("Slider", tsxSlider, pySlider, (k) => h(k.Slider, { defaultValue: [20, 80], max: 100, step: 10 }))
-scene("Slider value", tsxSlider, pySlider, (k) => h(k.Slider, { value: [30] }))
-scene("Slider bare", tsxSlider, pySlider, (k) => h(k.Slider, { min: 5 }))
+// React Aria's slider bounds itself by `minValue` and `maxValue`.
+const bounds = (min: number | undefined, max: number | undefined) => (ARIA ? { minValue: min, maxValue: max } : { min, max })
+
+scene("Slider", tsxSlider, pySlider, (k) => h(k.Slider, { defaultValue: [20, 80], ...bounds(undefined, 100), step: 10, "aria-label": "Range" }), [], ['"20"', '"80"'])
+scene("Slider value", tsxSlider, pySlider, (k) => h(k.Slider, { value: [30], "aria-label": "Value" }), [], ['"30"'])
+scene("Slider bare", tsxSlider, pySlider, (k) => h(k.Slider, { ...bounds(5, undefined), "aria-label": "Bare" }), [], ['"5"'])
 
 scene("Field", tsxField, pyField, (k) =>
   h(k.FieldSet, null,
@@ -232,29 +274,64 @@ scene("InputGroup", tsxInputGroup, pyInputGroup, (k) =>
   h(k.InputGroup, null,
     h(k.InputGroupInput, { placeholder: "search" }),
     h(k.InputGroupAddon, { align: "inline-end" }, h(k.InputGroupText, null, "⌘K"), h(k.InputGroupButton, { size: "icon-xs" }, "x"))),
+  // The addon focuses the input, which the page says once told.
   [
-    ["addon", (page) => click(page, "[data-slot=input-group-addon]")],
-    ["focused", () => void document.body.setAttribute("data-focus", document.activeElement?.getAttribute("data-slot") ?? "none")]
+    ["addon", (page) => {
+      click(page, "[data-slot=input-group-addon]")
+      page.setAttribute("data-focus", document.activeElement?.getAttribute("data-slot") ?? "none")
+    }]
   ]
 )
 
-scene("Calendar", tsxCalendar, pyCalendar, (k, seen) =>
-  h(k.Calendar, {
-    mode: "single",
-    defaultMonth: new Date(2026, 0, 1),
-    selected: new Date(2026, 0, 10),
-    onSelect: (day?: Date) => seen.push(`picked ${day?.getDate()}`),
-    showWeekNumber: true,
-    className: "rounded-md border"
-  }),
-  [
-    ["pick the 15th", (page) => click(page, "[data-day]", 18)],
-    ["next month", (page) => click(page, ".rdp-button_next")]
-  ]
-)
-scene("Calendar dropdown", tsxCalendar, pyCalendar, (k) =>
-  h(k.Calendar, { mode: "range", captionLayout: "dropdown", defaultMonth: new Date(2026, 5, 1), buttonVariant: "outline", numberOfMonths: 2 })
-)
+// React Aria's calendar is its own, of `@internationalized/date`'s dates, its
+// days the cells of a grid; the others' is react-day-picker's, its days
+// buttons in the cells.
+const day = (page: HTMLElement, text: string) =>
+  ([...page.querySelectorAll(ARIA ? "td [role=button]" : "td button")] as HTMLElement[])
+    .find((one) => one.textContent === text && !one.hasAttribute("data-outside-month") && !one.closest("[data-outside]"))!
+    .click()
+
+if (ARIA) {
+  scene("Calendar", tsxCalendar, pyCalendar, (k, seen) =>
+    h(k.Calendar, {
+      defaultValue: new CalendarDate(2026, 1, 10),
+      onChange: (value: CalendarDate) => seen.push(`picked ${value.day}`),
+      showWeekNumber: true,
+      className: "rounded-md border"
+    }),
+    [
+      ["pick the 15th", (page) => day(page, "15")],
+      ["next month", (page) => click(page, "[slot=next]")]
+    ],
+    ["January 2026"]
+  )
+  scene("Calendar dropdown", tsxCalendar, pyCalendar, (k) =>
+    h(k.RangeCalendar, { captionLayout: "dropdown", defaultFocusedValue: new CalendarDate(2026, 6, 1), buttonVariant: "outline", numberOfMonths: 2 }),
+    [],
+    ["June", "July"]
+  )
+} else {
+  scene("Calendar", tsxCalendar, pyCalendar, (k, seen) =>
+    h(k.Calendar, {
+      mode: "single",
+      defaultMonth: new Date(2026, 0, 1),
+      selected: new Date(2026, 0, 10),
+      onSelect: (day?: Date) => seen.push(`picked ${day?.getDate()}`),
+      showWeekNumber: true,
+      className: "rounded-md border"
+    }),
+    [
+      ["pick the 15th", (page) => day(page, "15")],
+      ["next month", (page) => click(page, ".rdp-button_next")]
+    ],
+    ["January 2026"]
+  )
+  scene("Calendar dropdown", tsxCalendar, pyCalendar, (k) =>
+    h(k.Calendar, { mode: "range", captionLayout: "dropdown", defaultMonth: new Date(2026, 5, 1), buttonVariant: "outline", numberOfMonths: 2 }),
+    [],
+    ["Jun", "Jul"]
+  )
+}
 
 const config = {
   desktop: { label: "Desktop", color: "#2563eb" },
@@ -293,32 +370,34 @@ scene("ChartLegendContent", tsxChart, pyChart, (k) =>
   h(k.ChartContainer, { config }, h(k.ChartLegendContent, { payload, verticalAlign: "top" }))
 )
 
+// React Aria's combobox lists its items as children, each its `id`, and
+// opens as one types; the others' take `items` and a function of each.
 scene("Combobox", tsxCombobox, pyCombobox, (k) =>
-  h(k.Combobox, { items: ["Apple", "Banana"], defaultOpen: true },
-    h(k.ComboboxInput, { placeholder: "fruit", showClear: true }),
-    h(k.ComboboxContent, null,
-      h(k.ComboboxEmpty, null, "None"),
-      h(k.ComboboxList, null, (item: string) => h(k.ComboboxItem, { key: item, value: item }, item))))
+  ARIA
+    ? h(k.Combobox, { allowsEmptyCollection: true, "aria-label": "Fruit" },
+        h(k.ComboboxInput, { placeholder: "fruit", showClear: true }),
+        h(k.ComboboxContent, null,
+          h(k.ComboboxList, { renderEmptyState: () => h(k.ComboboxEmpty, null, "None") }, ...["Apple", "Banana"].map((item) => h(k.ComboboxItem, { key: item, id: item }, item)))))
+    : h(k.Combobox, { items: ["Apple", "Banana"], defaultOpen: true },
+        h(k.ComboboxInput, { placeholder: "fruit", showClear: true }),
+        h(k.ComboboxContent, null,
+          h(k.ComboboxEmpty, null, "None"),
+          h(k.ComboboxList, null, (item: string) => h(k.ComboboxItem, { key: item, value: item }, item)))),
+  ARIA ? [["type a", (page) => type(page.querySelector("input") as HTMLInputElement, "a")]] : [],
+  ARIA ? ["fruit"] : ["Apple", "Banana"]
 )
 
 describe("shadcn/ui's components of React's hooks, written in Python", () => {
-  // A scene of another preset's components, which this preset's TSX cannot
-  // play either, says nothing of the Python: skipped, and counted so.
-  it.for(scenes)("%s renders and behaves as the TSX one does", async ([, tsx, py, tree, steps], { skip }) => {
+  it.for(scenes)("%s renders and behaves as the TSX one does", async ([, tsx, py, tree, steps, shows]) => {
     // A library may keep what an instance did for the next one, input-otp its
     // selection: each of the two compared renders after one more.
-    let expected: string[] = []
-
-    try {
-      await pages(tree, tsx, steps)
-      expected = await pages(tree, tsx, steps)
-    } catch (error) {
-      skip(`not this preset's components: ${String(error).slice(0, 80)}`)
-    }
-
+    await pages(tree, tsx, steps)
+    const expected = await pages(tree, tsx, steps)
     const got = await pages(tree, py, steps)
 
     expect(expected[0]).toMatch(/<[a-z]/)
+    for (const one of shows) expect(expected[0], `the page shows ${one}`).toContain(one)
+    steps.forEach(([name], at) => expect(expected[at + 1], `${name} changes the page`).not.toBe(expected[at]))
     expected.forEach((page, at) => {
       let from = 0
 

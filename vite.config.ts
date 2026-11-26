@@ -26,8 +26,9 @@ export default defineConfig({
   base: "./",
   // The demo, on the preset the project was made with.
   ...preset("radix-nova"),
-  // The twins, on each preset.
+  // The twins, on each preset, which they are told: a tree is written with
+  // the parts of its base, as one writes it there.
   test: {
-    projects: readdirSync("src/presets").map((name) => ({ ...preset(name), test: { name } })),
+    projects: readdirSync("src/presets").map((name) => ({ ...preset(name), test: { name, env: { PRESET: name } } })),
   },
 })

@@ -113,10 +113,12 @@ TanStack's with rows dragged by dnd-kit.
 ## Tested against shadcn/ui's own
 
 The twins run on each preset, a Vitest project of its own, where `@` is the
-preset's folder: 4,896 of them. The trees and the scenes were written for
-Radix's components; one that React Aria's TSX cannot render either, a dialog
-of other parts, a calendar not react-day-picker's, says nothing of the Python,
-and is skipped as such: 5 a preset of React Aria, 40 in all.
+preset's folder: 4,936 of them, none skipped. Each tree and each scene is
+written with the parts of its preset's base, as shadcn's own examples write
+them there: React Aria's dialog opens from its trigger, its calendar takes
+`@internationalized/date`'s dates, Base UI's select its `items`. Each says
+what shadcn's page must show, and each step of a scene changes that page, so
+that none passes by rendering nothing on either side.
 
 - `tests/twin.test.tsx` renders ten of them and shadcn/ui's TSX ones with the
   same props, open and closed, every variant and size, and compares the two
@@ -132,8 +134,9 @@ and is skipped as such: 5 a preset of React Aria, 40 in all.
   one: the same page, to the character.
 - `tests/block-scenes.test.tsx` uses three of them as one does, both alike: a
   sidebar's group opened and a team picked from its menu, a mail picked, the
-  dashboard's rows selected, its next page and its form sent: the same page
-  after each step, and the same errors.
+  dashboard's rows selected, its next page and its form sent, its toast shown
+  in the application's toaster: the same page after each step, and the same
+  errors.
 - `tests/icons.test.tsx` writes every component's and block's icons in each
   of the four other libraries, each found, none of Lucide's left. The pages
   were twinned, once for each library and each base, against the TSX shadcn's

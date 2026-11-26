@@ -5,8 +5,10 @@
 // part of what is compared.
 import { act, createElement, Fragment, type ComponentType } from "react"
 import { createRoot } from "react-dom/client"
+import { toast } from "sonner"
 import { describe, expect, it } from "vitest"
 
+import { Toaster } from "@/components/ui/sonner"
 import * as tooltip from "@/components/ui/tooltip"
 
 ;(globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true
@@ -29,13 +31,14 @@ document.elementFromPoint ??= () => null
 let seed = 1
 Math.random = () => (seed = (seed * 16807) % 2147483647) / 2147483647
 
-// The provider the application's root holds tooltips in, where the preset has one.
+// The provider the application's root holds tooltips in, where the preset has
+// one, and the toaster it shows a block's toasts in.
 const TooltipProvider = ("TooltipProvider" in tooltip ? tooltip.TooltipProvider : Fragment) as ComponentType
 
 const tsx = import.meta.glob("@/blocks/*/page.tsx")
 const py = import.meta.glob("@/blocks/*/page.py")
 
-type Step = [string, (page: HTMLElement) => void]
+type Step = [string, (page: HTMLElement) => void | Promise<unknown>]
 
 const click = (page: HTMLElement, selector: string, at = 0) => (page.querySelectorAll(selector)[at] as HTMLElement).click()
 // A press of the main button, which a menu's trigger opens on, as a click does.
@@ -47,9 +50,18 @@ const press = (page: HTMLElement, selector: string, at = 0) => {
 }
 const button = (page: HTMLElement, text: string) => [...page.querySelectorAll("button")].find((one) => one.textContent?.includes(text))!.click()
 
-// The frame a library waits for, Radix's tabs theirs, passed on both alike,
-// however long a render takes.
-const settled = () => new Promise((resolve) => setTimeout(resolve, 30))
+// The frames a library waits for, Radix's tabs theirs, React Aria the focus it
+// gives back once its menu has closed: passed until the page holds still, on
+// both alike, however long a render takes under the load of the whole suite.
+async function settled() {
+  let before = ""
+
+  for (let tries = 0; tries < 20; tries++) {
+    await new Promise((resolve) => setTimeout(resolve, 30))
+    if (document.body.innerHTML === before) return
+    before = document.body.innerHTML
+  }
+}
 
 function numbered(page: string) {
   const ids = new Map<string, number>()
@@ -74,19 +86,22 @@ async function pages(Page: ComponentType, steps: Step[]) {
   seed = 1
   try {
     await act(async () => {
-      root.render(createElement(TooltipProvider, null, createElement(Page)))
+      root.render(createElement(TooltipProvider, null, createElement(Page), createElement(Toaster)))
       await settled()
     })
     out.push(numbered(document.body.innerHTML))
     for (const [, step] of steps) {
       await act(async () => {
-        step(container)
+        await step(container)
         await settled()
       })
       out.push(numbered(document.body.innerHTML))
     }
     out.push(`errors: ${errors.join(" | ")}`)
   } finally {
+    // Sonner hands a toaster that mounts the toasts still up, which the next
+    // page would show: dismissed with the page.
+    await act(() => void toast.dismiss())
     await act(() => root.unmount())
     container.remove()
     document.body.innerHTML = ""
@@ -96,13 +111,19 @@ async function pages(Page: ComponentType, steps: Step[]) {
   return out
 }
 
+// The gestures of the preset's base, as one makes them there: React Aria
+// opens a menu on a press of the button its trigger wraps, which a click is
+// to it, and selects a table's rows by checkboxes of its own naming.
+const ARIA = process.env.PRESET!.startsWith("aria-")
+
 const scenes: [string, Step[]][] = [
   [
     "sidebar-07",
     [
-      ["open a group", (page) => click(page, "[data-slot=collapsible-trigger]")],
+      // React Aria's group opens from the button its disclosure names its trigger.
+      ["open a group", (page) => click(page, ARIA ? "[data-slot=sidebar-content] [aria-expanded]" : "[data-slot=collapsible-trigger]")],
       // Its menu in a portal, outside the page.
-      ["open the teams", (page) => press(page, "[data-slot=dropdown-menu-trigger]")],
+      ["open the teams", (page) => (ARIA ? click(page, "[data-slot=sidebar-header] [aria-haspopup]") : press(page, "[data-slot=dropdown-menu-trigger]"))],
       ["pick a team", () => click(document.body, "[data-slot=dropdown-menu-item]", 1)],
     ],
   ],
@@ -110,10 +131,12 @@ const scenes: [string, Step[]][] = [
   [
     "dashboard-01",
     [
-      ["select all", (page) => click(page, '[aria-label="Select all"]')],
-      ["select a row", (page) => click(page, '[aria-label="Select row"]', 1)],
+      ["select all", (page) => click(page, ARIA ? '[aria-label="Select All"]' : '[aria-label="Select all"]')],
+      ["select a row", (page) => click(page, ARIA ? '[aria-label="Select"]' : '[aria-label="Select row"]', 1)],
       ["next page", (page) => button(page, "Go to next page")],
       ["save a target", (page) => page.querySelector("form")!.requestSubmit()],
+      // The toast of the save, a second later.
+      ["saved", () => new Promise((resolve) => setTimeout(resolve, 1100))],
     ],
   ],
 ]
@@ -131,20 +154,20 @@ for (const [name] of scenes) {
 }
 
 describe("shadcn/ui's blocks, written in Python, in use", () => {
-  // A scene of Radix's parts, which this preset's TSX cannot play either, says
-  // nothing of the Python: skipped, and counted so.
-  it.for(scenes.map((scene, at) => [...scene, ...loaded[at]] as const))("%s renders and behaves as the TSX one does", async ([, steps, Page, PyPage], { skip }) => {
-    let expected: string[] = []
-
-    try {
-      expected = await pages(Page, steps)
-    } catch (error) {
-      skip(`not this preset's components: ${String(error).slice(0, 80)}`)
-    }
-
+  // Each step changes shadcn's own page, or it plays nothing the two could
+  // differ in.
+  // Four pages of each scene, the dashboard's each waiting a second for its toast.
+  it.for(scenes.map((scene, at) => [...scene, ...loaded[at]] as const))("%s renders and behaves as the TSX one does", { timeout: 30_000 }, async ([, steps, Page, PyPage]) => {
+    // React Aria keeps how the last page was used, by pointer or not, for the
+    // next one, and sidebar-09 shuffles its own mails in place: each of the two
+    // compared is its second, after a page of the same scene.
+    await pages(Page, steps)
+    await pages(PyPage, steps)
+    const expected = await pages(Page, steps)
     const got = await pages(PyPage, steps)
 
     expect(expected[0]).toMatch(/<[a-z]/)
+    steps.forEach(([name], at) => expect(expected[at + 1], `${name} changes the page`).not.toBe(expected[at]))
     expected.forEach((page, at) => {
       let from = 0
 
