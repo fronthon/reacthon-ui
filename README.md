@@ -146,7 +146,10 @@ that none passes by rendering nothing on either side.
   a Next.js project, the TSX by shadcn's and the Python by `reacthon-ui add`:
   the same pages.
 - The demo, `src/App.py`, runs on the Python ones alone; in Chrome, Radix's
-  focus, keyboard and portals behave as with the TSX ones.
+  focus, keyboard and portals behave as with the TSX ones. Its 27 blocks are
+  each at `#/<name>`, and its TSX twin at `#/<name>/tsx`: in Chrome, each page
+  is the TSX one, as it loads and after a mouse collapses the sidebar, hovers
+  a menu's button and the chart, and drags a row of the dashboard's table.
 
 ```sh
 npm install

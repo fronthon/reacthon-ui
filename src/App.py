@@ -11,7 +11,34 @@ from dropdown_menu import (
 )
 from accordion import Accordion, AccordionItem, AccordionTrigger, AccordionContent
 
+__js__ = {"./blocks.ts": ["blocks"]}
+
 FRUITS = ["apple", "pear", "plum"]
+GROUPS = (("dashboard", "Dashboard"), ("sidebar", "Sidebars"), ("login", "Logins"), ("signup", "Signups"))
+
+
+def BlockLinks():
+    def group(prefix, title):
+        names = [name for name in blocks if name.startswith(f"{prefix}-")]
+
+        return t"""
+            <div key={prefix} class="flex flex-col gap-1">
+                <h3 class="text-sm font-medium">{title}</h3>
+                <div class="flex flex-wrap gap-x-3 gap-y-1">
+                    {[t'<a key={name} class="text-sm text-muted-foreground underline-offset-4 hover:underline" href={f"#/{name}"}>{name}</a>' for name in names]}
+                </div>
+            </div>
+        """
+
+    return t"""
+        <{Card} class="w-full max-w-md">
+            <{CardHeader}>
+                <{CardTitle}>Blocks</{CardTitle}>
+                <{CardDescription}>shadcn/ui's whole pages in Python, each with its TSX twin at its address and /tsx.</{CardDescription}>
+            </{CardHeader}>
+            <{CardContent} class="flex flex-col gap-3">{[group(prefix, title) for prefix, title in GROUPS]}</{CardContent}>
+        </{Card}>
+    """
 
 
 def App():
@@ -103,5 +130,6 @@ def App():
                     <{AccordionContent}>Because the component is yours to read.</{AccordionContent}>
                 </{AccordionItem}>
             </{Accordion}>
+            <{BlockLinks} />
         </div>
     """
