@@ -52,8 +52,9 @@ from dialog import Dialog, DialogTrigger, DialogContent, DialogTitle
 ## Translated from shadcn/ui's own
 
 A preset of shadcn/ui is a style on a base, the library its components behave
-by. Two so far: `radix-nova`, the Nova style on Radix, and `base-nova`, the
-Nova style on Base UI, the preset `npx shadcn init --defaults` makes. Each
+by. The Nova style on each of the three bases so far: `radix-nova` on Radix,
+`base-nova` on Base UI, the preset `npx shadcn init --defaults` makes, and
+`aria-nova` on React Aria. Each
 stands in its own folder of `src/presets`, laid out as a project of that
 preset: `components/ui`, `hooks`, `lib` and the blocks, the helpers of
 `src/lib` aside, which every preset shares. `tools/preset.js` fetches its TSX
@@ -70,8 +71,9 @@ cannot translate it names, and leaves the file out. `lib/utils.py` holds
 DOM's, which Brython's raises where it finds nothing, and `sort()`,
 JavaScript's, by a function that compares two items.
 
-In each preset, all 63 components of `npx shadcn add --all` are translated, the
-sidebar, the carousel, the calendar and the chart included.
+In each preset, all the components of `npx shadcn add --all` are translated, 63
+on Radix and on Base UI, 61 on React Aria, the sidebar, the carousel, the
+calendar and the chart included.
 
 So are shadcn/ui's blocks, whole pages made of its components, each in its own
 folder of the preset's `blocks`, its page beside its own components, as
@@ -82,7 +84,10 @@ TanStack's with rows dragged by dnd-kit.
 ## Tested against shadcn/ui's own
 
 The twins run on each preset, a Vitest project of its own, where `@` is the
-preset's folder.
+preset's folder: 604 of them. The trees and the scenes were written for
+Radix's components; one that React Aria's TSX cannot render either, a dialog
+of other parts, a calendar not react-day-picker's, says nothing of the Python,
+and is skipped as such: 3 of them.
 
 - `tests/twin.test.tsx` renders ten of them and shadcn/ui's TSX ones with the
   same props, open and closed, every variant and size, and compares the two

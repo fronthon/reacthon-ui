@@ -10,26 +10,30 @@ import { describe, expect, it } from "vitest"
 
 // What Radix, Base UI, embla and the media queries ask of the page and jsdom does not have.
 Object.assign(Element.prototype, { scrollIntoView() {}, hasPointerCapture: () => false, releasePointerCapture() {}, getAnimations: () => [] })
+;(globalThis as { CSS?: object }).CSS ??= { escape: (value: string) => value.replace(/[^\w-]/g, "\\$&") }
 ;(globalThis as { ResizeObserver?: unknown }).ResizeObserver ??= class {
   observe() {}
   unobserve() {}
   disconnect() {}
 }
 window.matchMedia ??= (() => ({ matches: false, addEventListener() {}, removeEventListener() {} })) as never
-// The sidebar's skeleton draws its width at random.
-Math.random = () => 0.5
+// The sidebar's skeleton draws its width at random: each render draws the same
+// numbers, from a seed set again before it. Not one number: React Aria's table
+// draws two keys until they differ.
+let seed = 1
+Math.random = () => (seed = (seed * 16807) % 2147483647) / 2147483647
 
 const tsx = import.meta.glob("@/components/ui/*.tsx")
 const py = import.meta.glob("@/components/ui/*.py")
 
-// React's ids count every root the page has rendered: each one is named by the
-// order it first appears in. input-otp marks the selection of the second input
-// it sees, whichever renders it.
+// React's ids count every root the page has rendered, and React Aria's its
+// descriptions: each one is named by the order it first appears in. input-otp
+// marks the selection of the second input it sees, whichever renders it.
 function numbered(page: string) {
   const ids = new Map<string, number>()
 
   return page
-    .replace(/_r_[0-9a-z]+_/g, (id) => {
+    .replace(/_r_[0-9a-z]+_|\breact-aria-description-\d+/g, (id) => {
       if (!ids.has(id)) ids.set(id, ids.size)
       return `_id${ids.get(id)}_`
     })
@@ -44,6 +48,7 @@ async function html(Comp: ComponentType) {
 
   console.error = () => {}
   document.body.append(container)
+  seed = 1
   try {
     await act(() => root.render(createElement(Comp, null, "x")))
     if (failed) throw failed

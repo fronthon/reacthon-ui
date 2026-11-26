@@ -46,17 +46,25 @@ const HOOKS = {
 };
 
 // The page's own names, from Brython's modules.
+// React's own values a component may read, as a library's.
+const REACT_VALUES = new Set(['Children', 'Fragment', 'cloneElement', 'isValidElement']);
+
 const GLOBALS = { window: ['browser', 'window'], document: ['browser', 'document'], Math: ['javascript', 'Math'], Date: ['javascript', 'Date'] };
 const ON_WINDOW = new Set(['navigator', 'setTimeout', 'clearTimeout', 'matchMedia', 'innerWidth', 'Promise']);
+
+// Python's own functions the translation calls, which a name of the module's
+// would hide: `list` is list_.
+const BUILTINS = new Set(['bool', 'dict', 'enumerate', 'float', 'format', 'getattr', 'isinstance', 'len', 'list', 'range', 'str']);
 
 // A name the Python modules make, as Python spells it: buttonVariants is
 // button_variants; a component's, a constant's and a prop's stay as they are.
 const snake = (name) => {
     const [, lead, rest] = /^(_*)(.*)$/.exec(name);
-
-    return /^[a-z]/.test(rest) && /[A-Z]/.test(rest)
+    const spelled = /^[a-z]/.test(rest) && /[A-Z]/.test(rest)
         ? lead + rest.replace(/([a-z0-9])([A-Z])/g, '$1_$2').replace(/([A-Z])([A-Z][a-z])/g, '$1_$2').toLowerCase()
         : name;
+
+    return BUILTINS.has(spelled) ? `${spelled}_` : spelled;
 };
 
 // Python's precedence, lowest first: an operand goes in parentheses where its
@@ -202,8 +210,24 @@ function moduleTranslator(source, checker, program) {
     const used = new Set();
     const own = new Set();
     let reactNamespace = null;
+    // The components the file renders with props spread on them.
+    const spreadInto = new Set();
+    const spreads = (node) => {
+        if ((ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)) && ts.isIdentifier(node.tagName) && node.attributes.properties.some(ts.isJsxSpreadAttribute)) {
+            spreadInto.add(node.tagName.text);
+        }
+        ts.forEachChild(node, spreads);
+    };
+
+    spreads(source);
 
     const add = (map, from, entry) => map.set(from, [...(map.get(from) ?? []), entry]);
+    // React's own value, `Children`, imported by `__js__` as a library's is.
+    const reactValue = (local) => {
+        if (!js.get('react')?.some((one) => one.local === local)) add(js, 'react', { local, entry: local });
+        used.add(local);
+        return local;
+    };
     // One of utils.py's own, for what Python's or Brython's does otherwise.
     const helper = (local) => {
         if (!python.get('utils')?.some((one) => one.local === local)) add(python, 'utils', { local });
@@ -290,11 +314,13 @@ function moduleTranslator(source, checker, program) {
     // object to Python, `table.getAllColumns()`, wherever Reacthon has not
     // copied it. Its data alone, a dict's reads read it, and the dict Python
     // handed the package and reads back as well: `table.state.pagination`.
-    const packaged = (type) => {
-        const symbol = type.aliasSymbol ?? type.getSymbol();
-        const declared = symbol?.getDeclarations()?.some((one) => /[\\/]node_modules[\\/]/.test(one.getSourceFile().fileName) && !fromLibrary(one));
+    const packaged = (type) => inPackage(type) && type.getProperties().some((one) => checker.getTypeOfSymbol(one).getCallSignatures().length);
+    const inPackage = (type) => {
+        if (type.isIntersection()) return type.types.some(inPackage);
 
-        return Boolean(declared) && type.getProperties().some((one) => checker.getTypeOfSymbol(one).getCallSignatures().length);
+        const symbol = type.aliasSymbol ?? type.getSymbol();
+
+        return Boolean(symbol?.getDeclarations()?.some((one) => /[\\/]node_modules[\\/]/.test(one.getSourceFile().fileName) && !fromLibrary(one)));
     };
 
     const isComponent = (fn) => {
@@ -536,7 +562,10 @@ function moduleTranslator(source, checker, program) {
         const object = node.expression;
         const field = node.name.text;
 
-        if (ts.isIdentifier(object) && object.text === reactNamespace) unsupported(node, "React's own API");
+        if (ts.isIdentifier(object) && object.text === reactNamespace) {
+            if (!REACT_VALUES.has(field)) unsupported(node, "React's own API");
+            return [reactValue(field), PRIMARY];
+        }
         if (field === 'length' && role === 'read' && sized(object)) return [`len(${expr(object, { ...cx, inChain: cx.inChain }, WHOLE)})`, PRIMARY];
 
         const base = expr(object, { ...cx, fallback: null }, PRIMARY);
@@ -585,6 +614,10 @@ function moduleTranslator(source, checker, program) {
             return `${key(one.name)}: ${expr(one.initializer, at)}`;
         }
         if (ts.isSpreadAssignment(one)) return `**${spreadable(one.expression, cx)}`;
+        // `onReorder(e) { … }`, a method of the dict: a def named after its key.
+        if (ts.isMethodDeclaration(one) && ts.isIdentifier(one.name)) {
+            return `${key(one.name)}: ${callable(one, { ...cx, hoistAs: snake(one.name.text) }, snake(one.name.text), true)}`;
+        }
         return unsupported(one, 'an object member');
     };
 
@@ -629,7 +662,20 @@ function moduleTranslator(source, checker, program) {
                 operands.unshift(unwrap(one).right);
                 if (!(ts.isBinaryExpression(unwrap(unwrap(one).left)) && unwrap(unwrap(one).left).operatorToken.kind === k.QuestionQuestionToken)) operands.unshift(unwrap(one).left);
             }
-            if (!operands.slice(0, -1).every(pure)) unsupported(node, 'a ?? of an expression');
+            // `Array.from(value)[0] ?? "90d"`: what it reads once, a name the
+            // line before the statement binds, where no function stands between.
+            if (!operands.slice(0, -1).every(pure)) {
+                let inside = false;
+
+                for (let up = node.parent; up && up !== cx.statement; up = up.parent) inside ||= ts.isFunctionLike(up);
+                if (operands.length !== 2 || !cx.hoists || inside) unsupported(node, 'a ?? of an expression');
+
+                const [left, right] = operands;
+                const local = fresh(ts.isElementAccessExpression(unwrap(left)) && unwrap(left).argumentExpression.getText() === '0' ? 'first' : 'value', cx);
+
+                cx.hoists.push(Object.assign([`${pad(cx.statementLevel)}${local} = ${expr(left, cx)}`], { tight: true }));
+                return [`${local} if ${local} is not None else ${expr(right, cx, CONDITIONAL)}`, CONDITIONAL];
+            }
 
             const text = operands
                 .slice(0, -1)
@@ -764,6 +810,13 @@ function moduleTranslator(source, checker, program) {
             const keywords = args[0].properties.map((one) => {
                 if (ts.isShorthandPropertyAssignment(one)) return `${one.name.text}=${name(one.name, inner)}`;
                 if (ts.isPropertyAssignment(one) && ts.isIdentifier(one.name)) return `${one.name.text}=${expr(one.initializer, inner)}`;
+                // React Aria's render props, `{ ...renderProps, showWeekNumber }`:
+                // keywords take a dict, not the object JavaScript made.
+                if (ts.isSpreadAssignment(one)) {
+                    const made = inPackage(checker.getNonNullableType(typeOf(one.expression))) && !copied(one.expression);
+
+                    return made ? `**dict(${expr(one.expression, inner)})` : `**${expr(one.expression, inner, PRIMARY)}`;
+                }
                 return unsupported(one, 'a variant');
             });
 
@@ -782,6 +835,7 @@ function moduleTranslator(source, checker, program) {
         if (text === 'Array.isArray') return [`isinstance(${expr(args[0], inner)}, list)`, PRIMARY];
         if (text === 'String') return [`str(${expr(args[0], inner)})`, PRIMARY];
         if (text === 'Number' && args.length === 1) return [`float(${expr(args[0], inner)})`, PRIMARY];
+        if (text === 'Array.from' && args.length === 1 && !ts.isObjectLiteralExpression(unwrap(args[0]))) return [`list(${expr(args[0], inner)})`, PRIMARY];
         if (text === 'Object.entries') return [`${expr(args[0], inner, PRIMARY)}.items()`, PRIMARY];
         if (text === 'Array.from' && args.length === 2 && ts.isObjectLiteralExpression(unwrap(args[0]))) {
             // `Array.from({ length: n }, (_, i) => ...)`, a list over range(n).
@@ -1010,11 +1064,7 @@ function moduleTranslator(source, checker, program) {
     const tagName = (tag, cx) => {
         if (ts.isIdentifier(tag) && /^[a-z]/.test(tag.text) && !tag.text.includes('.')) return tag.text;
         // A fragment with a key, React's own component.
-        if (tag.getText() === `${reactNamespace}.Fragment` || (ts.isIdentifier(tag) && react.get(tag.text) === 'Fragment')) {
-            if (!js.get('react')?.some((one) => one.local === 'Fragment')) add(js, 'react', { local: 'Fragment', entry: 'Fragment' });
-            used.add('Fragment');
-            return '{Fragment}';
-        }
+        if (tag.getText() === `${reactNamespace}.Fragment` || (ts.isIdentifier(tag) && react.get(tag.text) === 'Fragment')) return `{${reactValue('Fragment')}}`;
         if (ts.isIdentifier(tag) || ts.isPropertyAccessExpression(tag)) return `{${expr(tag, cx, PRIMARY)}}`;
         return unsupported(tag, 'a tag');
     };
@@ -1052,12 +1102,15 @@ function moduleTranslator(source, checker, program) {
 
         const inner = unwrap(value.expression);
         const fallback = ts.isPropertyAccessExpression(inner) ? propDefault(one.parent.parent.tagName, one.name.getText(), cx) : null;
-        const at = { ...cx, level, hoistAs: /^on[A-Z]/.test(attr) || isFunction(inner) ? snake(attr) : cx.hoistAs, fallback };
+        // A function is named after its attribute as JSX spells it: className's
+        // is class_name, `class` being Python's own.
+        const named = snake(one.name.getText());
+        const at = { ...cx, level, hoistAs: /^on[A-Z]/.test(attr) || isFunction(inner) ? named : cx.hoistAs, fallback };
         const line = `${attr}=${field(value.expression, at)}`;
 
         if (flat || line.includes('\n') || pad(level).length + line.length <= WIDTH) return line;
         // A lambda too long for its line, a def of its own.
-        if (isFunction(inner) && cx.hoists) return `${attr}={${callable(inner, at, snake(attr), true)}}`;
+        if (isFunction(inner) && cx.hoists) return `${attr}={${callable(inner, at, named, true)}}`;
         if (ts.isObjectLiteralExpression(inner)) return `${attr}={ ${pretty(inner, { ...at, inField: true }, level)} }`;
 
         const long = ts.isCallExpression(inner) && inner.arguments.filter((arg) => expr(arg, cx).length > 40).length > 1;
@@ -1297,11 +1350,22 @@ function moduleTranslator(source, checker, program) {
         const component = /^[A-Z]/.test(title) && fn.parameters.length <= 1;
 
         if (component && first && ts.isObjectBindingPattern(first.name)) {
+            const rest = first.name.elements.find((one) => one.dotDotDotToken)?.name.text ?? 'props';
+            // `"data-slot": dataSlot`, a prop no keyword can name, taken out of
+            // the others as JavaScript's rest leaves it out.
+            const quoted = first.name.elements.filter((one) => one.propertyName && ts.isStringLiteral(one.propertyName));
+
             for (const one of first.name.elements) {
                 const prop = (one.propertyName ?? one.name).getText();
 
                 // A prop keeps the name its callers hand it under.
                 scope.delete(one.name.text);
+                if (quoted.includes(one)) {
+                    scope.add(one.name.text);
+                    taken.add(snake(one.name.text));
+                    head.push(`${pad(level + 1)}${snake(one.name.text)} = ${rest}.pop(${prop}${one.initializer ? `, ${expr(one.initializer, { ...cx, scope })}` : ', None'})`);
+                    continue;
+                }
                 if (one.dotDotDotToken) {
                     params.push(`**${one.name.text}`);
                     continue;
@@ -1314,6 +1378,12 @@ function moduleTranslator(source, checker, program) {
                     taken.add(snake(one.name.text));
                     head.push(`${pad(level + 1)}${snake(one.name.text)} = ${prop}`);
                 }
+            }
+            // Handed props it does not take, as `<CalendarInner {...props} />`
+            // hands them, a component leaves them, as JavaScript's does.
+            if (!first.name.elements.some((one) => one.dotDotDotToken)) {
+                if (quoted.length) params.push(`**${rest}`);
+                else if (spreadInto.has(title)) params.push('**_');
             }
         } else if (component && first && ts.isIdentifier(first.name)) {
             params.push(`**${first.name.text}`);
@@ -1412,7 +1482,9 @@ function moduleTranslator(source, checker, program) {
         return lines;
     };
 
-    const flush = (hoists) => hoists.flatMap((lines) => [...lines, '']);
+    // Each def taken out before its statement, a blank line after it; a name
+    // the statement reads, none.
+    const flush = (hoists) => hoists.flatMap((lines) => (lines.tight ? lines : [...lines, '']));
 
     const statement = (node, cx) => {
         const hoists = [];
@@ -1601,6 +1673,15 @@ function moduleTranslator(source, checker, program) {
 
                     add(js, node.moduleSpecifier.text, { local, entry: from === local ? from : `${from} as ${local}` });
                     used.add(local);
+                }
+                continue;
+            }
+            // `export { ComboBoxPrimitive as Combobox }`, a name the module
+            // hands out under another: bound to it.
+            if (ts.isExportDeclaration(node) && !node.moduleSpecifier && node.exportClause && ts.isNamedExports(node.exportClause) && !node.isTypeOnly) {
+                for (const one of node.exportClause.elements) {
+                    if (one.isTypeOnly || !one.propertyName) continue;
+                    items.push({ def: false, lines: [`${snake(one.name.text)} = ${name(one.propertyName, cx)}`] });
                 }
                 continue;
             }
