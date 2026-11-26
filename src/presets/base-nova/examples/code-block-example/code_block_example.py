@@ -45,9 +45,7 @@ diff = [
     {"variant": "default", "text": "}"},
 ]
 
-log = "\n".join(
-    "\n",
-)
+log = "\n".join([f"[{str(index + 1).rjust(2, "0")}] GET /api/chat 200 in {12 + index * 7 % 40}ms" for index in range(40)])
 
 
 def CodeBlockExample():

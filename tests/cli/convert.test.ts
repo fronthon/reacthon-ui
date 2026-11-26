@@ -1,6 +1,7 @@
 // `npx reacthon-ui convert` in a project of its own: its components and
 // pages written in Python beside them, a page importing a component of the
-// project as Python, a `.py` already there kept unless --overwrite says.
+// project as Python, a `.py` already there kept unless --overwrite says, and
+// a switch, which Python writes as an if and its elifs.
 import { spawnSync } from "node:child_process"
 import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs"
 import { tmpdir } from "node:os"
@@ -75,6 +76,53 @@ describe("npx reacthon-ui convert", () => {
     expect(read("src/app/page.py")).toBe("# mine\n")
     expect(run("src/app/page.tsx", "--overwrite").stdout.trim()).toBe("written src/app/page.py")
     expect(read("src/app/page.py")).toContain("\nfrom team_card import TeamCard\n")
+  })
+
+  it("writes a switch as an if and its elifs", () => {
+    writeFileSync(
+      join(project, "src/components/kind.tsx"),
+      `export function label(kind: string | null) {
+  switch (kind) {
+    case "a":
+      return "one"
+    case "b":
+    case "c": {
+      return "two"
+    }
+    default:
+      return "other"
+    case null:
+      return "none"
+  }
+}
+
+export function size(n: number) {
+  switch (true) {
+    case n > 9:
+      return "big"
+  }
+  return "small"
+}
+`
+    )
+
+    expect(run("src/components/kind.tsx").stdout.trim()).toBe("written src/components/kind.py")
+    expect(read("src/components/kind.py")).toContain(`def label(kind):
+    if kind == "a":
+        return "one"
+    elif kind in ("b", "c"):
+        return "two"
+    elif kind is NULL:
+        return "none"
+    else:
+        return "other"
+
+
+def size(n):
+    if n > 9:
+        return "big"
+    return "small"
+`)
   })
 
   it("names what it cannot convert, and what is not there", () => {

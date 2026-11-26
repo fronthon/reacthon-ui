@@ -32,8 +32,8 @@ def ProgressContent(children=None, percentage=None, isIndeterminate=None, valueT
 
 
 def Progress(className=None, children=None, **props):
-    def callback(props):
-        percentage, value_text, is_indeterminate = props.get("percentage"), props.get("valueText"), props.get("isIndeterminate")
+    def callback(props_2):
+        percentage, value_text, is_indeterminate = props_2.get("percentage"), props_2.get("valueText"), props_2.get("isIndeterminate")
 
         return t"""
             <{ProgressContent}

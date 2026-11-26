@@ -197,13 +197,13 @@ def SidebarIconExample():
                                         </{SidebarMenuButton}>
                                         <{CollapsibleContent}>
                                             <{SidebarMenuSub}>
-                                                {item["items"].map(lambda sub_item: t"""
+                                                {[t"""
                                                     <{SidebarMenuSubItem} key={sub_item["title"]}>
                                                         <{SidebarMenuSubButton} asChild>
                                                             <a href={sub_item["url"]}>{sub_item["title"]}</a>
                                                         </{SidebarMenuSubButton}>
                                                     </{SidebarMenuSubItem}>
-                                                """)}
+                                                """ for sub_item in item["items"]]}
                                             </{SidebarMenuSub}>
                                         </{CollapsibleContent}>
                                     </{SidebarMenuItem}>

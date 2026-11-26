@@ -105,7 +105,7 @@ def SidebarInsetExample():
                                             </{CollapsibleTrigger}>
                                             <{CollapsibleContent}>
                                                 <{SidebarMenuSub}>
-                                                    {item["items"].map(lambda sub_item: t'''
+                                                    {[t'''
                                                         <{SidebarMenuSubItem} key={sub_item["title"]}>
                                                             <{SidebarMenuSubButton} asChild>
                                                                 <a href={sub_item["url"]}>
@@ -113,10 +113,10 @@ def SidebarInsetExample():
                                                                 </a>
                                                             </{SidebarMenuSubButton}>
                                                         </{SidebarMenuSubItem}>
-                                                    ''')}
+                                                    ''' for sub_item in item["items"]]}
                                                 </{SidebarMenuSub}>
                                             </{CollapsibleContent}>
-                                        """ if (item.get("items").length if item.get("items") else None) else None}
+                                        """ if (len(item.get("items")) if item.get("items") else None) else None}
                                     </{SidebarMenuItem}>
                                 </{Collapsible}>
                             ''' for item in data["navMain"]]}

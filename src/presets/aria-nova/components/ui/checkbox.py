@@ -7,8 +7,8 @@ __js__ = {
 
 
 def Checkbox(className=None, children=None, **props):
-    def callback(children, props):
-        is_selected, is_indeterminate = props.get("isSelected"), props.get("isIndeterminate")
+    def callback(children, props_2):
+        is_selected, is_indeterminate = props_2.get("isSelected"), props_2.get("isIndeterminate")
 
         return t"""
             <span

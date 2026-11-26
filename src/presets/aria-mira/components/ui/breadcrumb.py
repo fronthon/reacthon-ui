@@ -26,8 +26,8 @@ def BreadcrumbList(className=None, **props):
 
 
 def BreadcrumbItem(className=None, children=None, separatorClassName=None, **props):
-    def callback(children, props):
-        is_current = props.get("isCurrent")
+    def callback(children, props_2):
+        is_current = props_2.get("isCurrent")
 
         span = t"""
             <span

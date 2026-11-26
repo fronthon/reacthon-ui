@@ -120,8 +120,8 @@ def ComboboxList(className=None, **props):
 
 
 def ComboboxItem(className=None, children=None, **props):
-    def callback(children, props):
-        is_selected = props.get("isSelected")
+    def callback(children, props_2):
+        is_selected = props_2.get("isSelected")
 
         return t"""
             {children}
@@ -189,8 +189,8 @@ def ComboboxChips(children=None, className=None, **props):
 
 
 def ComboboxChipList(className=None, **props):
-    def callback(props):
-        selected_items, state = props.get("selectedItems"), props.get("state")
+    def callback(props_2):
+        selected_items, state = props_2.get("selectedItems"), props_2.get("state")
 
         def on_remove(keys):
             if isinstance(state.value, list):

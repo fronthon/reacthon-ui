@@ -66,13 +66,13 @@ context_menu_item_variants = cva(
 
 
 def ContextMenuItem(className=None, inset=None, variant="default", children=None, **props):
-    def callback(class_name, props):
-        selection_mode = props.get("selectionMode")
+    def callback(class_name, props_2):
+        selection_mode = props_2.get("selectionMode")
 
         return cn(context_menu_item_variants(selectionMode=selection_mode), class_name)
 
-    def callback_2(children, props):
-        is_selected, selection_mode = props.get("isSelected"), props.get("selectionMode")
+    def callback_2(children, props_2):
+        is_selected, selection_mode = props_2.get("isSelected"), props_2.get("selectionMode")
 
         span = t"""
             <span

@@ -4,8 +4,8 @@ __js__ = {"react-aria-components": ["composeRenderProps", "Switch as SwitchPrimi
 
 
 def Switch(className=None, size="default", children=None, **props):
-    def callback(children, props):
-        is_selected = props.get("isSelected")
+    def callback(children, props_2):
+        is_selected = props_2.get("isSelected")
 
         return t"""
             <span

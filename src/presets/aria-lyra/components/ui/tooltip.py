@@ -23,8 +23,8 @@ def TooltipTrigger(delay=0, children=None, **props):
 
 
 def Tooltip(className=None, placement="top", offset=4, crossOffset=0, children=None, **props):
-    def style(props):
-        placement, default_style = props.get("placement"), props.get("defaultStyle")
+    def style(props_2):
+        placement, default_style = props_2.get("placement"), props_2.get("defaultStyle")
 
         return {
             **default_style,

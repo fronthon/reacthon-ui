@@ -420,7 +420,7 @@ def ComboboxWithGroups():
                         {(lambda group: t'''
                             <{ComboboxGroup} id={group["value"]}>
                                 <{ComboboxLabel}>{group["value"]}</{ComboboxLabel}>
-                                {group["items"].map(lambda item: t"<{ComboboxItem} key={item} id={item}>{item}</{ComboboxItem}>")}
+                                {[t"<{ComboboxItem} key={item} id={item}>{item}</{ComboboxItem}>" for item in group["items"]]}
                             </{ComboboxGroup}>
                         ''')}
                     </{ComboboxList}>
@@ -443,7 +443,7 @@ def ComboboxWithGroupsAndSeparator():
                         {(lambda group: t'''
                             <{ComboboxGroup} id={group["value"]}>
                                 <{ComboboxLabel}>{group["value"]}</{ComboboxLabel}>
-                                {group["items"].map(lambda item: t"<{ComboboxItem} key={item} id={item}>{item}</{ComboboxItem}>")}
+                                {[t"<{ComboboxItem} key={item} id={item}>{item}</{ComboboxItem}>" for item in group["items"]]}
                                 <{ComboboxSeparator} />
                             </{ComboboxGroup}>
                         ''')}
@@ -554,7 +554,7 @@ def ComboxboxInputAddon():
                         {(lambda group: t'''
                             <{ComboboxGroup} id={group["value"]}>
                                 <{ComboboxLabel}>{group["value"]}</{ComboboxLabel}>
-                                {group["items"].map(lambda item: t"<{ComboboxItem} key={item} id={item}>{item}</{ComboboxItem}>")}
+                                {[t"<{ComboboxItem} key={item} id={item}>{item}</{ComboboxItem}>" for item in group["items"]]}
                             </{ComboboxGroup}>
                         ''')}
                     </{ComboboxList}>

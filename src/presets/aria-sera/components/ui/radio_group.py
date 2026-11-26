@@ -10,8 +10,8 @@ def RadioGroup(className=None, **props):
 
 
 def RadioGroupItem(className=None, children=None, **props):
-    def callback(children, props):
-        is_selected = props.get("isSelected")
+    def callback(children, props_2):
+        is_selected = props_2.get("isSelected")
 
         span = t"""
             <span class="absolute top-1/2 left-1/2 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-foreground" />

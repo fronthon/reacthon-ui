@@ -333,9 +333,27 @@ function moduleTranslator(source, checker, program, translated = new Set()) {
         const symbol = type.aliasSymbol ?? type.getSymbol();
         const declarations = symbol?.getDeclarations() ?? [];
 
-        if (declarations.some((one) => ts.isClassDeclaration(one) || ts.isClassExpression(one) || fromLibrary(one))) return false;
+        if (!libraryData(type) && declarations.some((one) => ts.isClassDeclaration(one) || ts.isClassExpression(one) || fromLibrary(one))) return false;
         if (symbol && symbol.flags & (ts.SymbolFlags.ValueModule | ts.SymbolFlags.Function)) return false;
         return true;
+    };
+
+    // An interface of TypeScript's own libs that names data alone, of no class
+    // of the browser's and no method: Intl.DateTimeFormatOptions a prop holds,
+    // which Reacthon copied, where an IteratorResult a JavaScript call hands
+    // back is an object.
+    const libraryData = (type) => {
+        if (type.isUnion()) return type.types.some(libraryData);
+
+        const symbol = type.aliasSymbol ?? type.getSymbol();
+        const declarations = symbol?.getDeclarations() ?? [];
+
+        return (
+            declarations.length > 0 &&
+            !(symbol.flags & ts.SymbolFlags.Value) &&
+            declarations.every((one) => ts.isInterfaceDeclaration(one) && program.isSourceFileDefaultLibrary(one.getSourceFile())) &&
+            !type.getProperties().some((one) => checker.getTypeOfSymbol(one).getCallSignatures().length)
+        );
     };
 
     // A type of a package's own with methods: what its JavaScript makes is an
@@ -455,18 +473,18 @@ function moduleTranslator(source, checker, program, translated = new Set()) {
         if (type.flags & (ts.TypeFlags.Any | ts.TypeFlags.Unknown)) {
             return (ts.isPropertyAccessExpression(one) || ts.isElementAccessExpression(one)) && isDict(one.expression);
         }
-        return plain(type) && (!packaged(type) || copied(node));
+        return plain(type) && (!(packaged(type) || libraryData(type)) || copied(node));
     };
     const nullable = (node) => {
         const type = typeOf(node);
 
         return Boolean(type.flags & (ts.TypeFlags.Any | ts.TypeFlags.Unknown)) || (type.isUnion() && type.types.some((one) => one.flags & (ts.TypeFlags.Null | ts.TypeFlags.Undefined | ts.TypeFlags.Void)));
     };
-    const sized = (node) => {
-        const type = checker.getNonNullableType(typeOf(node));
-
-        return checker.isArrayType(type) || checker.isTupleType(type) || Boolean(type.flags & ts.TypeFlags.StringLike);
-    };
+    // A list or a str, or a union of them, the lists of differing rows of a
+    // list of objects written each its own way.
+    const sizedType = (type) =>
+        type.isUnion() ? type.types.every(sizedType) : checker.isArrayType(type) || checker.isTupleType(type) || Boolean(type.flags & ts.TypeFlags.StringLike);
+    const sized = (node) => sizedType(checker.getNonNullableType(typeOf(node)));
     const numeric = (node) => Boolean(checker.getNonNullableType(typeOf(node)).flags & ts.TypeFlags.NumberLike);
     const boolean = (node) => Boolean(checker.getNonNullableType(typeOf(node)).flags & ts.TypeFlags.BooleanLike);
     // An element of the page, which Brython hands over as its DOMNode.
@@ -1558,8 +1576,11 @@ function moduleTranslator(source, checker, program, translated = new Set()) {
             const hook = reactName(unwrap(one.expression));
             const args = hook ? hookArguments(hook, one.arguments, at) : null;
             const texts = args ?? one.arguments.map(item);
+            // Laid out by its arguments where Python's call is JavaScript's,
+            // not one the translation writes otherwise: `"\n".join(lines)`.
+            const flatArgs = args ?? one.arguments.map((node) => (ts.isSpreadElement(node) ? `*${expr(node.expression, cx)}` : expr(node, cx)));
 
-            if (head && !head.includes(' ')) {
+            if (head && !head.includes(' ') && flat === `${head}(${flatArgs.join(', ')})`) {
                 return `${head}(\n${texts.map((text, at_) => `${indent}${args ? prettyText(one.arguments[at_], text, at, level + 1) : text},`).join('\n')}\n${pad(level)})`;
             }
         }
@@ -1614,6 +1635,7 @@ function moduleTranslator(source, checker, program, translated = new Set()) {
                 }
                 if (one.dotDotDotToken) {
                     params.push(`**${one.name.text}`);
+                    taken.add(one.name.text);
                     continue;
                 }
                 params.push(`${prop}=${one.initializer ? expr(one.initializer, { ...cx, scope }) : 'None'}`);
@@ -1629,6 +1651,7 @@ function moduleTranslator(source, checker, program, translated = new Set()) {
             // hands them or recharts its tooltip's content, a component leaves
             // them, as JavaScript's does.
             if (!first.name.elements.some((one) => one.dotDotDotToken)) params.push(quoted.length ? `**${rest}` : '**_');
+            if (quoted.length) taken.add(rest);
         } else if (component && first && ts.isIdentifier(first.name)) {
             params.push(`**${first.name.text}`);
             taken.add(first.name.text);
@@ -1763,6 +1786,8 @@ function moduleTranslator(source, checker, program, translated = new Set()) {
             lines = block(node.statements, cx);
         } else if (ts.isForOfStatement(node) || ts.isForInStatement(node) || ts.isForStatement(node) || ts.isWhileStatement(node)) {
             lines = loop(node, at);
+        } else if (ts.isSwitchStatement(node)) {
+            lines = switched(node, at);
         } else if ((ts.isBreakStatement(node) || ts.isContinueStatement(node)) && !node.label) {
             lines = [`${indent}${ts.isBreakStatement(node) ? 'break' : 'continue'}`];
         } else {
@@ -1846,6 +1871,79 @@ function moduleTranslator(source, checker, program, translated = new Set()) {
 
         if (node.elseStatement && ts.isIfStatement(node.elseStatement)) return [...lines, ...conditional(node.elseStatement, cx, 'elif')];
         if (node.elseStatement) return [...lines, `${indent}else:`, ...branch(node.elseStatement)];
+        return lines;
+    };
+
+    // A break of the statement it stands in, not of a loop or a switch inside it.
+    const breaks = (one) =>
+        (ts.isBreakStatement(one) && !one.label) || (!ts.isIterationStatement(one, false) && !ts.isSwitchStatement(one) && !ts.isFunctionLike(one) && Boolean(ts.forEachChild(one, breaks)));
+
+    // A switch, an if and its elifs: each case's values compared as `===`
+    // compares them, null as NULL and undefined as None, the default the else,
+    // and `switch (true)`, each case its own test. Each case but the last ends
+    // in a break, a return, a throw or a continue, as none falls into the next.
+    const switched = (node, cx) => {
+        const indent = pad(cx.level);
+        const inner = { ...cx, level: cx.level + 1 };
+        const always = unwrap(node.expression).kind === k.TrueKeyword;
+        const clauses = node.caseBlock.clauses;
+        const last = clauses.findLast((one) => one.statements.length);
+        const lines = [];
+        // What reading twice would run twice, read once.
+        const once = !always && !pure(node.expression);
+        const subject = always ? null : once ? fresh('chosen', cx) : expr(node.expression, cx, COMPARE + 1);
+
+        if (once) lines.push(`${indent}${subject} = ${expr(node.expression, cx)}`);
+
+        // An empty case falls into the next, whose values it adds to.
+        const groups = [];
+        let values = [];
+        let fallback = false;
+
+        for (const clause of clauses) {
+            if (ts.isDefaultClause(clause)) fallback = true;
+            else values.push(clause.expression);
+            if (!clause.statements.length) continue;
+
+            const statements = clause.statements.length === 1 && ts.isBlock(clause.statements[0]) ? [...clause.statements[0].statements] : [...clause.statements];
+            const end = statements.at(-1);
+
+            if (clause !== last && !(end && (ts.isBreakStatement(end) || ts.isReturnStatement(end) || ts.isThrowStatement(end) || ts.isContinueStatement(end)))) {
+                unsupported(clause, 'a case that falls into the next');
+            }
+            if (end && ts.isBreakStatement(end) && !end.label) statements.pop();
+            if (statements.some(breaks)) unsupported(clause, 'a break before the end of its case');
+            groups.push({ values, fallback, statements });
+            values = [];
+            fallback = false;
+        }
+
+        const nil = (one) => unwrap(one).kind === k.NullKeyword || (ts.isIdentifier(unwrap(one)) && unwrap(one).text === 'undefined');
+        const test = (values) => {
+            if (always) return values.map((one) => expr(one, cx, OR + 1)).join(' or ');
+
+            const tests = values.filter(nil).map((one) => {
+                if (unwrap(one).kind !== k.NullKeyword) return `${subject} is None`;
+                need('javascript', 'NULL');
+                return `${subject} is NULL`;
+            });
+            const others = values.filter((one) => !nil(one));
+
+            if (others.length === 1) tests.push(`${subject} == ${expr(others[0], cx, COMPARE + 1)}`);
+            if (others.length > 1) tests.push(`${subject} in (${others.map((one) => expr(one, cx)).join(', ')})`);
+            return tests.join(' or ');
+        };
+        const branch = (statements) => {
+            const body = block(statements, inner);
+
+            return body.some((line) => line.trim()) ? body : [`${pad(inner.level)}pass`];
+        };
+        const cases = groups.filter((one) => !one.fallback);
+        const otherwise = groups.find((one) => one.fallback);
+
+        cases.forEach((one, at) => lines.push(`${indent}${at ? 'elif' : 'if'} ${test(one.values)}:`, ...branch(one.statements)));
+        if (otherwise && cases.length) lines.push(`${indent}else:`, ...branch(otherwise.statements));
+        else if (otherwise) lines.push(...block(otherwise.statements, cx));
         return lines;
     };
 

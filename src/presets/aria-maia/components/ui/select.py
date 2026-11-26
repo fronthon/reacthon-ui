@@ -28,8 +28,8 @@ def SelectGroup(className=None, **props):
 
 
 def SelectValue(className=None, children=None, **props):
-    def callback(props):
-        selected_items, selected_text, default_children = props.get("selectedItems"), props.get("selectedText"), props.get("defaultChildren")
+    def callback(props_2):
+        selected_items, selected_text, default_children = props_2.get("selectedItems"), props_2.get("selectedText"), props_2.get("defaultChildren")
 
         return selected_text if len(selected_items) > 1 else default_children
 
@@ -115,8 +115,8 @@ def SelectLabel(className=None, **props):
 
 
 def SelectItem(className=None, children=None, **props):
-    def callback(children, props):
-        is_selected = props.get("isSelected")
+    def callback(children, props_2):
+        is_selected = props_2.get("isSelected")
 
         return t"""
             <span class="flex flex-1 shrink-0 gap-2 whitespace-nowrap">{children}</span>

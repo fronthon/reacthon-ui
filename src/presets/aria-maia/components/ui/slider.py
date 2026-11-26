@@ -4,8 +4,8 @@ __js__ = {"react-aria-components": ["SliderFill", "Slider as SliderPrimitive", "
 
 
 def Slider(className=None, **props):
-    def callback(props):
-        state = props.get("state")
+    def callback(props_2):
+        state = props_2.get("state")
 
         return t"""
             <{SliderTrack}
