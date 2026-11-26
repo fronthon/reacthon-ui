@@ -1,4 +1,4 @@
-from utils import cva
+from utils import cn, cva
 
 __js__ = {"radix-ui": ["Slot"]}
 
@@ -36,7 +36,7 @@ def Button(className=None, variant="default", size="default", asChild=False, **p
             data-slot="button"
             data-variant={variant}
             data-size={size}
-            class={button_variants(variant=variant, size=size, className=className)}
+            class={cn(button_variants(variant=variant, size=size, className=className))}
             ...{props}
         />
     """

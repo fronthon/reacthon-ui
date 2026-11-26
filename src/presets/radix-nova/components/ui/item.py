@@ -51,7 +51,7 @@ def Item(className=None, variant="default", size="default", asChild=False, **pro
             data-slot="item"
             data-variant={variant}
             data-size={size}
-            class={item_variants(variant=variant, size=size, className=className)}
+            class={cn(item_variants(variant=variant, size=size, className=className))}
             ...{props}
         />
     """
@@ -75,7 +75,7 @@ def ItemMedia(className=None, variant="default", **props):
         <div
             data-slot="item-media"
             data-variant={variant}
-            class={item_media_variants(variant=variant, className=className)}
+            class={cn(item_media_variants(variant=variant, className=className))}
             ...{props}
         />
     """

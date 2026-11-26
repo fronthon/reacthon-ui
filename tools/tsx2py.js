@@ -760,8 +760,6 @@ function moduleTranslator(source, checker, program) {
             return [`${HOOKS[hook]}(${hookArguments(hook, args, inner).join(', ')})`, PRIMARY];
         }
 
-        if (ts.isIdentifier(callee) && callee.text === 'cn' && args.length === 1 && isVariantCall(args[0])) return emit(args[0], cx);
-
         if (isVariantCall(node) && args.length === 1 && ts.isObjectLiteralExpression(args[0])) {
             const keywords = args[0].properties.map((one) => {
                 if (ts.isShorthandPropertyAssignment(one)) return `${one.name.text}=${name(one.name, inner)}`;

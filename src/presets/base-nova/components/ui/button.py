@@ -1,4 +1,4 @@
-from utils import cva
+from utils import cn, cva
 
 __js__ = {"@base-ui/react/button": ["Button as ButtonPrimitive"]}
 
@@ -32,7 +32,7 @@ def Button(className=None, variant="default", size="default", **props):
     return t"""
         <{ButtonPrimitive}
             data-slot="button"
-            class={button_variants(variant=variant, size=size, className=className)}
+            class={cn(button_variants(variant=variant, size=size, className=className))}
             ...{props}
         />
     """

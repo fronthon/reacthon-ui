@@ -49,7 +49,7 @@ def Item(className=None, variant="default", size="default", render=None, **props
         {
             "defaultTagName": "div",
             "props": mergeProps(
-                {"className": item_variants(variant=variant, size=size, className=className)},
+                {"className": cn(item_variants(variant=variant, size=size, className=className))},
                 props,
             ),
             "render": render,
@@ -76,7 +76,7 @@ def ItemMedia(className=None, variant="default", **props):
         <div
             data-slot="item-media"
             data-variant={variant}
-            class={item_media_variants(variant=variant, className=className)}
+            class={cn(item_media_variants(variant=variant, className=className))}
             ...{props}
         />
     """

@@ -1,4 +1,4 @@
-from utils import cva
+from utils import cn, cva
 
 __js__ = {"@base-ui/react/toggle": ["Toggle as TogglePrimitive"]}
 
@@ -20,7 +20,7 @@ def Toggle(className=None, variant="default", size="default", **props):
     return t"""
         <{TogglePrimitive}
             data-slot="toggle"
-            class={toggle_variants(variant=variant, size=size, className=className)}
+            class={cn(toggle_variants(variant=variant, size=size, className=className))}
             ...{props}
         />
     """

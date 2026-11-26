@@ -21,7 +21,7 @@ def Marker(className=None, variant="default", asChild=False, **props):
         <{Comp}
             data-slot="marker"
             data-variant={variant}
-            class={marker_variants(variant=variant, className=className)}
+            class={cn(marker_variants(variant=variant, className=className))}
             ...{props}
         />
     """

@@ -38,7 +38,7 @@ def EmptyMedia(className=None, variant="default", **props):
         <div
             data-slot="empty-icon"
             data-variant={variant}
-            class={empty_media_variants(variant=variant, className=className)}
+            class={cn(empty_media_variants(variant=variant, className=className))}
             ...{props}
         />
     """

@@ -18,7 +18,7 @@ def Marker(className=None, variant="default", render=None, **props):
     return useRender(
         {
             "defaultTagName": "div",
-            "props": mergeProps({"className": marker_variants(variant=variant, className=className)}, props),
+            "props": mergeProps({"className": cn(marker_variants(variant=variant, className=className))}, props),
             "render": render,
             "state": {"slot": "marker", "variant": variant},
         },

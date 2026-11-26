@@ -11,9 +11,22 @@ def _key(value):
     return ("true" if value else "false") if isinstance(value, bool) else value
 
 
+def _joined(*values):
+    # clsx(), by which cva joins its classes: the truthy ones, a list's in its
+    # place, none merged as cn() merges them.
+    parts = []
+    for value in values:
+        if isinstance(value, (list, tuple)):
+            value = _joined(*value)
+        if value:
+            parts.append(str(value))
+    return " ".join(parts)
+
+
 def cva(base, variants=None, default_variants=None, compound_variants=None):
     """class-variance-authority's cva(): a function of the chosen variants and
-    of a className, which hands back the classes they make."""
+    of a className, which hands back the classes they make, joined as they
+    come, cn() merging them where the component asks it to."""
     variants = variants or {}
     default_variants = default_variants or {}
 
@@ -27,7 +40,7 @@ def cva(base, variants=None, default_variants=None, compound_variants=None):
             wanted = {name: one for name, one in compound.items() if name not in ("class", "className")}
             if all(value(name) in (one if isinstance(one, list) else [_key(one)]) for name, one in wanted.items()):
                 picked += [compound.get("class"), compound.get("className")]
-        return cn(base, *picked, className)
+        return _joined(base, *picked, className)
 
     return classes
 
