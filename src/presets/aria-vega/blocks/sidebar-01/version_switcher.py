@@ -7,6 +7,19 @@ __js__ = {"lucide-react": ["GalleryVerticalEndIcon", "ChevronsUpDownIcon", "Chec
 
 def VersionSwitcher(versions=None, defaultVersion=None):
     selected_version, set_selected_version = use_state(defaultVersion)
+
+    def render_version(version):
+        return t"""
+            <{DropdownMenuItem}
+                key={version}
+                onAction={(lambda: set_selected_version(version))}
+            >
+                v{version}
+                {" "}
+                {version == selected_version and t'<{CheckIcon} class="ml-auto" />'}
+            </{DropdownMenuItem}>
+        """
+
     return t"""
         <{SidebarMenu}>
             <{SidebarMenuItem}>
@@ -25,16 +38,7 @@ def VersionSwitcher(versions=None, defaultVersion=None):
                         <{ChevronsUpDownIcon} class="ml-auto" />
                     </{SidebarMenuButton}>
                     <{DropdownMenu} placement="bottom start">
-                        {[t'''
-                            <{DropdownMenuItem}
-                                key={version}
-                                onAction={(lambda: set_selected_version(version))}
-                            >
-                                v{version}
-                                {" "}
-                                {version == selected_version and t"""<{CheckIcon} class="ml-auto" />"""}
-                            </{DropdownMenuItem}>
-                        ''' for version in versions]}
+                        {[render_version(version) for version in versions]}
                     </{DropdownMenu}>
                 </{DropdownMenuTrigger}>
             </{SidebarMenuItem}>

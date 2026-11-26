@@ -14,6 +14,18 @@ def VersionSwitcher(versions=None, defaultVersion=None):
         />
     """
 
+    def render_version(version):
+        return t"""
+            <{DropdownMenuItem}
+                key={version}
+                onSelect={(lambda: set_selected_version(version))}
+            >
+                v{version}
+                {" "}
+                {version == selected_version and t'<{CheckIcon} class="ml-auto" />'}
+            </{DropdownMenuItem}>
+        """
+
     return t"""
         <{SidebarMenu}>
             <{SidebarMenuItem}>
@@ -29,16 +41,7 @@ def VersionSwitcher(versions=None, defaultVersion=None):
                         <{ChevronsUpDownIcon} class="ml-auto" />
                     </{DropdownMenuTrigger}>
                     <{DropdownMenuContent} align="start">
-                        {[t'''
-                            <{DropdownMenuItem}
-                                key={version}
-                                onSelect={(lambda: set_selected_version(version))}
-                            >
-                                v{version}
-                                {" "}
-                                {version == selected_version and t"""<{CheckIcon} class="ml-auto" />"""}
-                            </{DropdownMenuItem}>
-                        ''' for version in versions]}
+                        {[render_version(version) for version in versions]}
                     </{DropdownMenuContent}>
                 </{DropdownMenu}>
             </{SidebarMenuItem}>

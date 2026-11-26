@@ -38,6 +38,13 @@ const py = import.meta.glob("@/blocks/*/page.py")
 type Step = [string, (page: HTMLElement) => void]
 
 const click = (page: HTMLElement, selector: string, at = 0) => (page.querySelectorAll(selector)[at] as HTMLElement).click()
+// A press of the main button, which a menu's trigger opens on, as a click does.
+const press = (page: HTMLElement, selector: string, at = 0) => {
+  const one = page.querySelectorAll(selector)[at] as HTMLElement
+
+  one.dispatchEvent(new MouseEvent("pointerdown", { bubbles: true, button: 0 }))
+  one.dispatchEvent(new MouseEvent("mousedown", { bubbles: true, button: 0 }))
+}
 const button = (page: HTMLElement, text: string) => [...page.querySelectorAll("button")].find((one) => one.textContent?.includes(text))!.click()
 
 // The frame a library waits for, Radix's tabs theirs, passed on both alike,
@@ -90,7 +97,15 @@ async function pages(Page: ComponentType, steps: Step[]) {
 }
 
 const scenes: [string, Step[]][] = [
-  ["sidebar-07", [["open a group", (page) => click(page, "[data-slot=collapsible-trigger]")]]],
+  [
+    "sidebar-07",
+    [
+      ["open a group", (page) => click(page, "[data-slot=collapsible-trigger]")],
+      // Its menu in a portal, outside the page.
+      ["open the teams", (page) => press(page, "[data-slot=dropdown-menu-trigger]")],
+      ["pick a team", () => click(document.body, "[data-slot=dropdown-menu-item]", 1)],
+    ],
+  ],
   ["sidebar-09", [["pick the drafts", (page) => click(page, "[data-slot=sidebar-menu-button]", 2)]]],
   [
     "dashboard-01",

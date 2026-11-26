@@ -128,9 +128,9 @@ and is skipped as such: 5 a preset of React Aria, 40 in all.
 - `tests/blocks.test.tsx` renders each translated block's page against its TSX
   one: the same page, to the character.
 - `tests/block-scenes.test.tsx` uses three of them as one does, both alike: a
-  sidebar's group opened, a mail picked, the dashboard's rows selected, its
-  next page and its form sent: the same page after each step, and the same
-  errors.
+  sidebar's group opened and a team picked from its menu, a mail picked, the
+  dashboard's rows selected, its next page and its form sent: the same page
+  after each step, and the same errors.
 - `tests/icons.test.tsx` writes every component's and block's icons in each
   of the four other libraries, each found, none of Lucide's left. The pages
   were twinned, once for each library and each base, against the TSX shadcn's

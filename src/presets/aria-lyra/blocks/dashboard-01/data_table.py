@@ -297,7 +297,7 @@ def DataTable(data=None):
         if selection == "all":
             table.toggleAllRowsSelected()
         else:
-            table.setRowSelection(Object.fromEntries([[key, True] for key in list(selection)]))
+            table.setRowSelection(dict([[key, True] for key in list(selection)]))
 
     def on_sort_change(sort_descriptor):
         table.setSorting(

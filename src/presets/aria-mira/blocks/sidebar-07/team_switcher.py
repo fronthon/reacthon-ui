@@ -18,6 +18,16 @@ def TeamSwitcher(teams=None):
     active_team, set_active_team = use_state(teams[0])
     if not active_team:
         return None
+
+    def render_team(team, index):
+        return t"""
+            <{DropdownMenuItem} key={team["name"]} onAction={(lambda: set_active_team(team))} class="gap-2 p-2">
+                <div class="flex size-6 items-center justify-center rounded-md border">{team["logo"]}</div>
+                {team["name"]}
+                <{DropdownMenuShortcut}>⌘{index + 1}</{DropdownMenuShortcut}>
+            </{DropdownMenuItem}>
+        """
+
     return t"""
         <{SidebarMenu}>
             <{SidebarMenuItem}>
@@ -38,19 +48,7 @@ def TeamSwitcher(teams=None):
                     <{DropdownMenu} class="w-fit" placement={"bottom start" if is_mobile else "right top"} offset={4}>
                         <{DropdownMenuGroup}>
                             <{DropdownMenuLabel} class="text-xs text-muted-foreground">Teams</{DropdownMenuLabel}>
-                            {[t'''
-                                <{DropdownMenuItem}
-                                    key={team["name"]}
-                                    onAction={(lambda: set_active_team(team))}
-                                    class="gap-2 p-2"
-                                >
-                                    <div class="flex size-6 items-center justify-center rounded-md border">
-                                        {team["logo"]}
-                                    </div>
-                                    {team["name"]}
-                                    <{DropdownMenuShortcut}>⌘{index + 1}</{DropdownMenuShortcut}>
-                                </{DropdownMenuItem}>
-                            ''' for index, team in enumerate(teams)]}
+                            {[render_team(team, index) for index, team in enumerate(teams)]}
                         </{DropdownMenuGroup}>
                         <{DropdownMenuSeparator} />
                         <{DropdownMenuGroup}>

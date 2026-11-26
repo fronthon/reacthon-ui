@@ -370,6 +370,18 @@ def DataTable(data=None):
 
             set_data(callback)
 
+    def render_column(column):
+        return t"""
+            <{DropdownMenuCheckboxItem}
+                key={column.id}
+                class="capitalize"
+                checked={column.getIsVisible()}
+                onCheckedChange={(lambda value: column.toggleVisibility(bool(value)))}
+            >
+                {column.id}
+            </{DropdownMenuCheckboxItem}>
+        """
+
     def on_value_change(value):
         table.setPageSize(float(value))
 
@@ -411,16 +423,7 @@ def DataTable(data=None):
                             <{ChevronDownIcon} data-icon="inline-end" />
                         </{DropdownMenuTrigger}>
                         <{DropdownMenuContent} align="end" class="w-32">
-                            {[t'''
-                                <{DropdownMenuCheckboxItem}
-                                    key={column.id}
-                                    class="capitalize"
-                                    checked={column.getIsVisible()}
-                                    onCheckedChange={(lambda value: column.toggleVisibility(bool(value)))}
-                                >
-                                    {column.id}
-                                </{DropdownMenuCheckboxItem}>
-                            ''' for column in table.getAllColumns() if getattr(column, "accessorFn", None) is not None and column.getCanHide()]}
+                            {[render_column(column) for column in table.getAllColumns() if getattr(column, "accessorFn", None) is not None and column.getCanHide()]}
                         </{DropdownMenuContent}>
                     </{DropdownMenu}>
                     <{Button} variant="outline" size="sm">

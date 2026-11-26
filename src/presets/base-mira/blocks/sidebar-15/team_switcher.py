@@ -22,6 +22,15 @@ def TeamSwitcher(teams=None):
         <{SidebarMenuButton} class="w-fit px-1.5 aria-expanded:bg-muted aria-expanded:text-foreground" />
     """
 
+    def render_team(team, index):
+        return t"""
+            <{DropdownMenuItem} key={team["name"]} onClick={(lambda: set_active_team(team))} class="gap-2 p-2">
+                <div class="flex size-6 items-center justify-center rounded-xs border">{team["logo"]}</div>
+                {team["name"]}
+                <{DropdownMenuShortcut}>⌘{index + 1}</{DropdownMenuShortcut}>
+            </{DropdownMenuItem}>
+        """
+
     return t"""
         <{SidebarMenu}>
             <{SidebarMenuItem}>
@@ -36,19 +45,7 @@ def TeamSwitcher(teams=None):
                     <{DropdownMenuContent} class="w-64 rounded-lg" align="start" side="bottom" sideOffset={4}>
                         <{DropdownMenuGroup}>
                             <{DropdownMenuLabel} class="text-xs text-muted-foreground">Teams</{DropdownMenuLabel}>
-                            {[t'''
-                                <{DropdownMenuItem}
-                                    key={team["name"]}
-                                    onClick={(lambda: set_active_team(team))}
-                                    class="gap-2 p-2"
-                                >
-                                    <div class="flex size-6 items-center justify-center rounded-xs border">
-                                        {team["logo"]}
-                                    </div>
-                                    {team["name"]}
-                                    <{DropdownMenuShortcut}>⌘{index + 1}</{DropdownMenuShortcut}>
-                                </{DropdownMenuItem}>
-                            ''' for index, team in enumerate(teams)]}
+                            {[render_team(team, index) for index, team in enumerate(teams)]}
                         </{DropdownMenuGroup}>
                         <{DropdownMenuSeparator} />
                         <{DropdownMenuGroup}>

@@ -49,7 +49,7 @@ def ChartStyle(id=None, config=None):
     if not color_config:
         return None
 
-    def render(key, item_config, theme):
+    def render_key(key, item_config, theme):
         color = item_config.get("theme").get(theme) if item_config.get("theme") else None
         if color is None:
             color = item_config.get("color")
@@ -57,7 +57,7 @@ def ChartStyle(id=None, config=None):
 
     return t"""
         <style dangerouslySetInnerHTML={ {
-            "__html": "\n".join([f"\n{prefix} [data-chart={id}] {{\n{"\n".join([render(key, item_config, theme) for key, item_config in color_config])}\n}}\n" for theme, prefix in THEMES.items()]),
+            "__html": "\n".join([f"\n{prefix} [data-chart={id}] {{\n{"\n".join([render_key(key, item_config, theme) for key, item_config in color_config])}\n}}\n" for theme, prefix in THEMES.items()]),
         } } />
     """
 
