@@ -9,10 +9,13 @@ import { withIcons } from "./icons.js"
 
 const registries = fileURLToPath(new URL("../public/r/", import.meta.url))
 const valued = new Set(["-c", "--cwd", "-p", "--path"])
+// shadcn's options of a value one may leave out, which take the next argument
+// where it is not an option, as its CLI reads them.
+const optional = new Set(["--diff", "--view"])
 
 const [command, ...args] = process.argv.slice(2)
 if (command !== "add") {
-  console.error("Usage: reacthon-ui add <component>...")
+  console.error("Usage: reacthon-ui add <component or block>...")
   process.exit(1)
 }
 
@@ -30,21 +33,22 @@ if (!existsSync(registry)) {
   process.exit(1)
 }
 
-// shadcn's own names would fetch its TSX components: every name, and --all, are ours.
+// shadcn's own names would fetch its TSX components: every name, and --all, are
+// ours, --all its components and not its blocks, as shadcn's.
 const passed = []
 for (let i = 0; i < args.length; i++) {
   const arg = args[i]
   if (arg === "-a" || arg === "--all") {
     for (const file of readdirSync(registry)) {
-      if (file !== "registry.json") passed.push(registry + file)
+      if (file !== "registry.json" && JSON.parse(readFileSync(registry + file, "utf8")).type === "registry:ui") passed.push(registry + file)
     }
   } else if (arg.startsWith("-")) {
     passed.push(arg)
-    if (valued.has(arg)) passed.push(args[++i])
+    if (valued.has(arg) || (optional.has(arg) && i + 1 < args.length && !args[i + 1].startsWith("-"))) passed.push(args[++i])
   } else if (existsSync(`${registry}${arg}.json`)) {
     passed.push(`${registry}${arg}.json`)
   } else {
-    console.error(`reacthon-ui: no component named ${arg}`)
+    console.error(`reacthon-ui: no component or block named ${arg}`)
     process.exit(1)
   }
 }

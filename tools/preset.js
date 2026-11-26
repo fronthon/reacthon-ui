@@ -2,18 +2,24 @@
 // src/presets, as shadcn's CLI writes them into a project of that preset:
 //   node tools/preset.js <preset> [block...]
 //   node tools/preset.js <preset> --icons
+//   node tools/preset.js <preset> --items
 // Its components, its hooks and its lib, the helpers aside, which every preset
 // shares; then each block in a folder of its own of blocks/, its page beside
 // its components, each imported as ./name, which is where Python looks first;
-// then icons.json, each icon's name in every library the CLI writes icons in.
-// Given blocks, those alone; given --icons, icons.json alone. The CLI writes a
-// block's page only into a Next.js project: the files are read with --dry-run
-// from one made for the purpose, its icons Lucide's.
+// then icons.json, each icon's name in every library the CLI writes icons in,
+// and items.json, what the registry says of each component and block beside
+// its files. Given blocks, those alone; given --icons or --items, that file
+// alone. The
+// CLI writes a block's page only into a project whose routes are files, as
+// Next.js's are: the files are read with --dry-run from one made for the
+// purpose, its icons Lucide's.
 import { spawnSync } from 'node:child_process';
 import { copyFileSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { basename, dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+
+import { COMPONENTS_HIDDEN_FROM_SELECTION } from '@shadcn/registry/internal/registry/constants';
 
 const shadcn = fileURLToPath(import.meta.resolve('shadcn'));
 const [preset, ...given] = process.argv.slice(2);
@@ -24,11 +30,37 @@ if (!preset) {
     process.exit(1);
 }
 
-async function blockNames() {
-    const response = await fetch(`https://ui.shadcn.com/r/styles/${preset}/registry.json`);
-    const { items } = await response.json();
+const base = `https://ui.shadcn.com/r/styles/${preset}`;
+const index = async () => (await (await fetch(`${base}/registry.json`)).json()).items;
 
-    return items.filter((item) => item.type === 'registry:block').map((item) => item.name);
+async function blockNames() {
+    return (await index()).filter((item) => item.type === 'registry:block').map((item) => item.name);
+}
+
+// What shadcn's registry says of each component and block, beside its files:
+// the npm packages and the items it takes, which its CLI installs whether its
+// code imports them or not; and of a block, its title, its description and its
+// categories, and the type and the place of its page and its data, which the
+// CLI writes in the routes of the app, each by its file's name.
+async function items() {
+    const found = {};
+
+    for (const { name, type, title, description, categories, dependencies, registryDependencies, files } of await index()) {
+        const isBlock = type === 'registry:block';
+
+        if (!existsSync(join(root, isBlock ? `blocks/${name}/page.tsx` : `components/ui/${name}.tsx`))) continue;
+        if (!isBlock && type !== 'registry:ui') continue;
+        found[name] = {
+            ...(isBlock ? { title, description, categories } : {}),
+            ...(dependencies ? { dependencies } : {}),
+            ...(registryDependencies ? { registryDependencies } : {}),
+            ...(isBlock
+                ? { files: Object.fromEntries(files.filter((file) => file.target).map((file) => [basename(file.path), { type: file.type, target: file.target }])) }
+                : {})
+        };
+    }
+    writeFileSync(join(root, 'items.json'), `${JSON.stringify(found, null, 2)}\n`);
+    console.log(`${root}/items.json: ${Object.keys(found).length} items`);
 }
 
 // Each icon of each file in the other libraries, in the file's order, as
@@ -36,8 +68,7 @@ async function blockNames() {
 // `<IconPlaceholder lucide="ChevronDownIcon" hugeicons="UnfoldMoreIcon" … />`,
 // the same Lucide icon another one of Hugeicons elsewhere in the file.
 async function icons() {
-    const base = `https://ui.shadcn.com/r/styles/${preset}`;
-    const { items } = await (await fetch(`${base}/registry.json`)).json();
+    const items = await index();
     const files = [];
     const names = {};
 
@@ -113,10 +144,14 @@ function viewed(project, items) {
     return files;
 }
 
+// The components of `add --all`, and those it hides on this base, which `add`
+// adds by name and a block takes: Base UI's sonner, beside its own toast.
 function components(project) {
     const written = [];
+    const hidden = COMPONENTS_HIDDEN_FROM_SELECTION.filter((one) => one.hiddenIn.includes(preset.split('-')[0])).map((one) => one.name);
+    const files = new Map([...viewed(project, ['--all']), ...(hidden.length ? viewed(project, hidden) : [])]);
 
-    for (const [path, text] of viewed(project, ['--all'])) {
+    for (const [path, text] of files) {
         if (!/^src\/(components\/ui|hooks|lib)\/[^/]+$/.test(path) || path === 'src/lib/utils.ts') continue;
         mkdirSync(dirname(join(root, path.slice(4))), { recursive: true });
         writeFileSync(join(root, path.slice(4)), text);
@@ -160,13 +195,18 @@ function block(project, name) {
 
 if (given[0] === '--icons') {
     await icons();
+} else if (given[0] === '--items') {
+    await items();
 } else {
     const project = nextProject();
 
     try {
         if (!given.length) components(project);
         for (const name of given.length ? given : await blockNames()) block(project, name);
-        if (!given.length) await icons();
+        if (!given.length) {
+            await icons();
+            await items();
+        }
     } finally {
         rmSync(project, { recursive: true, force: true });
     }

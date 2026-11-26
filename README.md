@@ -27,7 +27,7 @@ you read it and change it. Here that source is Python: the same Radix parts
 underneath, the same Tailwind classes, the same props, and a component a
 Python developer owns.
 
-## Add a component
+## Add a component or a block
 
 In a React project with shadcn/ui and [Reacthon](https://github.com/svelthon/reacthon):
 
@@ -40,16 +40,31 @@ copies `dialog.py`, and the `button.py` and `lib/utils.py` it needs, as
 from the registry the package carries for the project's preset, which its
 `components.json` names. Their icons are in the library it names too, Lucide,
 Tabler, Hugeicons, Phosphor or Remix Icon, each written in its place as
-shadcn's CLI writes it in the TSX. Reacthon finds them by the folders it is
-given:
+shadcn's CLI writes it in the TSX.
+
+```sh
+npx reacthon-ui add dashboard-01
+```
+
+copies a block's own components, `app_sidebar.py`, `data_table.py` and the
+others, into `components`, with those of `components/ui` they take, as
+`npx shadcn add dashboard-01` copies its TSX. Its page, shadcn's CLI writes
+only where a page is a file of the app's routes, as in Next.js, there
+`app/dashboard/page.py`. A Vite project, Reacthon's, has none, its root
+showing what it chooses: the CLI writes no page there, of TSX as of Python,
+and the block's page is its `page.py` in this repository, to write in one's
+own, `App.py` say.
+
+Reacthon finds them all by the folders it is given:
 
 ```js
 // vite.config.ts
-plugins: [reacthon({ path: ["src/lib", "src/components/ui"] }), react(), tailwindcss()]
+plugins: [reacthon({ path: ["src/lib", "src/components/ui", "src/components"] }), react(), tailwindcss()]
 ```
 
 ```python
 from dialog import Dialog, DialogTrigger, DialogContent, DialogTitle
+from app_sidebar import AppSidebar
 ```
 
 ## Translated from shadcn/ui's own
@@ -60,7 +75,11 @@ Rhea and Sera, on each of the three bases, Radix, Base UI and React Aria,
 `base-nova` being the preset `npx shadcn init --defaults` makes. Their Python
 is written with Lucide's icons, and `icons.json` holds each icon of each file
 in the other libraries, as shadcn's registry has them for its CLI, in the
-file's order: `bin/icons.js` writes them in the project's library. Each
+file's order: `bin/icons.js` writes them in the project's library.
+`items.json` holds what shadcn's registry says of each component and block
+beside its files: the packages and the items it takes, which its CLI installs
+whether its code imports them or not, at their versions, and where a block's
+page and data go; `tools/registry.js` gives our items all of it. Each preset
 stands in its own folder of `src/presets`, laid out as a project of that
 preset: `components/ui`, `hooks`, `lib` and the blocks, the helpers of
 `src/lib` aside, which every preset shares. `tools/preset.js` fetches its TSX
@@ -79,7 +98,8 @@ JavaScript's, by a function that compares two items.
 
 In each preset, all the components of `npx shadcn add --all` are translated, 63
 on Radix and on Base UI, 61 on React Aria, the sidebar, the carousel, the
-calendar and the chart included.
+calendar and the chart included; and on Base UI the sonner `--all` leaves out
+there, beside Base UI's own toast, which a block takes.
 
 So are shadcn/ui's blocks, whole pages made of its components, each in its own
 folder of the preset's `blocks`, its page beside its own components, as
@@ -90,7 +110,7 @@ TanStack's with rows dragged by dnd-kit.
 ## Tested against shadcn/ui's own
 
 The twins run on each preset, a Vitest project of its own, where `@` is the
-preset's folder: 4,888 of them. The trees and the scenes were written for
+preset's folder: 4,896 of them. The trees and the scenes were written for
 Radix's components; one that React Aria's TSX cannot render either, a dialog
 of other parts, a calendar not react-day-picker's, says nothing of the Python,
 and is skipped as such: 5 a preset of React Aria, 40 in all.
@@ -111,10 +131,12 @@ and is skipped as such: 5 a preset of React Aria, 40 in all.
   sidebar's group opened, a mail picked, the dashboard's rows selected, its
   next page and its form sent: the same page after each step, and the same
   errors.
-- `tests/icons.test.tsx` writes every component's icons in each of the four
-  other libraries, each found, none of Lucide's left. The pages were twinned,
-  once for each library and each base, against the TSX shadcn's CLI writes
-  for it: the same pages.
+- `tests/icons.test.tsx` writes every component's and block's icons in each
+  of the four other libraries, each found, none of Lucide's left. The pages
+  were twinned, once for each library and each base, against the TSX shadcn's
+  CLI writes for it: the same pages; and blocks, written by the two CLIs into
+  a Next.js project, the TSX by shadcn's and the Python by `reacthon-ui add`:
+  the same pages.
 - The demo, `src/App.py`, runs on the Python ones alone; in Chrome, Radix's
   focus, keyboard and portals behave as with the TSX ones.
 
@@ -125,7 +147,7 @@ npm run preset radix-nova   # its components and blocks, from shadcn/ui
 npm run translate      # each preset's components/ui/*.tsx into their .py
 npm run translate:blocks
 npm run dev            # the demo, on radix-nova
-npm run registry       # a registry a preset, built into public/r/<preset>/
+npm run registry       # a registry a preset, its components and blocks, built into public/r/<preset>/
 ```
 
 ## Licence
