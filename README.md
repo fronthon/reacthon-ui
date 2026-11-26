@@ -29,7 +29,7 @@ Python developer owns.
 
 ## Add a component or a block
 
-In a React project with shadcn/ui and [Reacthon](https://github.com/svelthon/reacthon):
+In a React project with shadcn/ui and [Reacthon](https://github.com/fronthon/reacthon):
 
 ```sh
 npx reacthon-ui add dialog

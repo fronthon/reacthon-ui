@@ -147,7 +147,7 @@ for (const preset of readdirSync('src/presets')) {
     const registry = {
         $schema: 'https://ui.shadcn.com/schema/registry.json',
         name: 'reacthon-ui',
-        homepage: 'https://github.com/svelthon/reacthon-ui',
+        homepage: 'https://github.com/fronthon/reacthon-ui',
         items: [...components, ...pages]
     };
     const folder = mkdtempSync(join(tmpdir(), 'reacthon-ui-registry-'));

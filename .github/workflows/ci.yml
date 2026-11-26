@@ -33,7 +33,7 @@ jobs:
           git clone --depth 1 https://github.com/svelthon/bryvend.git
           git clone --depth 1 https://github.com/svelthon/bryntime.git
           git clone --depth 1 https://github.com/svelthon/brycomp.git
-          git clone --depth 1 https://github.com/svelthon/reacthon.git
+          git clone --depth 1 https://github.com/fronthon/reacthon.git
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -70,7 +70,7 @@ jobs:
           git clone --depth 1 https://github.com/svelthon/bryvend.git
           git clone --depth 1 https://github.com/svelthon/bryntime.git
           git clone --depth 1 https://github.com/svelthon/brycomp.git
-          git clone --depth 1 https://github.com/svelthon/reacthon.git
+          git clone --depth 1 https://github.com/fronthon/reacthon.git
 
       - name: Setup Node
         uses: actions/setup-node@v4

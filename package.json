@@ -7,7 +7,10 @@
   "author": "Florent Gallaire <fgallaire@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/svelthon/reacthon-ui.git"
+    "url": "git+https://github.com/fronthon/reacthon-ui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/fronthon/reacthon-ui/issues"
   },
   "keywords": [
     "python",
