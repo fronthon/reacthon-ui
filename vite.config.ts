@@ -1,4 +1,4 @@
-import { readdirSync } from "node:fs"
+import { existsSync, readdirSync } from "node:fs"
 import { resolve } from "node:path"
 import tailwindcss from "@tailwindcss/vite"
 import react from "@vitejs/plugin-react"
@@ -34,7 +34,17 @@ export default defineConfig({
   // twins compare. Each page a minute at most.
   test: {
     projects: [
-      ...readdirSync("src/presets").map((name) => ({ ...preset(name), test: { name, include: ["tests/*.test.tsx"], env: { PRESET: name } } })),
+      ...readdirSync("src/presets").map((name) => ({
+        ...preset(name),
+        // shadcn/ui's examples where the preset has them fetched, one of each
+        // base, Next.js's image and link theirs as a page renders them elsewhere.
+        test: {
+          name,
+          include: ["tests/*.test.tsx", ...(existsSync(`src/presets/${name}/examples`) ? ["tests/examples/*.test.tsx"] : [])],
+          env: { PRESET: name },
+          alias: { "next/image": resolve(import.meta.dirname, "tests/examples/next.tsx"), "next/link": resolve(import.meta.dirname, "tests/examples/next.tsx") },
+        },
+      })),
       { test: { name: "cli", include: ["tests/cli/*.test.ts"], environment: "node" } },
       ...["radix-nova", "base-nova", "aria-nova"].map((name) => ({
         test: { name: `browser ${name}`, include: ["tests/browser/*.test.ts"], environment: "node", env: { DEMO_PRESET: name }, testTimeout: 60_000, hookTimeout: 120_000 },

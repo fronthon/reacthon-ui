@@ -159,6 +159,12 @@ that none passes by rendering nothing on either side.
   dashboard's rows selected, its next page and its form sent, its toast shown
   in the application's toaster: the same page after each step, and the same
   errors.
+- `tests/examples/examples.test.tsx` converts shadcn/ui's examples, the pages
+  of its site that show each component, as `reacthon-ui convert` converts a
+  project's own TSX, on Nova on each base: 187 of them, each converted, its
+  Python page the same as its TSX one, to the character. `npm run preset
+  radix-nova -- --examples` fetches them as shadcn's CLI writes them, leaving
+  out one that imports a file of shadcn's site, which works in no project.
 - `tests/icons.test.tsx` writes every component's and block's icons in each
   of the four other libraries, each found, none of Lucide's left. The pages
   were twinned, once for each library and each base, against the TSX shadcn's
@@ -180,6 +186,7 @@ npm test               # the twins, on each preset
 npm run preset radix-nova   # its components and blocks, from shadcn/ui
 npm run convert        # each preset's components/ui/*.tsx into their .py
 npm run convert:blocks
+npm run convert:examples
 npm run dev            # the demo, on radix-nova
 npm run registry       # a registry a preset, its components and blocks, built into public/r/<preset>/
 ```
