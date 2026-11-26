@@ -4,7 +4,7 @@ from utils import cn
 
 __js__ = {"@base-ui/react/drawer": ["Drawer as DrawerPrimitive"]}
 
-DrawerContext = create_context(None)
+DrawerContext = create_context(NULL)
 
 
 def use_drawer():

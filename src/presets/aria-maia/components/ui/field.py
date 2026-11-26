@@ -1,3 +1,4 @@
+from javascript import NULL
 from reacthon import use_memo
 from utils import cn, cva
 from label import Label
@@ -138,7 +139,7 @@ def FieldError(className=None, children=None, errors=None, **props):
             return children
 
         if not errors:
-            return None
+            return NULL
 
         unique_errors = list({error.get("message") if error else None: error for error in errors}.values())
 

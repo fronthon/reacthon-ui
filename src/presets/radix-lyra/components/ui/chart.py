@@ -8,7 +8,7 @@ THEMES = {"light": "", "dark": ".dark"}
 
 INITIAL_DIMENSION = {"width": 320, "height": 200}
 
-ChartContext = create_context(None)
+ChartContext = create_context(NULL)
 
 
 def use_chart():
@@ -22,7 +22,7 @@ def use_chart():
 
 def ChartContainer(id=None, className=None, children=None, config=None, initialDimension=INITIAL_DIMENSION, **props):
     unique_id = use_id()
-    chart_id = f"chart-{id if id is not None else unique_id.replace(":", "")}"
+    chart_id = f"chart-{id if id not in (None, NULL) else unique_id.replace(":", "")}"
 
     return t"""
         <{ChartContext.Provider} value={ {
@@ -44,16 +44,16 @@ def ChartContainer(id=None, className=None, children=None, config=None, initialD
 
 
 def ChartStyle(id=None, config=None):
-    color_config = [(_, config) for _, config in config.items() if (config.get("theme") if config.get("theme") is not None else config.get("color"))]
+    color_config = [(_, config) for _, config in config.items() if (config.get("theme") if config.get("theme") not in (None, NULL) else config.get("color"))]
 
     if not color_config:
         return None
 
     def render_key(key, item_config, theme):
         color = item_config.get("theme").get(theme) if item_config.get("theme") else None
-        if color is None:
+        if color in (None, NULL):
             color = item_config.get("color")
-        return f"  --color-{key}: {color};" if color else None
+        return f"  --color-{key}: {color};" if color else NULL
 
     return t"""
         <style dangerouslySetInnerHTML={ {
@@ -70,18 +70,18 @@ def ChartTooltipContent(active=None, payload=None, className=None, indicator="do
 
     def tooltip_label():
         if hideLabel or not payload:
-            return None
+            return NULL
 
         item = payload[0]
-        key = f"{labelKey if labelKey is not None else item.get("dataKey") if item.get("dataKey") is not None else item.get("name") if item.get("name") is not None else "value"}"
+        key = f"{labelKey if labelKey not in (None, NULL) else item.get("dataKey") if item.get("dataKey") not in (None, NULL) else item.get("name") if item.get("name") not in (None, NULL) else "value"}"
         item_config = get_payload_config_from_payload(config, item, key)
-        value = ((config.get(label).get("label") if config.get(label) else None) if (config.get(label).get("label") if config.get(label) else None) is not None else label) if not labelKey and isinstance(label, str) else item_config.get("label") if item_config else None
+        value = ((config.get(label).get("label") if config.get(label) else None) if (config.get(label).get("label") if config.get(label) else None) not in (None, NULL) else label) if not labelKey and isinstance(label, str) else item_config.get("label") if item_config else None
 
         if labelFormatter:
             return t"<div class={cn("font-medium", labelClassName)}>{labelFormatter(value, payload)}</div>"
 
         if not value:
-            return None
+            return NULL
 
         return t"<div class={cn("font-medium", labelClassName)}>{value}</div>"
 
@@ -93,10 +93,10 @@ def ChartTooltipContent(active=None, payload=None, className=None, indicator="do
     nest_label = len(payload) == 1 and indicator != "dot"
 
     def render_item(item, index):
-        key = f"{nameKey if nameKey is not None else item.get("name") if item.get("name") is not None else item.get("dataKey") if item.get("dataKey") is not None else "value"}"
+        key = f"{nameKey if nameKey not in (None, NULL) else item.get("name") if item.get("name") not in (None, NULL) else item.get("dataKey") if item.get("dataKey") not in (None, NULL) else "value"}"
         item_config = get_payload_config_from_payload(config, item, key)
-        indicator_color = color if color is not None else item.get("payload").get("fill") if item.get("payload") else None
-        if indicator_color is None:
+        indicator_color = color if color not in (None, NULL) else item.get("payload").get("fill") if item.get("payload") else None
+        if indicator_color in (None, NULL):
             indicator_color = item.get("color")
 
         return t"""
@@ -126,7 +126,7 @@ def ChartTooltipContent(active=None, payload=None, className=None, indicator="do
                         <div class="grid gap-1.5">
                             {tooltip_label if nest_label else None}
                             <span class="text-muted-foreground">
-                                {(item_config.get("label") if item_config else None) if (item_config.get("label") if item_config else None) is not None else item.get("name")}
+                                {(item_config.get("label") if item_config else None) if (item_config.get("label") if item_config else None) not in (None, NULL) else item.get("name")}
                             </span>
                         </div>
                         {item.get("value") not in (None, NULL) and t"""
@@ -159,7 +159,7 @@ def ChartLegendContent(className=None, hideIcon=False, payload=None, verticalAli
         return None
 
     def render_item(item, index):
-        key = f"{nameKey if nameKey is not None else item.get("dataKey") if item.get("dataKey") is not None else "value"}"
+        key = f"{nameKey if nameKey not in (None, NULL) else item.get("dataKey") if item.get("dataKey") not in (None, NULL) else "value"}"
         item_config = get_payload_config_from_payload(config, item, key)
 
         return t"""

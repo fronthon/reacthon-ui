@@ -89,9 +89,12 @@ as shadcn's CLI writes it.
 with TypeScript's own parser and checker, as one writes
 it by hand: its imports, its `cva` tables, its props, its JSX as a t-string,
 React's hooks as Reacthon's, its handlers and effects as functions of their
-own, its own names in snake_case. TypeScript's types tell it what each value
-is: plain data, which Brython hands Python as a dict, or an object. What it
-cannot translate it names, and leaves the file out. `lib/utils.py` holds
+own, its own names in snake_case, JavaScript's `null` as `javascript.NULL` and
+`undefined` as `None`, as Brython hands them, and `None` where React renders
+either alike, a child or what a component returns. TypeScript's types tell it
+what each value is: plain data, which Brython hands Python as a dict, or an
+object. What it cannot translate it names, and leaves the file out.
+`lib/utils.py` holds
 `cn()`, shadcn/ui's own package, `cva()`, written in Python, `closest()`, the
 DOM's, which Brython's raises where it finds nothing, and `sort()`,
 JavaScript's, by a function that compares two items.

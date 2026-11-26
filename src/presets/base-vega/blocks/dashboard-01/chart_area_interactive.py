@@ -135,7 +135,7 @@ def ChartAreaInteractive():
     filtered_data = [item for item in chart_data if keep(item)]
 
     def on_value_change(value):
-        set_time_range(value[0] if value[0] is not None else "90d")
+        set_time_range(value[0] if value[0] not in (None, NULL) else "90d")
 
     def on_value_change_2(value):
         if value is not NULL:

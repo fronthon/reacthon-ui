@@ -1,5 +1,5 @@
 from browser import document, window
-from javascript import Math
+from javascript import Math, NULL
 from reacthon import create_context, use_callback, use_context, use_effect, use_memo, use_state
 from utils import cn, cva
 from button import Button
@@ -27,7 +27,7 @@ SIDEBAR_WIDTH_ICON = "3rem"
 
 SIDEBAR_KEYBOARD_SHORTCUT = "b"
 
-SidebarContext = create_context(None)
+SidebarContext = create_context(NULL)
 
 
 def use_sidebar():
@@ -48,7 +48,7 @@ def SidebarProvider(defaultOpen=True, open=None, onOpenChange=None, className=No
     # This is the internal state of the sidebar.
     # We use openProp and setOpenProp for control from outside the component.
     _open, _set_open = use_state(defaultOpen)
-    open_ = open_prop if open_prop is not None else _open
+    open_ = open_prop if open_prop not in (None, NULL) else _open
 
     def set_open(value):
         open_state = value(open_) if callable(value) else value

@@ -1,3 +1,4 @@
+from javascript import NULL
 from utils import cn, cva
 from button import Button
 
@@ -99,7 +100,7 @@ def AttachmentAction(className=None, variant=None, size="icon-xs", **props):
     return t"""
         <{Button}
             data-slot="attachment-action"
-            variant={variant if variant is not None else "ghost"}
+            variant={variant if variant not in (None, NULL) else "ghost"}
             size={size}
             class={cn(className)}
             ...{props}
@@ -113,7 +114,7 @@ def AttachmentTrigger(className=None, render=None, type=None, **props):
             "defaultTagName": "button",
             "props": mergeProps(
                 {
-                    "type": type if render else type if type is not None else "button",
+                    "type": type if render else type if type not in (None, NULL) else "button",
                     "className": cn("absolute inset-0 z-10 outline-none", className),
                 },
                 props,

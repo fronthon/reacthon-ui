@@ -1,3 +1,4 @@
+from javascript import NULL
 from utils import cn
 from button import button_variants
 
@@ -166,7 +167,7 @@ def QuestionnairePrevious(children=None, className=None, size="default", variant
             )}
             ...{props}
         >
-            {children if children is not None else "Previous"}
+            {children if children not in (None, NULL) else "Previous"}
         </{QuestionnairePrimitive.Previous}>
     """
 
@@ -184,7 +185,7 @@ def QuestionnaireSkip(children=None, className=None, size="default", variant="ou
             )}
             ...{props}
         >
-            {children if children is not None else "Skip"}
+            {children if children not in (None, NULL) else "Skip"}
         </{QuestionnairePrimitive.Skip}>
     """
 
@@ -202,7 +203,7 @@ def QuestionnaireNext(children=None, className=None, size="default", variant="de
             )}
             ...{props}
         >
-            {children if children is not None else "Next"}
+            {children if children not in (None, NULL) else "Next"}
         </{QuestionnairePrimitive.Next}>
     """
 
@@ -220,6 +221,6 @@ def QuestionnaireSubmit(children=None, className=None, size="default", variant="
             )}
             ...{props}
         >
-            {children if children is not None else "Submit"}
+            {children if children not in (None, NULL) else "Submit"}
         </{QuestionnairePrimitive.Submit}>
     """

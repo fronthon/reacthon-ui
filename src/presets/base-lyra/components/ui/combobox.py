@@ -1,3 +1,4 @@
+from javascript import NULL
 from reacthon import use_ref
 from utils import cn
 from button import Button
@@ -196,4 +197,4 @@ def ComboboxChipsInput(className=None, **props):
 
 
 def use_combobox_anchor():
-    return use_ref(None)
+    return use_ref(NULL)

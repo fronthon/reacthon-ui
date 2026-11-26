@@ -1,3 +1,4 @@
+from javascript import NULL
 from reacthon import use_context
 from utils import cn
 
@@ -28,7 +29,7 @@ def InputOTPGroup(className=None, **props):
 
 def InputOTPSlot(index=None, className=None, **props):
     input_otp_context = use_context(OTPInputContext)
-    slot = input_otp_context["slots"][index] if input_otp_context["slots"][index] is not None else {}
+    slot = input_otp_context["slots"][index] if input_otp_context["slots"][index] not in (None, NULL) else {}
     char, has_fake_caret, is_active = slot.get("char"), slot.get("hasFakeCaret"), slot.get("isActive")
 
     div = t"""

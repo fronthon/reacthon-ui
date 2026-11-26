@@ -1,4 +1,5 @@
 from browser import window
+from javascript import NULL
 from reacthon import use_id, use_memo, use_state
 from badge import Badge
 from button import Button
@@ -253,7 +254,7 @@ def reviewer_cell(props):
 
 columns = column_helper.columns(
     [
-        column_helper.display({"id": "drag", "header": lambda: None, "cell": drag_cell}),
+        column_helper.display({"id": "drag", "header": lambda: NULL, "cell": drag_cell}),
         column_helper.display(
             {
                 "id": "select",

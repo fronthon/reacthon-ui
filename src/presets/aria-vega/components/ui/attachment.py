@@ -1,3 +1,4 @@
+from javascript import NULL
 from utils import cn, cva
 from button import Button
 
@@ -18,7 +19,7 @@ attachment_variants = cva(
 
 
 def Attachment(className=None, state="done", size="default", orientation="horizontal", **props):
-    resolved_orientation = orientation if orientation is not None else "horizontal"
+    resolved_orientation = orientation if orientation not in (None, NULL) else "horizontal"
 
     return t"""
         <div
@@ -99,7 +100,7 @@ def AttachmentAction(className=None, variant=None, size="icon-xs", **props):
     return t"""
         <{Button}
             data-slot="attachment-action"
-            variant={variant if variant is not None else "ghost"}
+            variant={variant if variant not in (None, NULL) else "ghost"}
             size={size}
             class={cn(className)}
             ...{props}
@@ -121,7 +122,7 @@ def AttachmentTrigger(className=None, render=None, type=None, children=None, **p
     return t"""
         <button
             ...{props}
-            type={type if type is not None else "button"}
+            type={type if type not in (None, NULL) else "button"}
             data-slot="attachment-trigger"
             class={cn("absolute inset-0 z-10 outline-none", className)}
         >

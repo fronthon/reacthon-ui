@@ -355,6 +355,22 @@ function moduleTranslator(source, checker, program) {
         return Boolean(named) && /^[A-Z]/.test(named.getText()) && fn.parameters.length <= 1;
     };
 
+    // Whether React renders this `null`: a child of the markup, or what a
+    // component hands back, where null and undefined are one empty node, and
+    // Python's None says it.
+    const rendered = (node) => {
+        let at = node;
+
+        while (ts.isParenthesizedExpression(at.parent) || (ts.isConditionalExpression(at.parent) && at.parent.condition !== at)) at = at.parent;
+        if (ts.isJsxExpression(at.parent)) return !ts.isJsxAttribute(at.parent.parent);
+        if (ts.isReturnStatement(at.parent)) {
+            const fn = ts.findAncestor(at.parent, ts.isFunctionLike);
+
+            return Boolean(fn) && isComponent(fn);
+        }
+        return ts.isArrowFunction(at.parent) && at.parent.body === at && isComponent(at.parent);
+    };
+
     // Whether Reacthon copied a value into Python's dicts and lists: a
     // component's props, and what is read off them, an item of a list of them.
     const copied = (node) => {
@@ -497,8 +513,11 @@ function moduleTranslator(source, checker, program) {
                 return ['True', PRIMARY];
             case k.FalseKeyword:
                 return ['False', PRIMARY];
+            // null is javascript.NULL, undefined None, as Bryntime hands them.
             case k.NullKeyword:
-                return ['None', PRIMARY];
+                if (rendered(node)) return ['None', PRIMARY];
+                need('javascript', 'NULL');
+                return ['NULL', PRIMARY];
             case k.Identifier:
                 return [name(node, cx), PRIMARY];
             case k.ParenthesizedExpression:
@@ -707,8 +726,10 @@ function moduleTranslator(source, checker, program) {
 
         if (ASSIGNMENTS[operator]) unsupported(node, 'an assignment inside an expression');
 
-        // `a ?? b ?? c` of what reading twice changes nothing.
+        // `a ?? b ?? c` of what reading twice changes nothing: past None and
+        // NULL both, JavaScript's undefined and null.
         if (operator === k.QuestionQuestionToken) {
+            need('javascript', 'NULL');
             const operands = [];
 
             for (let one = node; ts.isBinaryExpression(unwrap(one)) && unwrap(one).operatorToken.kind === k.QuestionQuestionToken; one = unwrap(one).left) {
@@ -727,13 +748,13 @@ function moduleTranslator(source, checker, program) {
                 const local = fresh(ts.isElementAccessExpression(unwrap(left)) && unwrap(left).argumentExpression.getText() === '0' ? 'first' : 'value', cx);
 
                 cx.hoists.push(Object.assign([`${pad(cx.statementLevel)}${local} = ${expr(left, cx)}`], { tight: true }));
-                return [`${local} if ${local} is not None else ${expr(right, cx, CONDITIONAL)}`, CONDITIONAL];
+                return [`${local} if ${local} not in (None, NULL) else ${expr(right, cx, CONDITIONAL)}`, CONDITIONAL];
             }
 
             const text = operands
                 .slice(0, -1)
                 .reduceRight(
-                    (rest, one) => `${expr(one, cx, OR)} if ${expr(one, cx, COMPARE + 1)} is not None else ${rest}`,
+                    (rest, one) => `${expr(one, cx, OR)} if ${expr(one, cx, COMPARE + 1)} not in (None, NULL) else ${rest}`,
                     expr(operands.at(-1), cx, CONDITIONAL)
                 );
 
@@ -1759,9 +1780,10 @@ function moduleTranslator(source, checker, program) {
             }
             if (isJsx(value)) return [`${indent}${local} = ${tstring(value, cx, indent.length + local.length + 3)}`];
 
-            // `x = a ?? b` of more than a name: a, then b where a is None.
+            // `x = a ?? b` of more than a name: a, then b where a is None or NULL.
             if (ts.isBinaryExpression(unwrap(value)) && unwrap(value).operatorToken.kind === k.QuestionQuestionToken && !ts.isIdentifier(unwrap(unwrap(value).left))) {
-                return [`${indent}${local} = ${expr(unwrap(value).left, cx)}`, `${indent}if ${local} is None:`, `${pad(cx.level + 1)}${local} = ${expr(unwrap(value).right, cx)}`];
+                need('javascript', 'NULL');
+                return [`${indent}${local} = ${expr(unwrap(value).left, cx)}`, `${indent}if ${local} in (None, NULL):`, `${pad(cx.level + 1)}${local} = ${expr(unwrap(value).right, cx)}`];
             }
             return [`${indent}${local} = ${pretty(value, cx, cx.level, indent.length + local.length + 3)}`];
         }
@@ -1794,7 +1816,8 @@ function moduleTranslator(source, checker, program) {
                 const temp = fresh(snake(fromName), cx);
 
                 if (ts.isBinaryExpression(from) && from.operatorToken.kind === k.QuestionQuestionToken && !pure(from.left)) {
-                    lines.push(`${indent}${temp} = ${expr(from.left, cx)}`, `${indent}if ${temp} is None:`, `${pad(cx.level + 1)}${temp} = ${expr(from.right, cx)}`);
+                    need('javascript', 'NULL');
+                    lines.push(`${indent}${temp} = ${expr(from.left, cx)}`, `${indent}if ${temp} in (None, NULL):`, `${pad(cx.level + 1)}${temp} = ${expr(from.right, cx)}`);
                 } else {
                     lines.push(`${indent}${temp} = ${source_}`);
                 }

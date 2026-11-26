@@ -1,3 +1,4 @@
+from javascript import NULL
 from utils import cn
 
 __js__ = {"radix-ui": ["Slot"], "lucide-react": ["ChevronRightIcon", "MoreHorizontalIcon"]}
@@ -55,7 +56,7 @@ def BreadcrumbSeparator(children=None, className=None, **props):
             class={cn("[&>svg]:size-3.5", className)}
             ...{props}
         >
-            {children if children is not None else t'<{ChevronRightIcon} />'}
+            {children if children not in (None, NULL) else t'<{ChevronRightIcon} />'}
         </li>
     """
 

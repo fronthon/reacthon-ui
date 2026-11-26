@@ -1,3 +1,4 @@
+from javascript import NULL
 from utils import cn
 
 __js__ = {"react-aria-components": ["LabelContext", "Label as LabelPrimitive"]}
@@ -15,6 +16,6 @@ def Label(className=None, htmlFor=None, slot=None, **props):
     """
 
     if htmlFor and slot is None:
-        return t"<{LabelContext.Provider} value={None}>{label}</{LabelContext.Provider}>"
+        return t"<{LabelContext.Provider} value={NULL}>{label}</{LabelContext.Provider}>"
 
     return label

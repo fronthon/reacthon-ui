@@ -1,3 +1,4 @@
+from javascript import NULL
 from reacthon import create_context, use_callback, use_context, use_effect, use_state
 from utils import cn
 from button import Button
@@ -7,7 +8,7 @@ __js__ = {
     "lucide-react": ["ChevronLeftIcon", "ChevronRightIcon"],
 }
 
-CarouselContext = create_context(None)
+CarouselContext = create_context(NULL)
 
 
 def use_carousel():

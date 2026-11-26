@@ -136,7 +136,7 @@ def ChartAreaInteractive():
 
     def on_selection_change(value):
         first = list(value)[0]
-        set_time_range(first if first is not None else "90d")
+        set_time_range(first if first not in (None, NULL) else "90d")
 
     def on_change(value):
         if value is not NULL:

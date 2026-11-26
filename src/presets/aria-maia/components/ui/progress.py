@@ -4,7 +4,7 @@ from utils import cn
 
 __js__ = {"react-aria-components": ["Label as LabelPrimitive", "ProgressBar as ProgressPrimitive"]}
 
-ProgressContext = create_context(None)
+ProgressContext = create_context(NULL)
 
 
 def use_progress():
@@ -76,7 +76,7 @@ def ProgressIndicator(className=None, style=None, **props):
             class={cn("h-full bg-primary transition-all", className)}
             style={ {
                 **(style or {}),
-                "width": f"{100 if is_indeterminate else percentage if percentage is not None else 0}%",
+                "width": f"{100 if is_indeterminate else percentage if percentage not in (None, NULL) else 0}%",
             } }
             ...{props}
         />

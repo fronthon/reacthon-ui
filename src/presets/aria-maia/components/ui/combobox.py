@@ -52,7 +52,7 @@ def ComboboxClear(className=None, **props):
 
     def on_press():
         if state:
-            state.setValue(None)
+            state.setValue(NULL)
 
     return t"""
         <{InputGroupButton}
@@ -62,7 +62,7 @@ def ComboboxClear(className=None, **props):
             aria-label="Clear"
             class={cn(className)}
             onPress={on_press}
-            slot={None}
+            slot={NULL}
             ...{props}
         >
             <{XIcon} class="pointer-events-none" />
@@ -253,7 +253,7 @@ def ComboboxChipsInput(className=None, **props):
 
 
 def use_combobox_anchor():
-    return use_ref(None)
+    return use_ref(NULL)
 
 
 Combobox = ComboBoxPrimitive

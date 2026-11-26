@@ -1,3 +1,4 @@
+from javascript import NULL
 from utils import cn
 from button import Button
 
@@ -98,13 +99,13 @@ def ToastClose(className=None, children=None, render=t'<{Button} variant="ghost"
             class={cn("relative shrink-0 text-muted-foreground after:absolute after:-inset-2 after:content-[''] hover:text-foreground", className)}
             ...{props}
         >
-            {children if children is not None else t'<{XIcon} aria-hidden="true" />'}
+            {children if children not in (None, NULL) else t'<{XIcon} aria-hidden="true" />'}
         </{ToastPrimitive.Close}>
     """
 
 
 def ToastIcon(type=None):
-    icon = None
+    icon = NULL
 
     if type == "success":
         icon = t'<{CircleCheckIcon} aria-hidden="true" />'

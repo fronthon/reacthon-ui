@@ -1,3 +1,4 @@
+from javascript import NULL
 from reacthon import use_effect, use_ref
 from utils import cn
 from button import Button, button_variants
@@ -91,7 +92,7 @@ def Calendar(className=None, classNames=None, showOutsideDays=True, captionLayou
 def CalendarDayButton(className=None, day=None, modifiers=None, locale=None, **props):
     default_class_names = getDefaultClassNames()
 
-    ref = use_ref(None)
+    ref = use_ref(NULL)
 
     def effect():
         if modifiers.get("focused"):
