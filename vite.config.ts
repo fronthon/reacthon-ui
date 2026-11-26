@@ -27,8 +27,11 @@ export default defineConfig({
   // The demo, on the preset the project was made with.
   ...preset("radix-nova"),
   // The twins, on each preset, which they are told: a tree is written with
-  // the parts of its base, as one writes it there.
+  // the parts of its base, as one writes it there; and the CLI, once.
   test: {
-    projects: readdirSync("src/presets").map((name) => ({ ...preset(name), test: { name, env: { PRESET: name } } })),
+    projects: [
+      ...readdirSync("src/presets").map((name) => ({ ...preset(name), test: { name, include: ["tests/*.test.tsx"], env: { PRESET: name } } })),
+      { test: { name: "cli", include: ["tests/cli/*.test.ts"], environment: "node" } },
+    ],
   },
 })

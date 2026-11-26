@@ -7,7 +7,7 @@
 // as a dict, or an object. What it cannot write, it names rather than guesses:
 // the file is reported and left out.
 import ts from 'typescript';
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import { basename, dirname, join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
@@ -223,7 +223,7 @@ function replaced(regex, replacement) {
     return null;
 }
 
-function moduleTranslator(source, checker, program) {
+function moduleTranslator(source, checker, program, translated = new Set()) {
     const python = new Map();
     const js = new Map();
     const react = new Map();
@@ -249,6 +249,18 @@ function moduleTranslator(source, checker, program) {
         used.add(local);
     };
     const need = (module, name) => brython.set(module, new Set([...(brython.get(module) ?? []), name]));
+    // A file of the project that is Python, translated with this one or before
+    // it, its `.py` beside it: imported by its file's name, as Reacthon finds
+    // it, `@/components/app-sidebar` as `app_sidebar`.
+    const projectModule = (from) => {
+        const file = ts.resolveModuleName(from, source.fileName, program.getCompilerOptions(), ts.sys).resolvedModule?.resolvedFileName;
+
+        if (!file || /[\\/]node_modules[\\/]/.test(file) || file.endsWith('.d.ts')) return null;
+
+        const named = basename(file).replace(/\.tsx?$/, '').replace(/-/g, '_');
+
+        return translated.has(resolve(file)) || existsSync(join(dirname(file), `${named}.py`)) ? named : null;
+    };
 
     for (const node of source.statements) {
         if (!ts.isImportDeclaration(node)) continue;
@@ -263,7 +275,7 @@ function moduleTranslator(source, checker, program) {
             continue;
         }
 
-        const pyModule = pythonModule(from);
+        const pyModule = pythonModule(from) ?? projectModule(from);
         const whole = clause?.namedBindings && ts.isNamespaceImport(clause.namedBindings) ? clause.namedBindings.name.text : null;
 
         // A default and a namespace import, as `__js__` renames them; the
@@ -2049,9 +2061,11 @@ function moduleTranslator(source, checker, program) {
 }
 
 // The TypeScript program of the files, for its checker: the project's own
-// tsconfig where there is one.
+// tsconfig where there is one, a Vite project's `tsconfig.app.json`, which
+// holds its paths, or a Next.js project's `tsconfig.json`.
 function makeProgram(files) {
-    const config = ts.findConfigFile(process.cwd(), ts.sys.fileExists, 'tsconfig.app.json');
+    const config =
+        ts.findConfigFile(process.cwd(), ts.sys.fileExists, 'tsconfig.app.json') ?? ts.findConfigFile(process.cwd(), ts.sys.fileExists, 'tsconfig.json');
     const options = config
         ? ts.parseJsonConfigFileContent(ts.readConfigFile(config, ts.sys.readFile).config, ts.sys, dirname(config)).options
         : { jsx: ts.JsxEmit.Preserve, strict: true, skipLibCheck: true, moduleResolution: ts.ModuleResolutionKind.Bundler, module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 };
@@ -2062,14 +2076,15 @@ function makeProgram(files) {
     return ts.createProgram(files, { ...options, paths, noEmit: true });
 }
 
-export function translateFiles(files) {
+export function convertFiles(files) {
     const paths = files.map((file) => resolve(file));
     const program = makeProgram(paths);
     const checker = program.getTypeChecker();
+    const translated = new Set(paths);
 
     return paths.map((path) => {
         try {
-            return { file: path, python: moduleTranslator(program.getSourceFile(path), checker, program)() };
+            return { file: path, python: moduleTranslator(program.getSourceFile(path), checker, program, translated)() };
         } catch (error) {
             if (!(error instanceof Unsupported)) throw error;
             return { file: path, error: error.message };
@@ -2081,7 +2096,7 @@ const [out, ...files] = process.argv.slice(2);
 
 if (out && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
     mkdirSync(out, { recursive: true });
-    for (const { file, python, error } of translateFiles(files)) {
+    for (const { file, python, error } of convertFiles(files)) {
         const name = `${basename(file).replace(/\.tsx?$/, '').replace(/-/g, '_')}.py`;
 
         if (error) {

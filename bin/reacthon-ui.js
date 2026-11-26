@@ -14,8 +14,10 @@ const valued = new Set(["-c", "--cwd", "-p", "--path"])
 const optional = new Set(["--diff", "--view"])
 
 const [command, ...args] = process.argv.slice(2)
+// TypeScript, which only the conversion reads, loaded for it alone.
+if (command === "convert") process.exit((await import("./convert.js")).convert(args))
 if (command !== "add") {
-  console.error("Usage: reacthon-ui add <component or block>...")
+  console.error("Usage: reacthon-ui add <component or block>...\n       reacthon-ui convert <file or folder>... [--overwrite]")
   process.exit(1)
 }
 

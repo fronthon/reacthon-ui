@@ -67,6 +67,21 @@ from dialog import Dialog, DialogTrigger, DialogContent, DialogTitle
 from app_sidebar import AppSidebar
 ```
 
+## Convert your own
+
+```sh
+npx reacthon-ui convert src/components/team-card.tsx src/app
+```
+
+writes each TSX file it is given, or finds in a folder, a component or a page,
+in Python beside it, `team_card.py`, by the converter that writes Reacthon UI's
+components from shadcn/ui's, with the project's own `tsconfig`. An import of a
+file of the project that is Python, converted with it or before it, is
+Python's, `from team_card import TeamCard`, and `@/components/ui/dialog` the
+`dialog.py` that `reacthon-ui add` writes; a library's stays JavaScript's, in
+`__js__`. A `.py` already there is kept, as one may have changed it, unless
+`--overwrite` says. What it cannot convert it names, and leaves the file out.
+
 ## Translated from shadcn/ui's own
 
 A preset of shadcn/ui is a style on a base, the library its components behave
@@ -155,8 +170,8 @@ that none passes by rendering nothing on either side.
 npm install
 npm test               # the twins, on each preset
 npm run preset radix-nova   # its components and blocks, from shadcn/ui
-npm run translate      # each preset's components/ui/*.tsx into their .py
-npm run translate:blocks
+npm run convert        # each preset's components/ui/*.tsx into their .py
+npm run convert:blocks
 npm run dev            # the demo, on radix-nova
 npm run registry       # a registry a preset, its components and blocks, built into public/r/<preset>/
 ```
