@@ -1,3 +1,4 @@
+from browser import window
 from reacthon import use_memo
 from example import Example, ExampleWrapper
 from card import Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle
@@ -250,7 +251,7 @@ def ChartPieExample():
             return t"""
                 <text x={view_box["cx"]} y={view_box["cy"]} textAnchor="middle" dominantBaseline="middle">
                     <tspan x={view_box["cx"]} y={view_box["cy"]} class="fill-foreground text-3xl font-bold">
-                        {format(total_visitors, ",")}
+                        {window.Number.prototype.toLocaleString.call(total_visitors)}
                     </tspan>
                     <tspan x={view_box["cx"]} y={(view_box["cy"] or 0) + 24} class="fill-muted-foreground">
                         Visitors
@@ -352,7 +353,7 @@ def ChartRadialExample():
             return t"""
                 <text x={view_box["cx"]} y={view_box["cy"]} textAnchor="middle" dominantBaseline="middle">
                     <tspan x={view_box["cx"]} y={view_box["cy"]} class="fill-foreground text-4xl font-bold">
-                        {format(radial_chart_data[0]["visitors"], ",")}
+                        {window.Number.prototype.toLocaleString.call(radial_chart_data[0]["visitors"])}
                     </tspan>
                     <tspan x={view_box["cx"]} y={(view_box["cy"] or 0) + 24} class="fill-muted-foreground">
                         Visitors

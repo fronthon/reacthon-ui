@@ -115,11 +115,17 @@ either alike, a child or what a component returns. A component takes `**_`,
 the props it is handed and does not take, and a function one of them calls
 `*_`, the arguments it does not read, which JavaScript's leave as they come.
 TypeScript's types tell it what each value is: plain data, which Brython hands
-Python as a dict, or an object. What it cannot translate it names, and leaves
-the file out. `lib/utils.py` holds `cn()`, shadcn/ui's own package, `cva()`,
+Python as a dict, or an object. What Python writes its own way it writes so: a
+`switch` as an `if` and its `elif`s, an `async` function as an `async def`,
+which `aio.run()` starts where JavaScript calls it without awaiting it, a `try`
+and its `catch`, a `forEach` as a loop, a closure's write of an outer name with
+`nonlocal`, `forwardRef` as a component that takes `ref` among its props, as
+React 19 hands it; and what Brython's DOM answers its own way, `canvas.width`
+the style's, by JavaScript's. What it cannot translate it names, and leaves the
+file out. `lib/utils.py` holds `cn()`, shadcn/ui's own package, `cva()`,
 written in Python, `closest()`, the DOM's, which Brython's raises where it
-finds nothing, and `sort()`, JavaScript's, by a function that compares two
-items.
+finds nothing, `sort()`, JavaScript's, by a function that compares two items,
+and `reduce()`, functools', which Brython does not ship.
 
 In each preset, all the components of `npx shadcn add --all` are translated, 63
 on Radix and on Base UI, 61 on React Aria, the sidebar, the carousel, the

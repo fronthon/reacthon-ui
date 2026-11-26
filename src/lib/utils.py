@@ -1,9 +1,10 @@
 """The helpers the components share: cn() merges Tailwind classes, a later one
 winning over an earlier one it conflicts with, cva() names a component's
-classes after its variants, closest() finds an element's ancestor and sort()
-sorts by a function that compares two items."""
+classes after its variants, closest() finds an element's ancestor, sort()
+sorts by a function that compares two items and reduce() combines them."""
 
 from browser import window
+from javascript import NULL
 
 __js__ = {"cn": ["cn"]}
 
@@ -49,12 +50,12 @@ def cva(base, variants=None, default_variants=None, compound_variants=None):
 
 def closest(element, selector):
     """The DOM's closest(): the element or its nearest ancestor that matches the
-    selector, None where none does, as JavaScript's null; Brython's raises
-    KeyError."""
+    selector, javascript.NULL where none does, JavaScript's null; Brython's
+    raises KeyError."""
     try:
         return element.closest(selector)
     except KeyError:
-        return None
+        return NULL
 
 
 def sort(items, compare):
@@ -68,3 +69,20 @@ def sort(items, compare):
     order.sort(lambda one, other: compare(items[one], items[other]))
     items[:] = [items[at] for at in order]
     return items
+
+
+def reduce(combine, items, *initial):
+    """JavaScript's reduce(), as Python's functools.reduce, which Brython does
+    not ship: each item combined with what the ones before it made, from the
+    first item where no initial value is given; none, and no item, is
+    JavaScript's TypeError."""
+    rest = list(items)
+    if initial:
+        made = initial[0]
+    elif rest:
+        made = rest.pop(0)
+    else:
+        raise TypeError("Reduce of empty array with no initial value")
+    for item in rest:
+        made = combine(made, item)
+    return made

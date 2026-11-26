@@ -1,3 +1,4 @@
+from browser import window
 from javascript import NULL
 from reacthon import create_context, use_context, use_id, use_memo
 from utils import cn
@@ -131,7 +132,7 @@ def ChartTooltipContent(active=None, payload=None, className=None, indicator="do
                         </div>
                         {item.get("value") not in (None, NULL) and t"""
                             <span class="font-mono font-medium text-foreground tabular-nums">
-                                {format(item.get("value"), ",") if isinstance(item.get("value"), (int, float)) else str(item.get("value"))}
+                                {window.Number.prototype.toLocaleString.call(item.get("value")) if isinstance(item.get("value"), (int, float)) else str(item.get("value"))}
                             </span>
                         """}
                     </div>

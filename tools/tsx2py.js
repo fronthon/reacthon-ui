@@ -103,6 +103,7 @@ const COMPARE = 5;
 const ADD = 10;
 const MULTIPLY = 11;
 const UNARY = 12;
+const AWAIT = 14;
 const PRIMARY = 15;
 
 const k = ts.SyntaxKind;
@@ -126,7 +127,11 @@ const BINARY = {
 };
 const ASSIGNMENTS = { [k.EqualsToken]: '=', [k.PlusEqualsToken]: '+=', [k.MinusEqualsToken]: '-=' };
 const TYPEOF = { string: 'str', number: '(int, float)', boolean: 'bool', object: 'dict' };
-const UTILITY_TYPES = new Set(['Partial', 'Required', 'Readonly', 'Pick', 'Omit', 'Record', 'NonNullable']);
+// The DOM's names that Brython's DOMNode answers its own way: `canvas.width`
+// as the style's width, `children` a method, `input.select()` a query.
+const DOMNODE_PROPERTIES = new Set(['width', 'height', 'text', 'children']);
+const DOMNODE_METHODS = new Set(['select', 'reset']);
+const UTILITY_TYPES = new Set(['Partial', 'Required', 'Readonly', 'Pick', 'Omit', 'Record', 'NonNullable', 'PropsWithoutRef']);
 
 const DOM_NAMES = { className: 'class', htmlFor: 'for' };
 
@@ -146,6 +151,7 @@ const isFunction = (node) => {
 
     return Boolean(one) && (ts.isArrowFunction(one) || ts.isFunctionExpression(one));
 };
+const isAsync = (fn) => Boolean(fn.modifiers?.some((one) => one.kind === k.AsyncKeyword));
 
 // JSX's character references, which its compiler reads as their characters and
 // htm leaves as they are written.
@@ -256,10 +262,22 @@ function moduleTranslator(source, checker, program, translated = new Set()) {
         const file = ts.resolveModuleName(from, source.fileName, program.getCompilerOptions(), ts.sys).resolvedModule?.resolvedFileName;
 
         if (!file || /[\\/]node_modules[\\/]/.test(file) || file.endsWith('.d.ts')) return null;
+        return isPython(file) ? pythonName(file) : null;
+    };
+    const pythonName = (file) => basename(file).replace(/\.tsx?$/, '').replace(/-/g, '_');
+    const isPython = (file) => file === source.fileName || translated.has(resolve(file)) || existsSync(join(dirname(file), `${pythonName(file)}.py`));
 
-        const named = basename(file).replace(/\.tsx?$/, '').replace(/-/g, '_');
+    // A call of an `async` function of the project's that is Python, which
+    // hands back a coroutine.
+    const coroutine = (call) => {
+        let symbol = checker.getSymbolAtLocation(unwrap(call.expression));
 
-        return translated.has(resolve(file)) || existsSync(join(dirname(file), `${named}.py`)) ? named : null;
+        if (symbol && symbol.flags & ts.SymbolFlags.Alias) symbol = checker.getAliasedSymbol(symbol);
+
+        const declaration = symbol?.valueDeclaration;
+        const fn = declaration && ts.isVariableDeclaration(declaration) ? unwrap(declaration.initializer) : declaration;
+
+        return Boolean(fn && ts.isFunctionLike(fn) && isAsync(fn) && !/[\\/]node_modules[\\/]/.test(declaration.getSourceFile().fileName) && isPython(declaration.getSourceFile().fileName));
     };
 
     for (const node of source.statements) {
@@ -369,10 +387,14 @@ function moduleTranslator(source, checker, program, translated = new Set()) {
         return Boolean(symbol?.getDeclarations()?.some((one) => /[\\/]node_modules[\\/]/.test(one.getSourceFile().fileName) && !fromLibrary(one)));
     };
 
+    // A component, named as one, by its own name or the declaration's that
+    // holds it, through `memo()` or `forwardRef()`, which hands it a ref second.
     const isComponent = (fn) => {
-        const named = fn.name ?? (ts.isVariableDeclaration(fn.parent) || ts.isPropertyAssignment(fn.parent) ? fn.parent.name : undefined);
+        const wrapper = ts.isCallExpression(fn.parent) && ['memo', 'forwardRef'].includes(reactName(fn.parent.expression)) ? fn.parent : null;
+        const holder = (wrapper ?? fn).parent;
+        const named = fn.name ?? (ts.isVariableDeclaration(holder) || ts.isPropertyAssignment(holder) ? holder.name : undefined);
 
-        return Boolean(named) && /^[A-Z]/.test(named.getText()) && fn.parameters.length <= 1;
+        return Boolean(named) && /^[A-Z]/.test(named.getText()) && fn.parameters.length <= (wrapper && reactName(wrapper.expression) === 'forwardRef' ? 2 : 1);
     };
 
     // How many arguments Python may hand a function a prop of the project's
@@ -530,6 +552,14 @@ function moduleTranslator(source, checker, program, translated = new Set()) {
         hooks.add('memo');
         return unwrap(made.arguments[0]);
     };
+    // `React.forwardRef((props, ref) => …)`, a component that takes `ref` as
+    // React 19 hands it, among its props.
+    const forwarded = (value) => {
+        const made = value && unwrap(value);
+
+        if (!made || !ts.isCallExpression(made) || reactName(made.expression) !== 'forwardRef' || made.arguments.length !== 1 || !isFunction(made.arguments[0])) return null;
+        return unwrap(made.arguments[0]);
+    };
 
     const name = (node, cx) => {
         const text = node.text;
@@ -582,6 +612,9 @@ function moduleTranslator(source, checker, program, translated = new Set()) {
                 return ['True', PRIMARY];
             case k.FalseKeyword:
                 return ['False', PRIMARY];
+            // `await p`, in the `async def` its function becomes.
+            case k.AwaitExpression:
+                return [`await ${expr(node.expression, inner, PRIMARY)}`, AWAIT];
             // `void x`, x read and None handed back, JavaScript's undefined.
             case k.VoidExpression:
                 return [`(${expr(node.expression, inner)}, None)[1]`, PRIMARY];
@@ -653,8 +686,9 @@ function moduleTranslator(source, checker, program, translated = new Set()) {
             }
             case k.ObjectLiteralExpression:
                 // In a t-string's field, Brython's tokenizer refuses a dict
-                // of a name on one line, `{ {"a": x} }`: one entry a line.
-                if (cx.inField && node.properties.some((one) => !ts.isPropertyAssignment(one) || !constant(one.initializer))) {
+                // of a name on one line, `{ {"a": x} }`, True and None
+                // names too, which brython#3302 mends: one entry a line.
+                if (cx.inField && node.properties.some((one) => !ts.isPropertyAssignment(one) || !written(one.initializer))) {
                     const lines = node.properties.map((one) => `${pad(cx.level + 1)}${entry(one, { ...inner, level: cx.level + 1 })},`);
 
                     return [`{\n${lines.join('\n')}\n${pad(cx.level)}}`, PRIMARY];
@@ -706,6 +740,12 @@ function moduleTranslator(source, checker, program, translated = new Set()) {
             return [reactValue(field), PRIMARY];
         }
         if (field === 'length' && role === 'read' && sized(object)) return [`len(${expr(object, { ...cx, inChain: cx.inChain }, WHOLE)})`, PRIMARY];
+        // The DOM's own, past what Brython's DOMNode makes of it.
+        if (DOMNODE_PROPERTIES.has(field) && domElement(object)) {
+            if (role === 'write') unsupported(node, "a write of a DOM property Brython's DOMNode takes over, other than a statement's");
+            need('browser', 'window');
+            return [`window.Reflect.get(${expr(object, cx)}, ${string(field)})`, PRIMARY];
+        }
 
         const base = expr(object, { ...cx, fallback: null }, PRIMARY);
 
@@ -809,12 +849,8 @@ function moduleTranslator(source, checker, program, translated = new Set()) {
         // NULL both, JavaScript's undefined and null.
         if (operator === k.QuestionQuestionToken) {
             need('javascript', 'NULL');
-            const operands = [];
+            const operands = coalesced(node);
 
-            for (let one = node; ts.isBinaryExpression(unwrap(one)) && unwrap(one).operatorToken.kind === k.QuestionQuestionToken; one = unwrap(one).left) {
-                operands.unshift(unwrap(one).right);
-                if (!(ts.isBinaryExpression(unwrap(unwrap(one).left)) && unwrap(unwrap(one).left).operatorToken.kind === k.QuestionQuestionToken)) operands.unshift(unwrap(one).left);
-            }
             // `Array.from(value)[0] ?? "90d"`: what it reads once, a name the
             // line before the statement binds, where no function stands between.
             if (!operands.slice(0, -1).every(pure)) {
@@ -875,6 +911,38 @@ function moduleTranslator(source, checker, program, translated = new Set()) {
 
         return [`${expr(node.left, cx, level === COMPARE ? level + 1 : level)} ${word} ${expr(node.right, cx, level + 1)}`, level];
     };
+
+    // A value no one reads: a statement's, or what a callback of forEach hands
+    // back.
+    const discarded = (node) => {
+        let at = node;
+
+        while (ts.isParenthesizedExpression(at.parent)) at = at.parent;
+        if (ts.isExpressionStatement(at.parent)) return true;
+
+        const fn = at.parent;
+        const call = fn && isFunction(fn) && fn.body === at ? fn.parent : null;
+
+        return Boolean(call) && ts.isCallExpression(call) && ts.isPropertyAccessExpression(call.expression) && call.expression.name.text === 'forEach';
+    };
+
+    // The operands of `a ?? b ?? c`, in order.
+    const coalesced = (node) => {
+        const operands = [];
+        const chained = (one) => ts.isBinaryExpression(unwrap(one)) && unwrap(one).operatorToken.kind === k.QuestionQuestionToken;
+
+        for (let one = node; chained(one); one = unwrap(one).left) {
+            operands.unshift(unwrap(one).right);
+            if (!chained(unwrap(one).left)) operands.unshift(unwrap(one).left);
+        }
+        return operands;
+    };
+
+    // What a lambda cannot hold: a `??` of what reading twice would run twice,
+    // which takes a line of its own before it, and so a def.
+    const needsLine = (node) =>
+        (ts.isBinaryExpression(node) && node.operatorToken.kind === k.QuestionQuestionToken && !coalesced(node).slice(0, -1).every(pure)) ||
+        (!ts.isFunctionLike(node) && Boolean(ts.forEachChild(node, needsLine)));
 
     // A name, or a member of one, which reading twice changes nothing.
     const pure = (node) => {
@@ -1043,16 +1111,66 @@ function moduleTranslator(source, checker, program, translated = new Set()) {
             // A list grows by append() or extend(), which hand back None where
             // push() hands back its length: a statement of its own.
             if (method === 'push' && list) {
-                if (!ts.isExpressionStatement(node.parent)) unsupported(node, 'the length push() hands back');
+                if (!discarded(node)) unsupported(node, 'the length push() hands back');
                 return [args.length === 1 ? `${own}.append(${expr(args[0], inner)})` : `${own}.extend([${args.map((one) => expr(one, inner)).join(', ')}])`, PRIMARY];
             }
             // A str's methods under Python's names: a pad of one character, a
             // replace() of a string its first occurrence alone, as JavaScript's.
             if (textual) {
                 const pad = args[1] === undefined || (ts.isStringLiteral(args[1]) && [...args[1].text].length === 1);
-                const plain = { trim: 'strip', trimStart: 'lstrip', trimEnd: 'rstrip', toLowerCase: 'lower', toUpperCase: 'upper' };
+                const plain = {
+                    trim: 'strip',
+                    trimStart: 'lstrip',
+                    trimLeft: 'lstrip',
+                    trimEnd: 'rstrip',
+                    trimRight: 'rstrip',
+                    toLowerCase: 'lower',
+                    toLocaleLowerCase: 'lower',
+                    toUpperCase: 'upper',
+                    toLocaleUpperCase: 'upper'
+                };
+                const number = (one) => (ts.isNumericLiteral(unwrap(one)) ? Number(unwrap(one).text) : null);
+                // `i + 1` written out where i is a number written.
+                const after = (one, by) => (number(one) !== null ? String(number(one) + by) : `${expr(one, inner, ADD)} + ${by}`);
 
                 if (plain[method] && args.length === 0) return [`${own}.${plain[method]}()`, PRIMARY];
+                if (method === 'valueOf' && args.length === 0) return [expr(object, inner), PRIMARY];
+                // `name.charAt(0)`, the one character there, or "" past the end.
+                if (method === 'charAt' && args.length <= 1) {
+                    const at = args[0] ?? ts.factory.createNumericLiteral(0);
+
+                    return [`${own}[${number(at) === 0 ? '' : expr(at, inner)}:${after(at, 1)}]`, PRIMARY];
+                }
+                if ((method === 'charCodeAt' || method === 'codePointAt') && args.length <= 1) return [`ord(${own}[${args[0] ? expr(args[0], inner) : '0'}])`, PRIMARY];
+                if (method === 'concat') {
+                    const text = (one) => (checker.getNonNullableType(typeOf(one)).flags & ts.TypeFlags.StringLike ? expr(one, inner, ADD + 1) : `str(${expr(one, inner)})`);
+
+                    return [[expr(object, inner, ADD), ...args.map(text)].join(' + '), ADD];
+                }
+                if (method === 'lastIndexOf' && args.length === 1) return [`${own}.rfind(${expr(args[0], inner)})`, PRIMARY];
+                // `s.substring(a, b)`, where JavaScript reads a negative as 0.
+                if (method === 'substring' && args.length >= 1 && args.length <= 2) {
+                    const bound = (one) => (number(one) !== null ? String(Math.max(0, number(one))) : `max(${expr(one, inner)}, 0)`);
+
+                    return [`${own}[${number(args[0]) === 0 ? '' : bound(args[0])}:${args[1] ? bound(args[1]) : ''}]`, PRIMARY];
+                }
+                if (method === 'substr' && args.length >= 1 && args.length <= 2) {
+                    return [`${own}[${expr(args[0], inner)}:${args[1] ? `${expr(args[0], inner, ADD)} + ${expr(args[1], inner, ADD + 1)}` : ''}]`, PRIMARY];
+                }
+                // `s.split(",")` as Python's, `s.split("")` its characters, and
+                // `s.split()` the string alone, as JavaScript splits them.
+                if (method === 'split' && args.length <= 2 && !(args[0] && ts.isRegularExpressionLiteral(args[0]))) {
+                    if (!args.length) return [`[${expr(object, inner)}]`, PRIMARY];
+
+                    const whole = ts.isStringLiteral(args[0]) && args[0].text === '' ? `list(${expr(object, inner)})` : `${own}.split(${expr(args[0], inner)})`;
+
+                    return [args[1] ? `${whole}[:${expr(args[1], inner)}]` : whole, PRIMARY];
+                }
+                // What Python's str has not, JavaScript's own.
+                if (method === 'localeCompare' || method === 'normalize') {
+                    need('browser', 'window');
+                    return [`window.String.prototype.${method}.call(${[expr(object, inner), ...args.map((one) => expr(one, inner))].join(', ')})`, PRIMARY];
+                }
                 if (method === 'startsWith' && args.length <= 2) return [`${own}.startswith(${args.map((one) => expr(one, inner)).join(', ')})`, PRIMARY];
                 if (method === 'endsWith' && args.length === 1) return [`${own}.endswith(${expr(args[0], inner)})`, PRIMARY];
                 if ((method === 'padStart' || method === 'padEnd') && pad) {
@@ -1078,18 +1196,21 @@ function moduleTranslator(source, checker, program, translated = new Set()) {
             }
             // `n.toFixed(2)`, the digits Python's format writes.
             if (method === 'toFixed' && args.length <= 1 && numeric(object)) return [`format(${expr(object, inner)}, ${args[0] ? `f".{${expr(args[0], inner)}}f"` : '".0f"'})`, PRIMARY];
-            // `rows.reduce((total, row) => total + row.n, 0)`, a sum.
-            if (method === 'reduce' && args.length === 2 && isFunction(args[0]) && sized(object)) {
+            // `rows.reduce((total, row) => total + row.n, 0)`, a sum; any other,
+            // utils.py's reduce(), functools'.
+            if (method === 'reduce' && args.length >= 1 && args.length <= 2 && isFunction(args[0]) && sized(object)) {
                 const fn = unwrap(args[0]);
                 const value = body(fn);
 
-                if (fn.parameters.length === 2 && value && ts.isBinaryExpression(unwrap(value)) && unwrap(value).operatorToken.kind === k.PlusToken && unwrap(unwrap(value).left).getText() === fn.parameters[0].name.getText()) {
+                if (args.length === 2 && fn.parameters.length === 2 && value && ts.isBinaryExpression(unwrap(value)) && unwrap(value).operatorToken.kind === k.PlusToken && unwrap(unwrap(value).left).getText() === fn.parameters[0].name.getText()) {
                     const scope = new Set(inner.scope);
                     const one = target(fn.parameters[1].name, scope);
 
                     return [`sum((${expr(unwrap(value).right, { ...inner, scope })} for ${one} in ${expr(object, inner)}), ${expr(args[1], inner)})`, PRIMARY];
                 }
-                unsupported(node, 'a reduce other than a sum');
+                if (fn.parameters.length > 2) unsupported(node, 'a reduce that reads its index');
+                helper('reduce');
+                return [`reduce(${callable(fn, { ...inner, arity: 2 }, 'combine')}, ${expr(object, inner)}${args[1] ? `, ${expr(args[1], inner)}` : ''})`, PRIMARY];
             }
             if (method === 'replace' && args.length === 2 && ts.isRegularExpressionLiteral(args[0]) && ts.isStringLiteral(args[1])) {
                 const done = replaced(args[0], args[1].text);
@@ -1099,7 +1220,12 @@ function moduleTranslator(source, checker, program, translated = new Set()) {
                     ? [`${expr(object, inner, PRIMARY)}.replace(${string(done[1])}, ${string(args[1].text)})`, PRIMARY]
                     : [`${expr(object, inner, PRIMARY)}.removesuffix(${string(done[1])})`, PRIMARY];
             }
-            if (method === 'toLocaleString' && args.length === 0 && numeric(object)) return [`format(${expr(object, inner)}, ",")`, PRIMARY];
+            // `n.toLocaleString()`, by the reader's locale, which JavaScript's
+            // own knows.
+            if (method === 'toLocaleString' && numeric(object)) {
+                need('browser', 'window');
+                return [`window.Number.prototype.toLocaleString.call(${[expr(object, inner), ...args.map((one) => expr(one, inner))].join(', ')})`, PRIMARY];
+            }
             if (method === 'toString' && args.length === 0) return [`str(${expr(object, inner)})`, PRIMARY];
             // A string's find() is -1 where it finds nothing, as indexOf is; a
             // list's index() raises.
@@ -1115,6 +1241,12 @@ function moduleTranslator(source, checker, program, translated = new Set()) {
             if (method === 'closest' && args.length === 1 && domElement(object)) {
                 helper('closest');
                 return [`closest(${expr(object, inner)}, ${expr(args[0], inner)})`, PRIMARY];
+            }
+            // `input.select()`, the DOM's, which Brython's DOMNode takes for a
+            // query of its own.
+            if (DOMNODE_METHODS.has(method) && domElement(object)) {
+                need('browser', 'window');
+                return [`window.Reflect.get(${own}, ${string(method)}).call(${[own, ...args.map((one) => expr(one, inner))].join(', ')})`, PRIMARY];
             }
             // Python's sort() takes a key, not a function that compares two
             // items, which JavaScript's hands both of them.
@@ -1205,7 +1337,7 @@ function moduleTranslator(source, checker, program, translated = new Set()) {
     const element_ = (fn, cx) => {
         const value = body(fn);
 
-        if (value && !holdsHandler(value, fn)) return expr(value, cx);
+        if (value && !holdsHandler(value, fn) && !needsLine(value)) return expr(value, cx);
 
         const parameter = fn.parameters[0]?.name;
         // Named after the item, or the first name it is unpacked into.
@@ -1245,8 +1377,10 @@ function moduleTranslator(source, checker, program, translated = new Set()) {
             else binding.elements?.forEach((one) => !ts.isOmittedExpression(one) && names(one.name));
         };
 
-        for (let up = fn.parent; up && up !== cx.statement; up = up.parent) {
-            if (ts.isArrowFunction(up) || ts.isFunctionExpression(up)) up.parameters.forEach((one) => names(one.name));
+        // From the function itself, which a `return` may hand back whole: an
+        // effect's cleanup is its statement's value.
+        for (let up = fn; up && up !== cx.statement; up = up.parent) {
+            if (up !== fn && (ts.isArrowFunction(up) || ts.isFunctionExpression(up))) up.parameters.forEach((one) => names(one.name));
         }
 
         const read = new Set();
@@ -1281,12 +1415,13 @@ function moduleTranslator(source, checker, program, translated = new Set()) {
     };
 
     // A function as Python writes one where it stands: a lambda of an
-    // expression, else a def of its own before the statement.
+    // expression, else a def of its own before the statement, as an `async`
+    // one always is, Python having no lambda of a coroutine.
     const callable = (fn, cx, base, forceDef = false) => {
         // `() => {}`, which does nothing.
-        if (ts.isBlock(fn.body) && fn.body.statements.length === 0 && !forceDef && !cx.forceDef) return 'lambda *args: None';
+        if (ts.isBlock(fn.body) && fn.body.statements.length === 0 && !forceDef && !cx.forceDef && !isAsync(fn)) return 'lambda *args: None';
 
-        const value = !cx.forceDef && !forceDef && body(fn);
+        const value = !cx.forceDef && !forceDef && !isAsync(fn) && body(fn) && !needsLine(body(fn)) && body(fn);
 
         if (value && fn.parameters.every((one) => ts.isIdentifier(one.name))) {
             const scope = new Set(cx.scope);
@@ -1339,7 +1474,13 @@ function moduleTranslator(source, checker, program, translated = new Set()) {
     const constant = (node) => {
         const one = unwrap(node);
 
-        return ts.isStringLiteral(one) || ts.isNumericLiteral(one) || ts.isNoSubstitutionTemplateLiteral(one) || [k.TrueKeyword, k.FalseKeyword, k.NullKeyword].includes(one.kind);
+        return written(one) || [k.TrueKeyword, k.FalseKeyword, k.NullKeyword].includes(one.kind);
+    };
+    // A string or a number as it is written, no name of Python's.
+    const written = (node) => {
+        const one = unwrap(node);
+
+        return ts.isStringLiteral(one) || ts.isNumericLiteral(one) || ts.isNoSubstitutionTemplateLiteral(one);
     };
 
     // An attribute on its line at `level`: a call or a dict too long for it,
@@ -1610,7 +1751,7 @@ function moduleTranslator(source, checker, program, translated = new Set()) {
         const params = [];
         const head = [];
         const first = fn.parameters[0];
-        const component = /^[A-Z]/.test(title) && fn.parameters.length <= 1;
+        const component = /^[A-Z]/.test(title) && (fn.parameters.length <= 1 || Boolean(cx.forwarded));
 
         if (component && first && ts.isObjectBindingPattern(first.name)) {
             const rest = first.name.elements.find((one) => one.dotDotDotToken)?.name.text ?? 'props';
@@ -1685,6 +1826,23 @@ function moduleTranslator(source, checker, program, translated = new Set()) {
             if (fn.parameters.length < pythonArity(fn)) params.push('*_');
         }
 
+        // The ref a forwardRef hands its function second, a prop in React 19.
+        const forwardedRef = cx.forwarded ? fn.parameters[1] : null;
+
+        if (forwardedRef) {
+            if (!ts.isIdentifier(forwardedRef.name)) unsupported(forwardedRef, 'a ref unpacked');
+
+            const at = params.findIndex((one) => one.startsWith('**'));
+
+            params.splice(at === -1 ? params.length : at, 0, 'ref=None');
+            taken.add('ref');
+            if (forwardedRef.name.text !== 'ref') {
+                scope.add(forwardedRef.name.text);
+                taken.add(snake(forwardedRef.name.text));
+                head.push(`${pad(level + 1)}${snake(forwardedRef.name.text)} = ref`);
+            }
+        }
+
         const inner = {
             ...cx,
             scope,
@@ -1698,17 +1856,47 @@ function moduleTranslator(source, checker, program, translated = new Set()) {
             forceDef: false,
             flatParams: false,
             extraParams: undefined,
+            forwarded: false,
             effect: Boolean(cx.effectBody),
             effectBody: false
         };
         const lines = ts.isBlock(fn.body) ? block(fn.body.statements, inner) : [...returned(fn.body, inner)];
-        const bodyLines = [...head, ...(head.length && lines.length ? [''] : []), ...lines];
+        const { outer, module } = closureWrites(fn, inner);
+        const declared = [...(module.size ? [`${pad(level + 1)}global ${[...module].join(', ')}`] : []), ...(outer.size ? [`${pad(level + 1)}nonlocal ${[...outer].join(', ')}`] : [])];
+        const bodyLines = [...declared, ...head, ...(head.length && lines.length ? [''] : []), ...lines];
         // A prop keeps its name, and one named as a function the translation
         // calls in the body, `format`, would hide it: named, not written.
         const hidden = params.map((one) => one.split('=')[0]).find((one) => BUILTINS.has(one) && bodyLines.some((line) => new RegExp(`(?<![\\w.])${one}\\(`).test(line)));
 
         if (hidden) unsupported(fn, `a prop named as ${hidden}(), which the body calls`);
-        return [...decorated, `${pad(level)}def ${title}(${params.join(', ')}):`, ...(bodyLines.length ? bodyLines : [`${pad(level + 1)}pass`])];
+        // Brython's loop, which Bryntime hands a coroutine JavaScript calls.
+        if (isAsync(fn)) need('browser', 'aio');
+        return [...decorated, `${pad(level)}${isAsync(fn) ? 'async ' : ''}def ${title}(${params.join(', ')}):`, ...(bodyLines.length ? bodyLines : [`${pad(level + 1)}pass`])];
+    };
+
+    // The names a function writes of an enclosing function's, or of the
+    // module's, as a closure of JavaScript writes them with `=`: Python's
+    // `nonlocal` and `global`.
+    const closureWrites = (fn, cx) => {
+        const outer = new Set();
+        const module = new Set();
+        const visit = (node) => {
+            if (node !== fn.body && ts.isFunctionLike(node)) return;
+
+            const counted = (ts.isPostfixUnaryExpression(node) || ts.isPrefixUnaryExpression(node)) && [k.PlusPlusToken, k.MinusMinusToken].includes(node.operator);
+            const written = ts.isBinaryExpression(node) && ASSIGNMENTS[node.operatorToken.kind] ? unwrap(node.left) : counted ? unwrap(node.operand) : null;
+            const declaration = written && ts.isIdentifier(written) ? checker.getSymbolAtLocation(written)?.valueDeclaration : null;
+
+            if (declaration && (ts.isVariableDeclaration(declaration) || ts.isParameter(declaration))) {
+                const home = ts.findAncestor(declaration.parent, ts.isFunctionLike);
+
+                if (home !== fn) (home ? outer : module).add(expr(written, cx));
+            }
+            ts.forEachChild(node, visit);
+        };
+
+        visit(fn.body);
+        return { outer, module };
     };
 
     const returned = (value, cx) => {
@@ -1788,6 +1976,8 @@ function moduleTranslator(source, checker, program, translated = new Set()) {
             lines = loop(node, at);
         } else if (ts.isSwitchStatement(node)) {
             lines = switched(node, at);
+        } else if (ts.isTryStatement(node)) {
+            lines = attempted(node, at);
         } else if ((ts.isBreakStatement(node) || ts.isContinueStatement(node)) && !node.label) {
             lines = [`${indent}${ts.isBreakStatement(node) ? 'break' : 'continue'}`];
         } else {
@@ -1811,30 +2001,48 @@ function moduleTranslator(source, checker, program, translated = new Set()) {
         const declared = node.initializer && ts.isVariableDeclarationList(node.initializer) && node.initializer.declarations.length === 1 ? node.initializer.declarations[0] : null;
 
         if (!declared) unsupported(node, 'a loop over a name not declared by it');
+        // `for (let i = a; i < b; i++)`, up or down, by one or by a step: a
+        // range, whose end Python leaves out, as `<` and `>` leave it.
         if (ts.isForStatement(node)) {
             const name = declared.name;
             const test = node.condition && unwrap(node.condition);
             const step = node.incrementor && unwrap(node.incrementor);
-            const counts =
-                ts.isIdentifier(name) &&
-                declared.initializer &&
-                test &&
-                ts.isBinaryExpression(test) &&
-                test.operatorToken.kind === k.LessThanToken &&
-                ts.isIdentifier(unwrap(test.left)) &&
-                unwrap(test.left).text === name.text &&
-                step &&
-                (ts.isPostfixUnaryExpression(step) || ts.isPrefixUnaryExpression(step)) &&
-                step.operator === k.PlusPlusToken &&
-                ts.isIdentifier(step.operand) &&
-                step.operand.text === name.text;
+            const own = (one) => Boolean(one) && ts.isIdentifier(name) && ts.isIdentifier(unwrap(one)) && unwrap(one).text === name.text;
+            const counted = (one) => (ts.isPostfixUnaryExpression(one) || ts.isPrefixUnaryExpression(one)) && [k.PlusPlusToken, k.MinusMinusToken].includes(one.operator) && own(one.operand);
+            const stepped = (one) => ts.isBinaryExpression(one) && [k.PlusEqualsToken, k.MinusEqualsToken].includes(one.operatorToken.kind) && own(one.left);
+            const up = step && (counted(step) ? step.operator === k.PlusPlusToken : stepped(step) ? step.operatorToken.kind === k.PlusEqualsToken : null);
+            const ends = up === true ? [k.LessThanToken, k.LessThanEqualsToken] : up === false ? [k.GreaterThanToken, k.GreaterThanEqualsToken] : [];
+            // `i < a && i < b && ready(i)`: its bounds, the nearest one the
+            // range's end, and the rest tested before each turn, as JavaScript
+            // tests the whole.
+            const conjuncts = (one) => (ts.isBinaryExpression(one) && one.operatorToken.kind === k.AmpersandAmpersandToken ? [...conjuncts(unwrap(one.left)), ...conjuncts(unwrap(one.right))] : [one]);
+            const parts = test ? conjuncts(test) : [];
+            const bounds = parts.filter((one) => ts.isBinaryExpression(one) && own(one.left) && ends.includes(one.operatorToken.kind));
+            const others = parts.filter((one) => !bounds.includes(one));
 
-            if (!counts) unsupported(node, 'a loop of another shape than a range');
+            if (!declared.initializer || !bounds.length) unsupported(node, 'a loop of another shape than a range');
+
+            // What the body writes of the count, which a range would not see.
+            const writes = (one) =>
+                (ts.isBinaryExpression(one) && ASSIGNMENTS[one.operatorToken.kind] && own(one.left)) || counted(one) || Boolean(ts.forEachChild(one, writes));
+
+            if (writes(node.statement)) unsupported(node, 'a loop whose body changes its count');
 
             const local = target(name, cx.scope);
             const from = expr(declared.initializer, cx);
+            const by = counted(step) ? (up ? '1' : '-1') : up ? expr(step.right, cx, UNARY) : `-${expr(step.right, cx, UNARY)}`;
+            // `i <= b`, past b by one, `i >= b` before it.
+            const end = (bound) => {
+                const right = unwrap(bound.right);
+                const shift = bound.operatorToken.kind === k.LessThanEqualsToken ? 1 : bound.operatorToken.kind === k.GreaterThanEqualsToken ? -1 : 0;
 
-            return [`${indent}for ${local} in range(${from === '0' ? '' : `${from}, `}${expr(test.right, cx)}):`, ...lines];
+                return !shift ? expr(right, cx) : ts.isNumericLiteral(right) ? String(Number(right.text) + shift) : `${expr(right, cx, ADD)} ${shift > 0 ? '+' : '-'} 1`;
+            };
+            const to = bounds.length === 1 ? end(bounds[0]) : `${up ? 'min' : 'max'}(${bounds.map(end).join(', ')})`;
+            const args = by === '1' ? (from === '0' ? [to] : [from, to]) : [from, to, by];
+            const guard = others.length ? [`${pad(inner.level)}if not (${others.map((one) => expr(one, inner, AND + 1)).join(' and ')}):`, `${pad(inner.level + 1)}break`] : [];
+
+            return [`${indent}for ${local} in range(${args.join(', ')}):`, ...guard, ...lines];
         }
 
         const binding = declared.name;
@@ -1871,6 +2079,25 @@ function moduleTranslator(source, checker, program, translated = new Set()) {
 
         if (node.elseStatement && ts.isIfStatement(node.elseStatement)) return [...lines, ...conditional(node.elseStatement, cx, 'elif')];
         if (node.elseStatement) return [...lines, `${indent}else:`, ...branch(node.elseStatement)];
+        return lines;
+    };
+
+    // A try, Python's: JavaScript's catch takes every error, a JavaScript one
+    // too, which Brython raises as an exception.
+    const attempted = (node, cx) => {
+        const indent = pad(cx.level);
+        const inner = { ...cx, level: cx.level + 1 };
+        const branch = (one) => {
+            const body = block(one.statements, inner);
+
+            return body.some((line) => line.trim()) ? body : [`${pad(inner.level)}pass`];
+        };
+        const lines = [`${indent}try:`, ...branch(node.tryBlock)];
+        const binding = node.catchClause?.variableDeclaration?.name;
+
+        if (binding && !ts.isIdentifier(binding)) unsupported(node.catchClause, 'a catch that unpacks its error');
+        if (node.catchClause) lines.push(`${indent}except Exception${binding ? ` as ${target(binding, cx.scope)}` : ''}:`, ...branch(node.catchClause.block));
+        if (node.finallyBlock) lines.push(`${indent}finally:`, ...branch(node.finallyBlock));
         return lines;
     };
 
@@ -2077,10 +2304,60 @@ function moduleTranslator(source, checker, program, translated = new Set()) {
         }
         if (ts.isBinaryExpression(one) && ASSIGNMENTS[one.operatorToken.kind]) {
             const left = unwrap(one.left);
+
+            // `canvas.width = w`, the DOM's own, past Brython's DOMNode, which
+            // would write the style's.
+            if (ts.isPropertyAccessExpression(left) && DOMNODE_PROPERTIES.has(left.name.text) && domElement(left.expression)) {
+                const owner = expr(left.expression, cx);
+                const field_ = string(left.name.text);
+                const operator = ASSIGNMENTS[one.operatorToken.kind];
+                const value = operator === '=' ? expr(one.right, cx) : `window.Reflect.get(${owner}, ${field_}) ${operator[0]} ${expr(one.right, cx, ADD + 1)}`;
+
+                need('browser', 'window');
+                return [`${indent}window.Reflect.set(${owner}, ${field_}, ${value})`];
+            }
             const target_ = ts.isPropertyAccessExpression(left) ? property(left, cx, 'write')[0] : ts.isElementAccessExpression(left) ? element(left, cx, 'write')[0] : expr(left, cx);
 
             if (ts.isIdentifier(left)) cx.scope.add(left.text);
             return [`${indent}${target_} ${ASSIGNMENTS[one.operatorToken.kind]} ${pretty(one.right, cx, cx.level, indent.length + target_.length + 3)}`];
+        }
+        // `items.forEach(add)`, a loop over what Python and JavaScript both walk:
+        // the callback's body inside it, or the function called on each item,
+        // and its index where it takes one. A body that returns, which leaves
+        // its turn alone, is a def.
+        if (ts.isCallExpression(one) && ts.isPropertyAccessExpression(one.expression) && one.expression.name.text === 'forEach' && one.arguments.length === 1 && sized(one.expression.expression)) {
+            const fn = unwrap(one.arguments[0]);
+            const over = expr(one.expression.expression, cx);
+            const inner = { ...cx, level: cx.level + 1 };
+            const returns = (node) => ts.isReturnStatement(node) || (!ts.isFunctionLike(node) && Boolean(ts.forEachChild(node, returns)));
+            const each = (item, index) => (index ? `for ${index}, ${item} in enumerate(${over}):` : `for ${item} in ${over}:`);
+
+            if (isFunction(fn) && fn.parameters.length <= 2 && fn.parameters.every((param) => ts.isIdentifier(param.name)) && !(ts.isBlock(fn.body) && returns(fn.body))) {
+                const [item, index] = fn.parameters.map((param) => target(param.name, cx.scope));
+                const body = ts.isBlock(fn.body) ? block(fn.body.statements, inner) : expressionStatement(fn.body, inner);
+
+                return [`${indent}${each(item ?? '_', index)}`, ...(body.some((line) => line.trim()) ? body : [`${pad(inner.level)}pass`])];
+            }
+
+            const called = isFunction(fn) ? callable(fn, cx, 'each', true) : expr(fn, cx, PRIMARY);
+            const takes = isFunction(fn) ? fn.parameters.length : Math.max(0, ...typeOf(fn).getCallSignatures().map((signature) => signature.getParameters().length));
+            const item = fresh('item', cx);
+            const index = takes >= 2 ? fresh('index', cx) : null;
+
+            return [`${indent}${each(item, index)}`, `${pad(inner.level)}${called}(${index ? `${item}, ${index}` : item})`];
+        }
+        // `count++`, a statement of its own: Python's `+= 1`.
+        if ((ts.isPostfixUnaryExpression(one) || ts.isPrefixUnaryExpression(one)) && [k.PlusPlusToken, k.MinusMinusToken].includes(one.operator)) {
+            const operand = unwrap(one.operand);
+            const target_ = ts.isPropertyAccessExpression(operand) ? property(operand, cx, 'write')[0] : ts.isElementAccessExpression(operand) ? element(operand, cx, 'write')[0] : expr(operand, cx);
+
+            return [`${indent}${target_} ${one.operator === k.PlusPlusToken ? '+=' : '-='} 1`];
+        }
+        // A coroutine called and not awaited, which JavaScript runs at once and
+        // Python once Brython's loop is handed it.
+        if (ts.isCallExpression(one) && coroutine(one)) {
+            need('browser', 'aio');
+            return [`${indent}aio.run(${expr(one, cx)})`];
         }
         return [`${indent}${pretty(one, cx, cx.level, indent.length)}`];
     };
@@ -2130,6 +2407,8 @@ function moduleTranslator(source, checker, program, translated = new Set()) {
 
                     if (isFunction(value)) {
                         items.push({ def: true, lines: def(title, unwrap(value), { ...cx, hoists: [], hoisted: new Map() }) });
+                    } else if (forwarded(value)) {
+                        items.push({ def: true, lines: def(title, forwarded(value), { ...cx, hoists: [], hoisted: new Map(), forwarded: true }) });
                     } else if (memoized(value)) {
                         items.push({ def: true, lines: ['@memo', ...def(title, memoized(value), { ...cx, hoists: [], hoisted: new Map() })] });
                     } else if (ts.isCallExpression(value) && value.expression.getText() === 'cva') {
@@ -2151,7 +2430,9 @@ function moduleTranslator(source, checker, program, translated = new Set()) {
                     }
                 }
             } else {
-                unsupported(node, ts.SyntaxKind[node.kind]);
+                // `Bar.displayName = "Bar"`, and any other statement of the
+                // module, as a function's.
+                items.push({ def: false, lines: statement(node, cx) });
             }
         }
 

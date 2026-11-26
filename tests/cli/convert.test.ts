@@ -1,7 +1,7 @@
 // `npx reacthon-ui convert` in a project of its own: its components and
 // pages written in Python beside them, a page importing a component of the
 // project as Python, a `.py` already there kept unless --overwrite says, and
-// a switch, which Python writes as an if and its elifs.
+// what Python writes its own way: a switch, an async function and a try.
 import { spawnSync } from "node:child_process"
 import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs"
 import { tmpdir } from "node:os"
@@ -122,6 +122,38 @@ def size(n):
     if n > 9:
         return "big"
     return "small"
+`)
+  })
+
+  it("writes an async function as an async def, which aio.run starts where it is called, and a try", () => {
+    writeFileSync(
+      join(project, "src/components/load.tsx"),
+      `export function load(url: string, done: (text: string) => void) {
+  const run = async () => {
+    try {
+      done(await (await fetch(url)).text())
+    } catch {
+      done("")
+    }
+  }
+
+  run()
+}
+`
+    )
+
+    expect(run("src/components/load.tsx").stdout.trim()).toBe("written src/components/load.py")
+    expect(read("src/components/load.py")).toBe(`from browser import aio, window
+
+
+def load(url, done):
+    async def run():
+        try:
+            done(await (await window.fetch(url)).text())
+        except Exception:
+            done("")
+
+    aio.run(run())
 `)
   })
 
