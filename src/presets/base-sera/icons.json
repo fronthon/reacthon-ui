@@ -1,0 +1,7062 @@
+{
+  "blocks/dashboard-01/app-sidebar.tsx": [
+    {
+      "lucide": "LayoutDashboardIcon",
+      "tabler": "IconDashboard",
+      "hugeicons": "DashboardSquare01Icon",
+      "phosphor": "SquaresFourIcon",
+      "remixicon": "RiDashboardLine"
+    },
+    {
+      "lucide": "ListIcon",
+      "tabler": "IconListDetails",
+      "hugeicons": "Menu01Icon",
+      "phosphor": "ListIcon",
+      "remixicon": "RiListUnordered"
+    },
+    {
+      "lucide": "ChartBarIcon",
+      "tabler": "IconChartBar",
+      "hugeicons": "ChartHistogramIcon",
+      "phosphor": "ChartBarIcon",
+      "remixicon": "RiBarChartLine"
+    },
+    {
+      "lucide": "FolderIcon",
+      "tabler": "IconFolder",
+      "hugeicons": "Folder01Icon",
+      "phosphor": "FolderIcon",
+      "remixicon": "RiFolderLine"
+    },
+    {
+      "lucide": "UsersIcon",
+      "tabler": "IconUsers",
+      "hugeicons": "UserGroupIcon",
+      "phosphor": "UsersIcon",
+      "remixicon": "RiGroupLine"
+    },
+    {
+      "lucide": "CameraIcon",
+      "tabler": "IconCamera",
+      "hugeicons": "Camera01Icon",
+      "phosphor": "CameraIcon",
+      "remixicon": "RiCameraLine"
+    },
+    {
+      "lucide": "FileTextIcon",
+      "tabler": "IconFileDescription",
+      "hugeicons": "File01Icon",
+      "phosphor": "FileTextIcon",
+      "remixicon": "RiFileTextLine"
+    },
+    {
+      "lucide": "FileTextIcon",
+      "tabler": "IconFileAi",
+      "hugeicons": "File01Icon",
+      "phosphor": "FileTextIcon",
+      "remixicon": "RiFileTextLine"
+    },
+    {
+      "lucide": "Settings2Icon",
+      "tabler": "IconSettings",
+      "hugeicons": "Settings05Icon",
+      "phosphor": "GearIcon",
+      "remixicon": "RiSettingsLine"
+    },
+    {
+      "lucide": "CircleHelpIcon",
+      "tabler": "IconHelp",
+      "hugeicons": "HelpCircleIcon",
+      "phosphor": "QuestionIcon",
+      "remixicon": "RiQuestionLine"
+    },
+    {
+      "lucide": "SearchIcon",
+      "tabler": "IconSearch",
+      "hugeicons": "SearchIcon",
+      "phosphor": "MagnifyingGlassIcon",
+      "remixicon": "RiSearchLine"
+    },
+    {
+      "lucide": "DatabaseIcon",
+      "tabler": "IconDatabase",
+      "hugeicons": "Database01Icon",
+      "phosphor": "DatabaseIcon",
+      "remixicon": "RiDatabase2Line"
+    },
+    {
+      "lucide": "FileChartColumnIcon",
+      "tabler": "IconReport",
+      "hugeicons": "Analytics01Icon",
+      "phosphor": "ChartLineIcon",
+      "remixicon": "RiFileChartLine"
+    },
+    {
+      "lucide": "FileIcon",
+      "tabler": "IconFileWord",
+      "hugeicons": "File01Icon",
+      "phosphor": "FileIcon",
+      "remixicon": "RiFileLine"
+    },
+    {
+      "lucide": "CommandIcon",
+      "tabler": "IconInnerShadowTop",
+      "hugeicons": "CommandIcon",
+      "phosphor": "CommandIcon",
+      "remixicon": "RiCommandLine"
+    }
+  ],
+  "blocks/dashboard-01/data-table.tsx": [
+    {
+      "lucide": "GripVerticalIcon",
+      "tabler": "IconGripVertical",
+      "hugeicons": "DragDropVerticalIcon",
+      "phosphor": "DotsSixVerticalIcon",
+      "remixicon": "RiDraggable"
+    },
+    {
+      "lucide": "CircleCheckIcon",
+      "tabler": "IconCircleCheckFilled",
+      "hugeicons": "CheckmarkCircle01Icon",
+      "phosphor": "CheckCircleIcon",
+      "remixicon": "RiCheckboxCircleFill"
+    },
+    {
+      "lucide": "LoaderIcon",
+      "tabler": "IconLoader",
+      "hugeicons": "Loading03Icon",
+      "phosphor": "SpinnerIcon",
+      "remixicon": "RiLoader4Line"
+    },
+    {
+      "lucide": "EllipsisVerticalIcon",
+      "tabler": "IconDotsVertical",
+      "hugeicons": "MoreVerticalCircle01Icon",
+      "phosphor": "DotsThreeVerticalIcon",
+      "remixicon": "RiMore2Line"
+    },
+    {
+      "lucide": "Columns3Icon",
+      "tabler": "IconLayoutColumns",
+      "hugeicons": "LeftToRightListBulletIcon",
+      "phosphor": "ColumnsIcon",
+      "remixicon": "RiLayoutColumnLine",
+      "icon": "inline-start"
+    },
+    {
+      "lucide": "ChevronDownIcon",
+      "tabler": "IconChevronDown",
+      "hugeicons": "ArrowDown01Icon",
+      "phosphor": "CaretDownIcon",
+      "remixicon": "RiArrowDownSLine",
+      "icon": "inline-end"
+    },
+    {
+      "lucide": "PlusIcon",
+      "tabler": "IconPlus",
+      "hugeicons": "Add01Icon",
+      "phosphor": "PlusIcon",
+      "remixicon": "RiAddLine"
+    },
+    {
+      "lucide": "ChevronsLeftIcon",
+      "tabler": "IconChevronsLeft",
+      "hugeicons": "ArrowLeftDoubleIcon",
+      "phosphor": "CaretDoubleLeftIcon",
+      "remixicon": "RiSkipLeftLine"
+    },
+    {
+      "lucide": "ChevronLeftIcon",
+      "tabler": "IconChevronLeft",
+      "hugeicons": "ArrowLeft01Icon",
+      "phosphor": "CaretLeftIcon",
+      "remixicon": "RiArrowLeftSLine"
+    },
+    {
+      "lucide": "ChevronRightIcon",
+      "tabler": "IconChevronRight",
+      "hugeicons": "ArrowRight01Icon",
+      "phosphor": "CaretRightIcon",
+      "remixicon": "RiArrowRightSLine"
+    },
+    {
+      "lucide": "ChevronsRightIcon",
+      "tabler": "IconChevronsRight",
+      "hugeicons": "ArrowRightDoubleIcon",
+      "phosphor": "CaretDoubleRightIcon",
+      "remixicon": "RiSkipRightLine"
+    },
+    {
+      "lucide": "TrendingUpIcon",
+      "tabler": "IconTrendingUp",
+      "hugeicons": "ChartUpIcon",
+      "phosphor": "TrendUpIcon",
+      "remixicon": "RiArrowUpLine"
+    }
+  ],
+  "blocks/dashboard-01/nav-documents.tsx": [
+    {
+      "lucide": "MoreHorizontalIcon",
+      "tabler": "IconDots",
+      "hugeicons": "MoreHorizontalCircle01Icon",
+      "phosphor": "DotsThreeOutlineIcon",
+      "remixicon": "RiMoreLine"
+    },
+    {
+      "lucide": "FolderIcon",
+      "tabler": "IconFolder",
+      "hugeicons": "Folder01Icon",
+      "phosphor": "FolderIcon",
+      "remixicon": "RiFolderLine"
+    },
+    {
+      "lucide": "ShareIcon",
+      "tabler": "IconShare3",
+      "hugeicons": "Share01Icon",
+      "phosphor": "ShareIcon",
+      "remixicon": "RiShareLine"
+    },
+    {
+      "lucide": "Trash2Icon",
+      "tabler": "IconTrash",
+      "hugeicons": "Delete02Icon",
+      "phosphor": "TrashIcon",
+      "remixicon": "RiDeleteBinLine"
+    },
+    {
+      "lucide": "MoreHorizontalIcon",
+      "tabler": "IconDots",
+      "hugeicons": "MoreHorizontalCircle01Icon",
+      "phosphor": "DotsThreeOutlineIcon",
+      "remixicon": "RiMoreLine"
+    }
+  ],
+  "blocks/dashboard-01/nav-main.tsx": [
+    {
+      "lucide": "CirclePlusIcon",
+      "tabler": "IconCirclePlusFilled",
+      "hugeicons": "PlusSignCircleIcon",
+      "phosphor": "PlusCircleIcon",
+      "remixicon": "RiAddCircleFill"
+    },
+    {
+      "lucide": "MailIcon",
+      "tabler": "IconMail",
+      "hugeicons": "Mail01Icon",
+      "phosphor": "EnvelopeIcon",
+      "remixicon": "RiMailLine"
+    }
+  ],
+  "blocks/dashboard-01/nav-user.tsx": [
+    {
+      "lucide": "EllipsisVerticalIcon",
+      "tabler": "IconDotsVertical",
+      "hugeicons": "MoreVerticalCircle01Icon",
+      "phosphor": "DotsThreeVerticalIcon",
+      "remixicon": "RiMore2Line"
+    },
+    {
+      "lucide": "CircleUserRoundIcon",
+      "tabler": "IconUserCircle",
+      "hugeicons": "UserCircle02Icon",
+      "phosphor": "UserCircleIcon",
+      "remixicon": "RiUserLine"
+    },
+    {
+      "lucide": "CreditCardIcon",
+      "tabler": "IconCreditCard",
+      "hugeicons": "CreditCardIcon",
+      "phosphor": "CreditCardIcon",
+      "remixicon": "RiBankCardLine"
+    },
+    {
+      "lucide": "BellIcon",
+      "tabler": "IconNotification",
+      "hugeicons": "Notification03Icon",
+      "phosphor": "BellIcon",
+      "remixicon": "RiNotification3Line"
+    },
+    {
+      "lucide": "LogOutIcon",
+      "tabler": "IconLogout",
+      "hugeicons": "Logout01Icon",
+      "phosphor": "SignOutIcon",
+      "remixicon": "RiLogoutBoxLine"
+    }
+  ],
+  "blocks/dashboard-01/section-cards.tsx": [
+    {
+      "lucide": "TrendingUpIcon",
+      "tabler": "IconTrendingUp",
+      "hugeicons": "ChartUpIcon",
+      "phosphor": "TrendUpIcon",
+      "remixicon": "RiArrowUpLine"
+    },
+    {
+      "lucide": "TrendingUpIcon",
+      "tabler": "IconTrendingUp",
+      "hugeicons": "ChartUpIcon",
+      "phosphor": "TrendUpIcon",
+      "remixicon": "RiArrowUpLine"
+    },
+    {
+      "lucide": "TrendingDownIcon",
+      "tabler": "IconTrendingDown",
+      "hugeicons": "ChartDownIcon",
+      "phosphor": "TrendDownIcon",
+      "remixicon": "RiArrowDownLine"
+    },
+    {
+      "lucide": "TrendingDownIcon",
+      "tabler": "IconTrendingDown",
+      "hugeicons": "ChartDownIcon",
+      "phosphor": "TrendDownIcon",
+      "remixicon": "RiArrowDownLine"
+    },
+    {
+      "lucide": "TrendingUpIcon",
+      "tabler": "IconTrendingUp",
+      "hugeicons": "ChartUpIcon",
+      "phosphor": "TrendUpIcon",
+      "remixicon": "RiArrowUpLine"
+    },
+    {
+      "lucide": "TrendingUpIcon",
+      "tabler": "IconTrendingUp",
+      "hugeicons": "ChartUpIcon",
+      "phosphor": "TrendUpIcon",
+      "remixicon": "RiArrowUpLine"
+    },
+    {
+      "lucide": "TrendingUpIcon",
+      "tabler": "IconTrendingUp",
+      "hugeicons": "ChartUpIcon",
+      "phosphor": "TrendUpIcon",
+      "remixicon": "RiArrowUpLine"
+    },
+    {
+      "lucide": "TrendingUpIcon",
+      "tabler": "IconTrendingUp",
+      "hugeicons": "ChartUpIcon",
+      "phosphor": "TrendUpIcon",
+      "remixicon": "RiArrowUpLine"
+    }
+  ],
+  "blocks/login-02/page.tsx": [
+    {
+      "lucide": "GalleryVerticalEndIcon",
+      "tabler": "IconLayoutRows",
+      "hugeicons": "LayoutBottomIcon",
+      "phosphor": "RowsIcon",
+      "remixicon": "RiGalleryLine"
+    }
+  ],
+  "blocks/login-03/page.tsx": [
+    {
+      "lucide": "GalleryVerticalEndIcon",
+      "tabler": "IconLayoutRows",
+      "hugeicons": "LayoutBottomIcon",
+      "phosphor": "RowsIcon",
+      "remixicon": "RiGalleryLine"
+    }
+  ],
+  "blocks/login-05/login-form.tsx": [
+    {
+      "lucide": "GalleryVerticalEndIcon",
+      "tabler": "IconLayoutRows",
+      "hugeicons": "LayoutBottomIcon",
+      "phosphor": "RowsIcon",
+      "remixicon": "RiGalleryLine"
+    }
+  ],
+  "blocks/sidebar-01/search-form.tsx": [
+    {
+      "lucide": "SearchIcon",
+      "tabler": "IconSearch",
+      "hugeicons": "SearchIcon",
+      "phosphor": "MagnifyingGlassIcon",
+      "remixicon": "RiSearchLine"
+    }
+  ],
+  "blocks/sidebar-01/version-switcher.tsx": [
+    {
+      "lucide": "GalleryVerticalEndIcon",
+      "tabler": "IconLayoutRows",
+      "hugeicons": "LayoutBottomIcon",
+      "phosphor": "RowsIcon",
+      "remixicon": "RiGalleryLine"
+    },
+    {
+      "lucide": "ChevronsUpDownIcon",
+      "tabler": "IconSelector",
+      "hugeicons": "UnfoldMoreIcon",
+      "phosphor": "CaretUpDownIcon",
+      "remixicon": "RiArrowUpDownLine"
+    },
+    {
+      "lucide": "CheckIcon",
+      "tabler": "IconCheck",
+      "hugeicons": "Tick02Icon",
+      "phosphor": "CheckIcon",
+      "remixicon": "RiCheckLine"
+    }
+  ],
+  "blocks/sidebar-02/app-sidebar.tsx": [
+    {
+      "lucide": "ChevronRightIcon",
+      "tabler": "IconChevronRight",
+      "hugeicons": "ArrowRight01Icon",
+      "phosphor": "CaretRightIcon",
+      "remixicon": "RiArrowRightSLine"
+    }
+  ],
+  "blocks/sidebar-02/search-form.tsx": [
+    {
+      "lucide": "SearchIcon",
+      "tabler": "IconSearch",
+      "hugeicons": "SearchIcon",
+      "phosphor": "MagnifyingGlassIcon",
+      "remixicon": "RiSearchLine"
+    }
+  ],
+  "blocks/sidebar-02/version-switcher.tsx": [
+    {
+      "lucide": "GalleryVerticalEndIcon",
+      "tabler": "IconLayoutRows",
+      "hugeicons": "LayoutBottomIcon",
+      "phosphor": "RowsIcon",
+      "remixicon": "RiGalleryLine"
+    },
+    {
+      "lucide": "ChevronsUpDownIcon",
+      "tabler": "IconSelector",
+      "hugeicons": "UnfoldMoreIcon",
+      "phosphor": "CaretUpDownIcon",
+      "remixicon": "RiArrowUpDownLine"
+    },
+    {
+      "lucide": "CheckIcon",
+      "tabler": "IconCheck",
+      "hugeicons": "Tick02Icon",
+      "phosphor": "CheckIcon",
+      "remixicon": "RiCheckLine"
+    }
+  ],
+  "blocks/sidebar-03/app-sidebar.tsx": [
+    {
+      "lucide": "GalleryVerticalEndIcon",
+      "tabler": "IconLayoutRows",
+      "hugeicons": "LayoutBottomIcon",
+      "phosphor": "RowsIcon",
+      "remixicon": "RiGalleryLine"
+    }
+  ],
+  "blocks/sidebar-04/app-sidebar.tsx": [
+    {
+      "lucide": "GalleryVerticalEndIcon",
+      "tabler": "IconLayoutRows",
+      "hugeicons": "LayoutBottomIcon",
+      "phosphor": "RowsIcon",
+      "remixicon": "RiGalleryLine"
+    }
+  ],
+  "blocks/sidebar-05/app-sidebar.tsx": [
+    {
+      "lucide": "GalleryVerticalEndIcon",
+      "tabler": "IconLayoutRows",
+      "hugeicons": "LayoutBottomIcon",
+      "phosphor": "RowsIcon",
+      "remixicon": "RiGalleryLine"
+    },
+    {
+      "lucide": "PlusIcon",
+      "tabler": "IconPlus",
+      "hugeicons": "PlusSignIcon",
+      "phosphor": "PlusIcon",
+      "remixicon": "RiAddLine"
+    },
+    {
+      "lucide": "MinusIcon",
+      "tabler": "IconMinus",
+      "hugeicons": "MinusSignIcon",
+      "phosphor": "MinusIcon",
+      "remixicon": "RiSubtractLine"
+    }
+  ],
+  "blocks/sidebar-05/search-form.tsx": [
+    {
+      "lucide": "SearchIcon",
+      "tabler": "IconSearch",
+      "hugeicons": "SearchIcon",
+      "phosphor": "MagnifyingGlassIcon",
+      "remixicon": "RiSearchLine"
+    }
+  ],
+  "blocks/sidebar-06/app-sidebar.tsx": [
+    {
+      "lucide": "GalleryVerticalEndIcon",
+      "tabler": "IconLayoutRows",
+      "hugeicons": "LayoutBottomIcon",
+      "phosphor": "RowsIcon",
+      "remixicon": "RiGalleryLine"
+    }
+  ],
+  "blocks/sidebar-06/nav-main.tsx": [
+    {
+      "lucide": "MoreHorizontalIcon",
+      "tabler": "IconDots",
+      "hugeicons": "MoreHorizontalCircle01Icon",
+      "phosphor": "DotsThreeOutlineIcon",
+      "remixicon": "RiMoreLine"
+    }
+  ],
+  "blocks/sidebar-07/app-sidebar.tsx": [
+    {
+      "lucide": "GalleryVerticalEndIcon",
+      "tabler": "IconLayoutRows",
+      "hugeicons": "LayoutBottomIcon",
+      "phosphor": "RowsIcon",
+      "remixicon": "RiGalleryLine"
+    },
+    {
+      "lucide": "AudioLinesIcon",
+      "tabler": "IconWaveSine",
+      "hugeicons": "AudioWave01Icon",
+      "phosphor": "WaveformIcon",
+      "remixicon": "RiPulseLine"
+    },
+    {
+      "lucide": "TerminalIcon",
+      "tabler": "IconCommand",
+      "hugeicons": "CommandIcon",
+      "phosphor": "CommandIcon",
+      "remixicon": "RiCommandLine"
+    },
+    {
+      "lucide": "TerminalSquareIcon",
+      "tabler": "IconTerminal2",
+      "hugeicons": "ComputerTerminalIcon",
+      "phosphor": "TerminalIcon",
+      "remixicon": "RiTerminalBoxLine"
+    },
+    {
+      "lucide": "BotIcon",
+      "tabler": "IconRobot",
+      "hugeicons": "RoboticIcon",
+      "phosphor": "RobotIcon",
+      "remixicon": "RiRobotLine"
+    },
+    {
+      "lucide": "BookOpenIcon",
+      "tabler": "IconBook",
+      "hugeicons": "BookOpen02Icon",
+      "phosphor": "BookOpenIcon",
+      "remixicon": "RiBookOpenLine"
+    },
+    {
+      "lucide": "Settings2Icon",
+      "tabler": "IconSettings",
+      "hugeicons": "Settings05Icon",
+      "phosphor": "GearIcon",
+      "remixicon": "RiSettingsLine"
+    },
+    {
+      "lucide": "FrameIcon",
+      "tabler": "IconFrame",
+      "hugeicons": "CropIcon",
+      "phosphor": "CropIcon",
+      "remixicon": "RiCropLine"
+    },
+    {
+      "lucide": "PieChartIcon",
+      "tabler": "IconChartPie",
+      "hugeicons": "PieChartIcon",
+      "phosphor": "ChartPieIcon",
+      "remixicon": "RiPieChartLine"
+    },
+    {
+      "lucide": "MapIcon",
+      "tabler": "IconMap",
+      "hugeicons": "MapsIcon",
+      "phosphor": "MapTrifoldIcon",
+      "remixicon": "RiMapLine"
+    }
+  ],
+  "blocks/sidebar-07/nav-main.tsx": [
+    {
+      "lucide": "ChevronRightIcon",
+      "tabler": "IconChevronRight",
+      "hugeicons": "ArrowRight01Icon",
+      "phosphor": "CaretRightIcon",
+      "remixicon": "RiArrowRightSLine"
+    }
+  ],
+  "blocks/sidebar-07/nav-projects.tsx": [
+    {
+      "lucide": "MoreHorizontalIcon",
+      "tabler": "IconDots",
+      "hugeicons": "MoreHorizontalCircle01Icon",
+      "phosphor": "DotsThreeOutlineIcon",
+      "remixicon": "RiMoreLine"
+    },
+    {
+      "lucide": "FolderIcon",
+      "tabler": "IconFolder",
+      "hugeicons": "FolderIcon",
+      "phosphor": "FolderIcon",
+      "remixicon": "RiFolderLine"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowForward",
+      "hugeicons": "ArrowRightIcon",
+      "phosphor": "ShareFatIcon",
+      "remixicon": "RiShareForwardLine"
+    },
+    {
+      "lucide": "Trash2Icon",
+      "tabler": "IconTrash",
+      "hugeicons": "Delete02Icon",
+      "phosphor": "TrashIcon",
+      "remixicon": "RiDeleteBinLine"
+    },
+    {
+      "lucide": "MoreHorizontalIcon",
+      "tabler": "IconDots",
+      "hugeicons": "MoreHorizontalCircle01Icon",
+      "phosphor": "DotsThreeOutlineIcon",
+      "remixicon": "RiMoreLine"
+    }
+  ],
+  "blocks/sidebar-07/nav-user.tsx": [
+    {
+      "lucide": "ChevronsUpDownIcon",
+      "tabler": "IconSelector",
+      "hugeicons": "UnfoldMoreIcon",
+      "phosphor": "CaretUpDownIcon",
+      "remixicon": "RiArrowUpDownLine"
+    },
+    {
+      "lucide": "SparklesIcon",
+      "tabler": "IconSparkles",
+      "hugeicons": "SparklesIcon",
+      "phosphor": "SparkleIcon",
+      "remixicon": "RiSparklingLine"
+    },
+    {
+      "lucide": "BadgeCheckIcon",
+      "tabler": "IconRosetteDiscountCheck",
+      "hugeicons": "CheckmarkBadgeIcon",
+      "phosphor": "CheckCircleIcon",
+      "remixicon": "RiCheckboxCircleLine"
+    },
+    {
+      "lucide": "CreditCardIcon",
+      "tabler": "IconCreditCard",
+      "hugeicons": "CreditCardIcon",
+      "phosphor": "CreditCardIcon",
+      "remixicon": "RiBankCardLine"
+    },
+    {
+      "lucide": "BellIcon",
+      "tabler": "IconBell",
+      "hugeicons": "NotificationIcon",
+      "phosphor": "BellIcon",
+      "remixicon": "RiNotificationLine"
+    },
+    {
+      "lucide": "LogOutIcon",
+      "tabler": "IconLogout",
+      "hugeicons": "LogoutIcon",
+      "phosphor": "SignOutIcon",
+      "remixicon": "RiLogoutBoxLine"
+    }
+  ],
+  "blocks/sidebar-07/team-switcher.tsx": [
+    {
+      "lucide": "ChevronsUpDownIcon",
+      "tabler": "IconSelector",
+      "hugeicons": "UnfoldMoreIcon",
+      "phosphor": "CaretUpDownIcon",
+      "remixicon": "RiArrowUpDownLine"
+    },
+    {
+      "lucide": "PlusIcon",
+      "tabler": "IconPlus",
+      "hugeicons": "PlusSignIcon",
+      "phosphor": "PlusIcon",
+      "remixicon": "RiAddLine"
+    }
+  ],
+  "blocks/sidebar-08/app-sidebar.tsx": [
+    {
+      "lucide": "TerminalSquareIcon",
+      "tabler": "IconTerminal2",
+      "hugeicons": "ComputerTerminalIcon",
+      "phosphor": "TerminalIcon",
+      "remixicon": "RiTerminalBoxLine"
+    },
+    {
+      "lucide": "BotIcon",
+      "tabler": "IconRobot",
+      "hugeicons": "RoboticIcon",
+      "phosphor": "RobotIcon",
+      "remixicon": "RiRobotLine"
+    },
+    {
+      "lucide": "BookOpenIcon",
+      "tabler": "IconBook",
+      "hugeicons": "BookOpen02Icon",
+      "phosphor": "BookOpenIcon",
+      "remixicon": "RiBookOpenLine"
+    },
+    {
+      "lucide": "Settings2Icon",
+      "tabler": "IconSettings",
+      "hugeicons": "Settings05Icon",
+      "phosphor": "GearIcon",
+      "remixicon": "RiSettingsLine"
+    },
+    {
+      "lucide": "LifeBuoyIcon",
+      "tabler": "IconLifebuoy",
+      "hugeicons": "ChartRingIcon",
+      "phosphor": "LifebuoyIcon",
+      "remixicon": "RiLifebuoyLine"
+    },
+    {
+      "lucide": "SendIcon",
+      "tabler": "IconSend",
+      "hugeicons": "SentIcon",
+      "phosphor": "PaperPlaneTiltIcon",
+      "remixicon": "RiSendPlaneLine"
+    },
+    {
+      "lucide": "FrameIcon",
+      "tabler": "IconFrame",
+      "hugeicons": "CropIcon",
+      "phosphor": "CropIcon",
+      "remixicon": "RiCropLine"
+    },
+    {
+      "lucide": "PieChartIcon",
+      "tabler": "IconChartPie",
+      "hugeicons": "PieChartIcon",
+      "phosphor": "ChartPieIcon",
+      "remixicon": "RiPieChartLine"
+    },
+    {
+      "lucide": "MapIcon",
+      "tabler": "IconMap",
+      "hugeicons": "MapsIcon",
+      "phosphor": "MapTrifoldIcon",
+      "remixicon": "RiMapLine"
+    },
+    {
+      "lucide": "TerminalIcon",
+      "tabler": "IconCommand",
+      "hugeicons": "CommandIcon",
+      "phosphor": "CommandIcon",
+      "remixicon": "RiCommandLine"
+    }
+  ],
+  "blocks/sidebar-08/nav-main.tsx": [
+    {
+      "lucide": "ChevronRightIcon",
+      "tabler": "IconChevronRight",
+      "hugeicons": "ArrowRight01Icon",
+      "phosphor": "CaretRightIcon",
+      "remixicon": "RiArrowRightSLine"
+    }
+  ],
+  "blocks/sidebar-08/nav-projects.tsx": [
+    {
+      "lucide": "MoreHorizontalIcon",
+      "tabler": "IconDots",
+      "hugeicons": "MoreHorizontalCircle01Icon",
+      "phosphor": "DotsThreeOutlineIcon",
+      "remixicon": "RiMoreLine"
+    },
+    {
+      "lucide": "FolderIcon",
+      "tabler": "IconFolder",
+      "hugeicons": "FolderIcon",
+      "phosphor": "FolderIcon",
+      "remixicon": "RiFolderLine"
+    },
+    {
+      "lucide": "ShareIcon",
+      "tabler": "IconShare2",
+      "hugeicons": "Share03Icon",
+      "phosphor": "ShareIcon",
+      "remixicon": "RiShareLine"
+    },
+    {
+      "lucide": "Trash2Icon",
+      "tabler": "IconTrash",
+      "hugeicons": "Delete02Icon",
+      "phosphor": "TrashIcon",
+      "remixicon": "RiDeleteBinLine"
+    },
+    {
+      "lucide": "MoreHorizontalIcon",
+      "tabler": "IconDots",
+      "hugeicons": "MoreHorizontalCircle01Icon",
+      "phosphor": "DotsThreeOutlineIcon",
+      "remixicon": "RiMoreLine"
+    }
+  ],
+  "blocks/sidebar-08/nav-user.tsx": [
+    {
+      "lucide": "ChevronsUpDownIcon",
+      "tabler": "IconSelector",
+      "hugeicons": "UnfoldMoreIcon",
+      "phosphor": "CaretUpDownIcon",
+      "remixicon": "RiArrowUpDownLine"
+    },
+    {
+      "lucide": "SparklesIcon",
+      "tabler": "IconSparkles",
+      "hugeicons": "SparklesIcon",
+      "phosphor": "SparkleIcon",
+      "remixicon": "RiSparklingLine"
+    },
+    {
+      "lucide": "BadgeCheckIcon",
+      "tabler": "IconRosetteDiscountCheck",
+      "hugeicons": "CheckmarkBadgeIcon",
+      "phosphor": "CheckCircleIcon",
+      "remixicon": "RiCheckboxCircleLine"
+    },
+    {
+      "lucide": "CreditCardIcon",
+      "tabler": "IconCreditCard",
+      "hugeicons": "CreditCardIcon",
+      "phosphor": "CreditCardIcon",
+      "remixicon": "RiBankCardLine"
+    },
+    {
+      "lucide": "BellIcon",
+      "tabler": "IconBell",
+      "hugeicons": "NotificationIcon",
+      "phosphor": "BellIcon",
+      "remixicon": "RiNotificationLine"
+    },
+    {
+      "lucide": "LogOutIcon",
+      "tabler": "IconLogout",
+      "hugeicons": "LogoutIcon",
+      "phosphor": "SignOutIcon",
+      "remixicon": "RiLogoutBoxLine"
+    }
+  ],
+  "blocks/sidebar-09/app-sidebar.tsx": [
+    {
+      "lucide": "InboxIcon",
+      "tabler": "IconInbox",
+      "hugeicons": "InboxIcon",
+      "phosphor": "TrayIcon",
+      "remixicon": "RiInboxLine"
+    },
+    {
+      "lucide": "FileIcon",
+      "tabler": "IconFile",
+      "hugeicons": "FileIcon",
+      "phosphor": "FileIcon",
+      "remixicon": "RiFileLine"
+    },
+    {
+      "lucide": "SendIcon",
+      "tabler": "IconSend",
+      "hugeicons": "SentIcon",
+      "phosphor": "PaperPlaneTiltIcon",
+      "remixicon": "RiSendPlaneLine"
+    },
+    {
+      "lucide": "ArchiveXIcon",
+      "tabler": "IconArchiveOff",
+      "hugeicons": "ArchiveIcon",
+      "phosphor": "ArchiveIcon",
+      "remixicon": "RiArchiveLine"
+    },
+    {
+      "lucide": "Trash2Icon",
+      "tabler": "IconTrash",
+      "hugeicons": "Delete02Icon",
+      "phosphor": "TrashIcon",
+      "remixicon": "RiDeleteBinLine"
+    },
+    {
+      "lucide": "TerminalIcon",
+      "tabler": "IconCommand",
+      "hugeicons": "CommandIcon",
+      "phosphor": "CommandIcon",
+      "remixicon": "RiCommandLine"
+    }
+  ],
+  "blocks/sidebar-09/nav-user.tsx": [
+    {
+      "lucide": "ChevronsUpDownIcon",
+      "tabler": "IconSelector",
+      "hugeicons": "UnfoldMoreIcon",
+      "phosphor": "CaretUpDownIcon",
+      "remixicon": "RiArrowUpDownLine"
+    },
+    {
+      "lucide": "SparklesIcon",
+      "tabler": "IconSparkles",
+      "hugeicons": "SparklesIcon",
+      "phosphor": "SparkleIcon",
+      "remixicon": "RiSparklingLine"
+    },
+    {
+      "lucide": "BadgeCheckIcon",
+      "tabler": "IconRosetteDiscountCheck",
+      "hugeicons": "CheckmarkBadgeIcon",
+      "phosphor": "CheckCircleIcon",
+      "remixicon": "RiCheckboxCircleLine"
+    },
+    {
+      "lucide": "CreditCardIcon",
+      "tabler": "IconCreditCard",
+      "hugeicons": "CreditCardIcon",
+      "phosphor": "CreditCardIcon",
+      "remixicon": "RiBankCardLine"
+    },
+    {
+      "lucide": "BellIcon",
+      "tabler": "IconBell",
+      "hugeicons": "NotificationIcon",
+      "phosphor": "BellIcon",
+      "remixicon": "RiNotificationLine"
+    },
+    {
+      "lucide": "LogOutIcon",
+      "tabler": "IconLogout",
+      "hugeicons": "LogoutIcon",
+      "phosphor": "SignOutIcon",
+      "remixicon": "RiLogoutBoxLine"
+    }
+  ],
+  "blocks/sidebar-10/app-sidebar.tsx": [
+    {
+      "lucide": "TerminalIcon",
+      "tabler": "IconCommand",
+      "hugeicons": "CommandIcon",
+      "phosphor": "CommandIcon",
+      "remixicon": "RiCommandLine"
+    },
+    {
+      "lucide": "AudioLinesIcon",
+      "tabler": "IconWaveSine",
+      "hugeicons": "AudioWave01Icon",
+      "phosphor": "WaveformIcon",
+      "remixicon": "RiPulseLine"
+    },
+    {
+      "lucide": "TerminalIcon",
+      "tabler": "IconCommand",
+      "hugeicons": "CommandIcon",
+      "phosphor": "CommandIcon",
+      "remixicon": "RiCommandLine"
+    },
+    {
+      "lucide": "SearchIcon",
+      "tabler": "IconSearch",
+      "hugeicons": "SearchIcon",
+      "phosphor": "MagnifyingGlassIcon",
+      "remixicon": "RiSearchLine"
+    },
+    {
+      "lucide": "SparklesIcon",
+      "tabler": "IconSparkles",
+      "hugeicons": "SparklesIcon",
+      "phosphor": "SparkleIcon",
+      "remixicon": "RiSparklingLine"
+    },
+    {
+      "lucide": "HomeIcon",
+      "tabler": "IconHome",
+      "hugeicons": "HomeIcon",
+      "phosphor": "HouseIcon",
+      "remixicon": "RiHomeLine"
+    },
+    {
+      "lucide": "InboxIcon",
+      "tabler": "IconInbox",
+      "hugeicons": "InboxIcon",
+      "phosphor": "TrayIcon",
+      "remixicon": "RiInboxLine"
+    },
+    {
+      "lucide": "CalendarIcon",
+      "tabler": "IconCalendar",
+      "hugeicons": "CalendarIcon",
+      "phosphor": "CalendarIcon",
+      "remixicon": "RiCalendarLine"
+    },
+    {
+      "lucide": "Settings2Icon",
+      "tabler": "IconSettings",
+      "hugeicons": "Settings05Icon",
+      "phosphor": "GearIcon",
+      "remixicon": "RiSettingsLine"
+    },
+    {
+      "lucide": "BlocksIcon",
+      "tabler": "IconCube",
+      "hugeicons": "CubeIcon",
+      "phosphor": "CubeIcon",
+      "remixicon": "RiBox3Line"
+    },
+    {
+      "lucide": "Trash2Icon",
+      "tabler": "IconTrash",
+      "hugeicons": "Delete02Icon",
+      "phosphor": "TrashIcon",
+      "remixicon": "RiDeleteBinLine"
+    },
+    {
+      "lucide": "MessageCircleQuestionIcon",
+      "tabler": "IconMessageQuestion",
+      "hugeicons": "MessageQuestionIcon",
+      "phosphor": "ChatCircleIcon",
+      "remixicon": "RiQuestionLine"
+    }
+  ],
+  "blocks/sidebar-10/nav-actions.tsx": [
+    {
+      "lucide": "Settings2Icon",
+      "tabler": "IconSettings",
+      "hugeicons": "Settings05Icon",
+      "phosphor": "GearIcon",
+      "remixicon": "RiSettingsLine"
+    },
+    {
+      "lucide": "FileTextIcon",
+      "tabler": "IconFileText",
+      "hugeicons": "File01Icon",
+      "phosphor": "FileTextIcon",
+      "remixicon": "RiFileTextLine"
+    },
+    {
+      "lucide": "LinkIcon",
+      "tabler": "IconLink",
+      "hugeicons": "LinkIcon",
+      "phosphor": "LinkIcon",
+      "remixicon": "RiLinksLine"
+    },
+    {
+      "lucide": "CopyIcon",
+      "tabler": "IconCopy",
+      "hugeicons": "Copy01Icon",
+      "phosphor": "CopyIcon",
+      "remixicon": "RiFileCopyLine"
+    },
+    {
+      "lucide": "CornerUpRightIcon",
+      "tabler": "IconCornerUpRight",
+      "hugeicons": "RedoIcon",
+      "phosphor": "ArrowBendUpRightIcon",
+      "remixicon": "RiCornerUpRightLine"
+    },
+    {
+      "lucide": "Trash2Icon",
+      "tabler": "IconTrash",
+      "hugeicons": "Delete02Icon",
+      "phosphor": "TrashIcon",
+      "remixicon": "RiDeleteBinLine"
+    },
+    {
+      "lucide": "CornerUpLeftIcon",
+      "tabler": "IconCornerUpLeft",
+      "hugeicons": "UndoIcon",
+      "phosphor": "ArrowBendUpLeftIcon",
+      "remixicon": "RiCornerUpLeftLine"
+    },
+    {
+      "lucide": "ChartLineIcon",
+      "tabler": "IconChartLine",
+      "hugeicons": "ChartIcon",
+      "phosphor": "ChartLineIcon",
+      "remixicon": "RiLineChartLine"
+    },
+    {
+      "lucide": "GalleryVerticalEndIcon",
+      "tabler": "IconLayoutRows",
+      "hugeicons": "LayoutBottomIcon",
+      "phosphor": "RowsIcon",
+      "remixicon": "RiGalleryLine"
+    },
+    {
+      "lucide": "TrashIcon",
+      "tabler": "IconTrash",
+      "hugeicons": "DeleteIcon",
+      "phosphor": "TrashIcon",
+      "remixicon": "RiDeleteBinLine"
+    },
+    {
+      "lucide": "BellIcon",
+      "tabler": "IconBell",
+      "hugeicons": "NotificationIcon",
+      "phosphor": "BellIcon",
+      "remixicon": "RiNotificationLine"
+    },
+    {
+      "lucide": "ArrowUpIcon",
+      "tabler": "IconArrowUp",
+      "hugeicons": "ArrowUpIcon",
+      "phosphor": "ArrowUpIcon",
+      "remixicon": "RiArrowUpLine"
+    },
+    {
+      "lucide": "ArrowDownIcon",
+      "tabler": "IconArrowDown",
+      "hugeicons": "ArrowDownIcon",
+      "phosphor": "ArrowDownIcon",
+      "remixicon": "RiArrowDownLine"
+    },
+    {
+      "lucide": "StarIcon",
+      "tabler": "IconStar",
+      "hugeicons": "StarIcon",
+      "phosphor": "StarIcon",
+      "remixicon": "RiStarLine"
+    },
+    {
+      "lucide": "MoreHorizontalIcon",
+      "tabler": "IconDots",
+      "hugeicons": "MoreHorizontalCircle01Icon",
+      "phosphor": "DotsThreeOutlineIcon",
+      "remixicon": "RiMoreLine"
+    }
+  ],
+  "blocks/sidebar-10/nav-favorites.tsx": [
+    {
+      "lucide": "MoreHorizontalIcon",
+      "tabler": "IconDots",
+      "hugeicons": "MoreHorizontalCircle01Icon",
+      "phosphor": "DotsThreeOutlineIcon",
+      "remixicon": "RiMoreLine"
+    },
+    {
+      "lucide": "StarOffIcon",
+      "tabler": "IconStarOff",
+      "hugeicons": "StarOffIcon",
+      "phosphor": "StarIcon",
+      "remixicon": "RiStarOffLine"
+    },
+    {
+      "lucide": "LinkIcon",
+      "tabler": "IconLink",
+      "hugeicons": "LinkIcon",
+      "phosphor": "LinkIcon",
+      "remixicon": "RiLinksLine"
+    },
+    {
+      "lucide": "ArrowUpRightIcon",
+      "tabler": "IconArrowUpRight",
+      "hugeicons": "ArrowUpRightIcon",
+      "phosphor": "ArrowUpRightIcon",
+      "remixicon": "RiArrowRightUpLine"
+    },
+    {
+      "lucide": "Trash2Icon",
+      "tabler": "IconTrash",
+      "hugeicons": "Delete02Icon",
+      "phosphor": "TrashIcon",
+      "remixicon": "RiDeleteBinLine"
+    },
+    {
+      "lucide": "MoreHorizontalIcon",
+      "tabler": "IconDots",
+      "hugeicons": "MoreHorizontalCircle01Icon",
+      "phosphor": "DotsThreeOutlineIcon",
+      "remixicon": "RiMoreLine"
+    }
+  ],
+  "blocks/sidebar-10/nav-workspaces.tsx": [
+    {
+      "lucide": "ChevronRightIcon",
+      "tabler": "IconChevronRight",
+      "hugeicons": "ArrowRight01Icon",
+      "phosphor": "CaretRightIcon",
+      "remixicon": "RiArrowRightSLine"
+    },
+    {
+      "lucide": "PlusIcon",
+      "tabler": "IconPlus",
+      "hugeicons": "PlusSignIcon",
+      "phosphor": "PlusIcon",
+      "remixicon": "RiAddLine"
+    },
+    {
+      "lucide": "MoreHorizontalIcon",
+      "tabler": "IconDots",
+      "hugeicons": "MoreHorizontalCircle01Icon",
+      "phosphor": "DotsThreeOutlineIcon",
+      "remixicon": "RiMoreLine"
+    }
+  ],
+  "blocks/sidebar-10/team-switcher.tsx": [
+    {
+      "lucide": "ChevronDownIcon",
+      "tabler": "IconChevronDown",
+      "hugeicons": "ArrowDown01Icon",
+      "phosphor": "CaretDownIcon",
+      "remixicon": "RiArrowDownSLine"
+    },
+    {
+      "lucide": "PlusIcon",
+      "tabler": "IconPlus",
+      "hugeicons": "PlusSignIcon",
+      "phosphor": "PlusIcon",
+      "remixicon": "RiAddLine"
+    }
+  ],
+  "blocks/sidebar-11/app-sidebar.tsx": [
+    {
+      "lucide": "FileIcon",
+      "tabler": "IconFile",
+      "hugeicons": "FileIcon",
+      "phosphor": "FileIcon",
+      "remixicon": "RiFileLine"
+    },
+    {
+      "lucide": "FileIcon",
+      "tabler": "IconFile",
+      "hugeicons": "FileIcon",
+      "phosphor": "FileIcon",
+      "remixicon": "RiFileLine"
+    },
+    {
+      "lucide": "ChevronRightIcon",
+      "tabler": "IconChevronRight",
+      "hugeicons": "ArrowRight01Icon",
+      "phosphor": "CaretRightIcon",
+      "remixicon": "RiArrowRightSLine"
+    },
+    {
+      "lucide": "FolderIcon",
+      "tabler": "IconFolder",
+      "hugeicons": "FolderIcon",
+      "phosphor": "FolderIcon",
+      "remixicon": "RiFolderLine"
+    }
+  ],
+  "blocks/sidebar-12/app-sidebar.tsx": [
+    {
+      "lucide": "PlusIcon",
+      "tabler": "IconPlus",
+      "hugeicons": "PlusSignIcon",
+      "phosphor": "PlusIcon",
+      "remixicon": "RiAddLine"
+    }
+  ],
+  "blocks/sidebar-12/calendars.tsx": [
+    {
+      "lucide": "ChevronRightIcon",
+      "tabler": "IconChevronRight",
+      "hugeicons": "ArrowRight01Icon",
+      "phosphor": "CaretRightIcon",
+      "remixicon": "RiArrowRightSLine"
+    },
+    {
+      "lucide": "CheckIcon",
+      "tabler": "IconCheck",
+      "hugeicons": "Tick02Icon",
+      "phosphor": "CheckIcon",
+      "remixicon": "RiCheckLine"
+    }
+  ],
+  "blocks/sidebar-12/nav-user.tsx": [
+    {
+      "lucide": "ChevronsUpDownIcon",
+      "tabler": "IconSelector",
+      "hugeicons": "UnfoldMoreIcon",
+      "phosphor": "CaretUpDownIcon",
+      "remixicon": "RiArrowUpDownLine"
+    },
+    {
+      "lucide": "SparklesIcon",
+      "tabler": "IconSparkles",
+      "hugeicons": "SparklesIcon",
+      "phosphor": "SparkleIcon",
+      "remixicon": "RiSparklingLine"
+    },
+    {
+      "lucide": "BadgeCheckIcon",
+      "tabler": "IconRosetteDiscountCheck",
+      "hugeicons": "CheckmarkBadgeIcon",
+      "phosphor": "CheckCircleIcon",
+      "remixicon": "RiCheckboxCircleLine"
+    },
+    {
+      "lucide": "CreditCardIcon",
+      "tabler": "IconCreditCard",
+      "hugeicons": "CreditCardIcon",
+      "phosphor": "CreditCardIcon",
+      "remixicon": "RiBankCardLine"
+    },
+    {
+      "lucide": "BellIcon",
+      "tabler": "IconBell",
+      "hugeicons": "NotificationIcon",
+      "phosphor": "BellIcon",
+      "remixicon": "RiNotificationLine"
+    },
+    {
+      "lucide": "LogOutIcon",
+      "tabler": "IconLogout",
+      "hugeicons": "LogoutIcon",
+      "phosphor": "SignOutIcon",
+      "remixicon": "RiLogoutBoxLine"
+    }
+  ],
+  "blocks/sidebar-13/settings-dialog.tsx": [
+    {
+      "lucide": "BellIcon",
+      "tabler": "IconBell",
+      "hugeicons": "NotificationIcon",
+      "phosphor": "BellIcon",
+      "remixicon": "RiNotificationLine"
+    },
+    {
+      "lucide": "MenuIcon",
+      "tabler": "IconMenu",
+      "hugeicons": "Menu09Icon",
+      "phosphor": "ListIcon",
+      "remixicon": "RiMenuLine"
+    },
+    {
+      "lucide": "HomeIcon",
+      "tabler": "IconHome",
+      "hugeicons": "HomeIcon",
+      "phosphor": "HouseIcon",
+      "remixicon": "RiHomeLine"
+    },
+    {
+      "lucide": "PaintbrushIcon",
+      "tabler": "IconPalette",
+      "hugeicons": "PaintBoardIcon",
+      "phosphor": "PaletteIcon",
+      "remixicon": "RiPaletteLine"
+    },
+    {
+      "lucide": "MessageCircleIcon",
+      "tabler": "IconMessageQuestion",
+      "hugeicons": "MessageIcon",
+      "phosphor": "ChatCircleIcon",
+      "remixicon": "RiChat1Line"
+    },
+    {
+      "lucide": "GlobeIcon",
+      "tabler": "IconWorld",
+      "hugeicons": "Globe02Icon",
+      "phosphor": "GlobeIcon",
+      "remixicon": "RiGlobalLine"
+    },
+    {
+      "lucide": "KeyboardIcon",
+      "tabler": "IconKeyboard",
+      "hugeicons": "KeyboardIcon",
+      "phosphor": "KeyboardIcon",
+      "remixicon": "RiKeyboardLine"
+    },
+    {
+      "lucide": "CheckIcon",
+      "tabler": "IconCheck",
+      "hugeicons": "Tick02Icon",
+      "phosphor": "CheckIcon",
+      "remixicon": "RiCheckLine"
+    },
+    {
+      "lucide": "VideoIcon",
+      "tabler": "IconVideoPlus",
+      "hugeicons": "RecordIcon",
+      "phosphor": "VideoIcon",
+      "remixicon": "RiVideoLine"
+    },
+    {
+      "lucide": "LinkIcon",
+      "tabler": "IconLink",
+      "hugeicons": "LinkIcon",
+      "phosphor": "LinkIcon",
+      "remixicon": "RiLinksLine"
+    },
+    {
+      "lucide": "LockIcon",
+      "tabler": "IconLock",
+      "hugeicons": "ShieldIcon",
+      "phosphor": "LockIcon",
+      "remixicon": "RiLockLine"
+    },
+    {
+      "lucide": "SettingsIcon",
+      "tabler": "IconSettings",
+      "hugeicons": "SettingsIcon",
+      "phosphor": "GearIcon",
+      "remixicon": "RiSettingsLine"
+    }
+  ],
+  "blocks/sidebar-15/calendars.tsx": [
+    {
+      "lucide": "ChevronRightIcon",
+      "tabler": "IconChevronRight",
+      "hugeicons": "ArrowRight01Icon",
+      "phosphor": "CaretRightIcon",
+      "remixicon": "RiArrowRightSLine"
+    },
+    {
+      "lucide": "CheckIcon",
+      "tabler": "IconCheck",
+      "hugeicons": "Tick02Icon",
+      "phosphor": "CheckIcon",
+      "remixicon": "RiCheckLine"
+    }
+  ],
+  "blocks/sidebar-15/nav-favorites.tsx": [
+    {
+      "lucide": "MoreHorizontalIcon",
+      "tabler": "IconDots",
+      "hugeicons": "MoreHorizontalCircle01Icon",
+      "phosphor": "DotsThreeOutlineIcon",
+      "remixicon": "RiMoreLine"
+    },
+    {
+      "lucide": "StarOffIcon",
+      "tabler": "IconStarOff",
+      "hugeicons": "StarOffIcon",
+      "phosphor": "StarIcon",
+      "remixicon": "RiStarOffLine"
+    },
+    {
+      "lucide": "LinkIcon",
+      "tabler": "IconLink",
+      "hugeicons": "LinkIcon",
+      "phosphor": "LinkIcon",
+      "remixicon": "RiLinksLine"
+    },
+    {
+      "lucide": "ArrowUpRightIcon",
+      "tabler": "IconArrowUpRight",
+      "hugeicons": "ArrowUpRightIcon",
+      "phosphor": "ArrowUpRightIcon",
+      "remixicon": "RiArrowRightUpLine"
+    },
+    {
+      "lucide": "Trash2Icon",
+      "tabler": "IconTrash",
+      "hugeicons": "Delete02Icon",
+      "phosphor": "TrashIcon",
+      "remixicon": "RiDeleteBinLine"
+    },
+    {
+      "lucide": "MoreHorizontalIcon",
+      "tabler": "IconDots",
+      "hugeicons": "MoreHorizontalCircle01Icon",
+      "phosphor": "DotsThreeOutlineIcon",
+      "remixicon": "RiMoreLine"
+    }
+  ],
+  "blocks/sidebar-15/nav-user.tsx": [
+    {
+      "lucide": "ChevronsUpDownIcon",
+      "tabler": "IconSelector",
+      "hugeicons": "UnfoldMoreIcon",
+      "phosphor": "CaretUpDownIcon",
+      "remixicon": "RiArrowUpDownLine"
+    },
+    {
+      "lucide": "SparklesIcon",
+      "tabler": "IconSparkles",
+      "hugeicons": "SparklesIcon",
+      "phosphor": "SparkleIcon",
+      "remixicon": "RiSparklingLine"
+    },
+    {
+      "lucide": "BadgeCheckIcon",
+      "tabler": "IconRosetteDiscountCheck",
+      "hugeicons": "CheckmarkBadgeIcon",
+      "phosphor": "CheckCircleIcon",
+      "remixicon": "RiCheckboxCircleLine"
+    },
+    {
+      "lucide": "CreditCardIcon",
+      "tabler": "IconCreditCard",
+      "hugeicons": "CreditCardIcon",
+      "phosphor": "CreditCardIcon",
+      "remixicon": "RiBankCardLine"
+    },
+    {
+      "lucide": "BellIcon",
+      "tabler": "IconBell",
+      "hugeicons": "NotificationIcon",
+      "phosphor": "BellIcon",
+      "remixicon": "RiNotificationLine"
+    },
+    {
+      "lucide": "LogOutIcon",
+      "tabler": "IconLogout",
+      "hugeicons": "LogoutIcon",
+      "phosphor": "SignOutIcon",
+      "remixicon": "RiLogoutBoxLine"
+    }
+  ],
+  "blocks/sidebar-15/nav-workspaces.tsx": [
+    {
+      "lucide": "ChevronRightIcon",
+      "tabler": "IconChevronRight",
+      "hugeicons": "ArrowRight01Icon",
+      "phosphor": "CaretRightIcon",
+      "remixicon": "RiArrowRightSLine"
+    },
+    {
+      "lucide": "PlusIcon",
+      "tabler": "IconPlus",
+      "hugeicons": "PlusSignIcon",
+      "phosphor": "PlusIcon",
+      "remixicon": "RiAddLine"
+    },
+    {
+      "lucide": "MoreHorizontalIcon",
+      "tabler": "IconDots",
+      "hugeicons": "MoreHorizontalCircle01Icon",
+      "phosphor": "DotsThreeOutlineIcon",
+      "remixicon": "RiMoreLine"
+    }
+  ],
+  "blocks/sidebar-15/sidebar-left.tsx": [
+    {
+      "lucide": "TerminalIcon",
+      "tabler": "IconCommand",
+      "hugeicons": "CommandIcon",
+      "phosphor": "CommandIcon",
+      "remixicon": "RiCommandLine"
+    },
+    {
+      "lucide": "AudioLinesIcon",
+      "tabler": "IconWaveSine",
+      "hugeicons": "AudioWave01Icon",
+      "phosphor": "WaveformIcon",
+      "remixicon": "RiPulseLine"
+    },
+    {
+      "lucide": "TerminalIcon",
+      "tabler": "IconCommand",
+      "hugeicons": "CommandIcon",
+      "phosphor": "CommandIcon",
+      "remixicon": "RiCommandLine"
+    },
+    {
+      "lucide": "SearchIcon",
+      "tabler": "IconSearch",
+      "hugeicons": "SearchIcon",
+      "phosphor": "MagnifyingGlassIcon",
+      "remixicon": "RiSearchLine"
+    },
+    {
+      "lucide": "SparklesIcon",
+      "tabler": "IconSparkles",
+      "hugeicons": "SparklesIcon",
+      "phosphor": "SparkleIcon",
+      "remixicon": "RiSparklingLine"
+    },
+    {
+      "lucide": "HomeIcon",
+      "tabler": "IconHome",
+      "hugeicons": "HomeIcon",
+      "phosphor": "HouseIcon",
+      "remixicon": "RiHomeLine"
+    },
+    {
+      "lucide": "InboxIcon",
+      "tabler": "IconInbox",
+      "hugeicons": "InboxIcon",
+      "phosphor": "TrayIcon",
+      "remixicon": "RiInboxLine"
+    },
+    {
+      "lucide": "CalendarIcon",
+      "tabler": "IconCalendar",
+      "hugeicons": "CalendarIcon",
+      "phosphor": "CalendarIcon",
+      "remixicon": "RiCalendarLine"
+    },
+    {
+      "lucide": "Settings2Icon",
+      "tabler": "IconSettings",
+      "hugeicons": "Settings05Icon",
+      "phosphor": "GearIcon",
+      "remixicon": "RiSettingsLine"
+    },
+    {
+      "lucide": "BlocksIcon",
+      "tabler": "IconCube",
+      "hugeicons": "CubeIcon",
+      "phosphor": "CubeIcon",
+      "remixicon": "RiBox3Line"
+    },
+    {
+      "lucide": "Trash2Icon",
+      "tabler": "IconTrash",
+      "hugeicons": "Delete02Icon",
+      "phosphor": "TrashIcon",
+      "remixicon": "RiDeleteBinLine"
+    },
+    {
+      "lucide": "MessageCircleQuestionIcon",
+      "tabler": "IconMessageQuestion",
+      "hugeicons": "MessageQuestionIcon",
+      "phosphor": "ChatCircleIcon",
+      "remixicon": "RiQuestionLine"
+    }
+  ],
+  "blocks/sidebar-15/sidebar-right.tsx": [
+    {
+      "lucide": "PlusIcon",
+      "tabler": "IconPlus",
+      "hugeicons": "PlusSignIcon",
+      "phosphor": "PlusIcon",
+      "remixicon": "RiAddLine"
+    }
+  ],
+  "blocks/sidebar-15/team-switcher.tsx": [
+    {
+      "lucide": "ChevronDownIcon",
+      "tabler": "IconChevronDown",
+      "hugeicons": "ArrowDown01Icon",
+      "phosphor": "CaretDownIcon",
+      "remixicon": "RiArrowDownSLine"
+    },
+    {
+      "lucide": "PlusIcon",
+      "tabler": "IconPlus",
+      "hugeicons": "PlusSignIcon",
+      "phosphor": "PlusIcon",
+      "remixicon": "RiAddLine"
+    }
+  ],
+  "blocks/sidebar-16/app-sidebar.tsx": [
+    {
+      "lucide": "TerminalSquareIcon",
+      "tabler": "IconTerminal2",
+      "hugeicons": "ComputerTerminalIcon",
+      "phosphor": "TerminalIcon",
+      "remixicon": "RiTerminalBoxLine"
+    },
+    {
+      "lucide": "BotIcon",
+      "tabler": "IconRobot",
+      "hugeicons": "RoboticIcon",
+      "phosphor": "RobotIcon",
+      "remixicon": "RiRobotLine"
+    },
+    {
+      "lucide": "BookOpenIcon",
+      "tabler": "IconBook",
+      "hugeicons": "BookOpen02Icon",
+      "phosphor": "BookOpenIcon",
+      "remixicon": "RiBookOpenLine"
+    },
+    {
+      "lucide": "Settings2Icon",
+      "tabler": "IconSettings",
+      "hugeicons": "Settings05Icon",
+      "phosphor": "GearIcon",
+      "remixicon": "RiSettingsLine"
+    },
+    {
+      "lucide": "LifeBuoyIcon",
+      "tabler": "IconLifebuoy",
+      "hugeicons": "ChartRingIcon",
+      "phosphor": "LifebuoyIcon",
+      "remixicon": "RiLifebuoyLine"
+    },
+    {
+      "lucide": "SendIcon",
+      "tabler": "IconSend",
+      "hugeicons": "SentIcon",
+      "phosphor": "PaperPlaneTiltIcon",
+      "remixicon": "RiSendPlaneLine"
+    },
+    {
+      "lucide": "FrameIcon",
+      "tabler": "IconFrame",
+      "hugeicons": "CropIcon",
+      "phosphor": "CropIcon",
+      "remixicon": "RiCropLine"
+    },
+    {
+      "lucide": "PieChartIcon",
+      "tabler": "IconChartPie",
+      "hugeicons": "PieChartIcon",
+      "phosphor": "ChartPieIcon",
+      "remixicon": "RiPieChartLine"
+    },
+    {
+      "lucide": "MapIcon",
+      "tabler": "IconMap",
+      "hugeicons": "MapsIcon",
+      "phosphor": "MapTrifoldIcon",
+      "remixicon": "RiMapLine"
+    },
+    {
+      "lucide": "TerminalIcon",
+      "tabler": "IconCommand",
+      "hugeicons": "CommandIcon",
+      "phosphor": "CommandIcon",
+      "remixicon": "RiCommandLine"
+    }
+  ],
+  "blocks/sidebar-16/nav-main.tsx": [
+    {
+      "lucide": "ChevronRightIcon",
+      "tabler": "IconChevronRight",
+      "hugeicons": "ArrowRight01Icon",
+      "phosphor": "CaretRightIcon",
+      "remixicon": "RiArrowRightSLine"
+    }
+  ],
+  "blocks/sidebar-16/nav-projects.tsx": [
+    {
+      "lucide": "MoreHorizontalIcon",
+      "tabler": "IconDots",
+      "hugeicons": "MoreHorizontalCircle01Icon",
+      "phosphor": "DotsThreeOutlineIcon",
+      "remixicon": "RiMoreLine"
+    },
+    {
+      "lucide": "FolderIcon",
+      "tabler": "IconFolder",
+      "hugeicons": "FolderIcon",
+      "phosphor": "FolderIcon",
+      "remixicon": "RiFolderLine"
+    },
+    {
+      "lucide": "ShareIcon",
+      "tabler": "IconShare2",
+      "hugeicons": "Share03Icon",
+      "phosphor": "ShareIcon",
+      "remixicon": "RiShareLine"
+    },
+    {
+      "lucide": "Trash2Icon",
+      "tabler": "IconTrash",
+      "hugeicons": "Delete02Icon",
+      "phosphor": "TrashIcon",
+      "remixicon": "RiDeleteBinLine"
+    },
+    {
+      "lucide": "MoreHorizontalIcon",
+      "tabler": "IconDots",
+      "hugeicons": "MoreHorizontalCircle01Icon",
+      "phosphor": "DotsThreeOutlineIcon",
+      "remixicon": "RiMoreLine"
+    }
+  ],
+  "blocks/sidebar-16/nav-user.tsx": [
+    {
+      "lucide": "ChevronsUpDownIcon",
+      "tabler": "IconSelector",
+      "hugeicons": "UnfoldMoreIcon",
+      "phosphor": "CaretUpDownIcon",
+      "remixicon": "RiArrowUpDownLine"
+    },
+    {
+      "lucide": "SparklesIcon",
+      "tabler": "IconSparkles",
+      "hugeicons": "SparklesIcon",
+      "phosphor": "SparkleIcon",
+      "remixicon": "RiSparklingLine"
+    },
+    {
+      "lucide": "BadgeCheckIcon",
+      "tabler": "IconRosetteDiscountCheck",
+      "hugeicons": "CheckmarkBadgeIcon",
+      "phosphor": "CheckCircleIcon",
+      "remixicon": "RiCheckboxCircleLine"
+    },
+    {
+      "lucide": "CreditCardIcon",
+      "tabler": "IconCreditCard",
+      "hugeicons": "CreditCardIcon",
+      "phosphor": "CreditCardIcon",
+      "remixicon": "RiBankCardLine"
+    },
+    {
+      "lucide": "BellIcon",
+      "tabler": "IconBell",
+      "hugeicons": "NotificationIcon",
+      "phosphor": "BellIcon",
+      "remixicon": "RiNotificationLine"
+    },
+    {
+      "lucide": "LogOutIcon",
+      "tabler": "IconLogout",
+      "hugeicons": "LogoutIcon",
+      "phosphor": "SignOutIcon",
+      "remixicon": "RiLogoutBoxLine"
+    }
+  ],
+  "blocks/sidebar-16/search-form.tsx": [
+    {
+      "lucide": "SearchIcon",
+      "tabler": "IconSearch",
+      "hugeicons": "SearchIcon",
+      "phosphor": "MagnifyingGlassIcon",
+      "remixicon": "RiSearchLine"
+    }
+  ],
+  "blocks/sidebar-16/site-header.tsx": [
+    {
+      "lucide": "PanelLeftIcon",
+      "tabler": "IconLayoutSidebar",
+      "hugeicons": "SidebarLeftIcon",
+      "phosphor": "SidebarIcon",
+      "remixicon": "RiLayoutLeftLine"
+    }
+  ],
+  "blocks/signup-02/page.tsx": [
+    {
+      "lucide": "GalleryVerticalEndIcon",
+      "tabler": "IconLayoutRows",
+      "hugeicons": "LayoutBottomIcon",
+      "phosphor": "RowsIcon",
+      "remixicon": "RiGalleryLine"
+    }
+  ],
+  "blocks/signup-03/page.tsx": [
+    {
+      "lucide": "GalleryVerticalEndIcon",
+      "tabler": "IconLayoutRows",
+      "hugeicons": "LayoutBottomIcon",
+      "phosphor": "RowsIcon",
+      "remixicon": "RiGalleryLine"
+    }
+  ],
+  "blocks/signup-05/signup-form.tsx": [
+    {
+      "lucide": "GalleryVerticalEndIcon",
+      "tabler": "IconLayoutRows",
+      "hugeicons": "LayoutBottomIcon",
+      "phosphor": "RowsIcon",
+      "remixicon": "RiGalleryLine"
+    }
+  ],
+  "components/ui/accordion.tsx": [
+    {
+      "lucide": "ChevronDownIcon",
+      "tabler": "IconChevronDown",
+      "slot": "accordion-trigger-icon",
+      "hugeicons": "ArrowDown01Icon",
+      "phosphor": "CaretDownIcon",
+      "remixicon": "RiArrowDownSLine"
+    },
+    {
+      "lucide": "ChevronUpIcon",
+      "tabler": "IconChevronUp",
+      "slot": "accordion-trigger-icon",
+      "hugeicons": "ArrowUp01Icon",
+      "phosphor": "CaretUpIcon",
+      "remixicon": "RiArrowUpSLine"
+    }
+  ],
+  "components/ui/breadcrumb.tsx": [
+    {
+      "lucide": "ChevronRightIcon",
+      "tabler": "IconChevronRight",
+      "hugeicons": "ArrowRight01Icon",
+      "phosphor": "CaretRightIcon",
+      "remixicon": "RiArrowRightSLine"
+    },
+    {
+      "lucide": "MoreHorizontalIcon",
+      "tabler": "IconDots",
+      "hugeicons": "MoreHorizontalCircle01Icon",
+      "phosphor": "DotsThreeIcon",
+      "remixicon": "RiMoreLine"
+    }
+  ],
+  "components/ui/calendar.tsx": [
+    {
+      "lucide": "ChevronLeftIcon",
+      "tabler": "IconChevronLeft",
+      "hugeicons": "ArrowLeftIcon",
+      "phosphor": "CaretLeftIcon",
+      "remixicon": "RiArrowLeftSLine"
+    },
+    {
+      "lucide": "ChevronRightIcon",
+      "tabler": "IconChevronRight",
+      "hugeicons": "ArrowRightIcon",
+      "phosphor": "CaretRightIcon",
+      "remixicon": "RiArrowRightSLine"
+    },
+    {
+      "lucide": "ChevronDownIcon",
+      "tabler": "IconChevronDown",
+      "hugeicons": "ArrowDownIcon",
+      "phosphor": "CaretDownIcon",
+      "remixicon": "RiArrowDownSLine"
+    }
+  ],
+  "components/ui/carousel.tsx": [
+    {
+      "lucide": "ChevronLeftIcon",
+      "tabler": "IconChevronLeft",
+      "hugeicons": "ArrowLeft01Icon",
+      "phosphor": "CaretLeftIcon",
+      "remixicon": "RiArrowLeftSLine"
+    },
+    {
+      "lucide": "ChevronRightIcon",
+      "tabler": "IconChevronRight",
+      "hugeicons": "ArrowRight01Icon",
+      "phosphor": "CaretRightIcon",
+      "remixicon": "RiArrowRightSLine"
+    }
+  ],
+  "components/ui/checkbox.tsx": [
+    {
+      "lucide": "CheckIcon",
+      "tabler": "IconCheck",
+      "hugeicons": "Tick02Icon",
+      "phosphor": "CheckIcon",
+      "remixicon": "RiCheckLine"
+    }
+  ],
+  "components/ui/code-block.tsx": [
+    {
+      "lucide": "CheckIcon",
+      "tabler": "IconCheck",
+      "hugeicons": "Tick02Icon",
+      "phosphor": "CheckIcon",
+      "remixicon": "RiCheckLine"
+    },
+    {
+      "lucide": "CopyIcon",
+      "tabler": "IconCopy",
+      "hugeicons": "Copy01Icon",
+      "phosphor": "CopyIcon",
+      "remixicon": "RiFileCopyLine"
+    }
+  ],
+  "components/ui/combobox.tsx": [
+    {
+      "lucide": "ChevronDownIcon",
+      "tabler": "IconChevronDown",
+      "hugeicons": "ArrowDown01Icon",
+      "phosphor": "CaretDownIcon",
+      "remixicon": "RiArrowDownSLine"
+    },
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    },
+    {
+      "lucide": "CheckIcon",
+      "tabler": "IconCheck",
+      "hugeicons": "Tick02Icon",
+      "phosphor": "CheckIcon",
+      "remixicon": "RiCheckLine"
+    },
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    }
+  ],
+  "components/ui/command.tsx": [
+    {
+      "lucide": "SearchIcon",
+      "tabler": "IconSearch",
+      "hugeicons": "SearchIcon",
+      "phosphor": "MagnifyingGlassIcon",
+      "remixicon": "RiSearchLine"
+    },
+    {
+      "lucide": "CheckIcon",
+      "tabler": "IconCheck",
+      "hugeicons": "Tick02Icon",
+      "phosphor": "CheckIcon",
+      "remixicon": "RiCheckLine"
+    }
+  ],
+  "components/ui/context-menu.tsx": [
+    {
+      "lucide": "ChevronRightIcon",
+      "tabler": "IconChevronRight",
+      "hugeicons": "ArrowRight01Icon",
+      "phosphor": "CaretRightIcon",
+      "remixicon": "RiArrowRightSLine"
+    },
+    {
+      "lucide": "CheckIcon",
+      "tabler": "IconCheck",
+      "hugeicons": "Tick02Icon",
+      "phosphor": "CheckIcon",
+      "remixicon": "RiCheckLine"
+    },
+    {
+      "lucide": "CheckIcon",
+      "tabler": "IconCheck",
+      "hugeicons": "Tick02Icon",
+      "phosphor": "CheckIcon",
+      "remixicon": "RiCheckLine"
+    }
+  ],
+  "components/ui/dialog.tsx": [
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    }
+  ],
+  "components/ui/dropdown-menu.tsx": [
+    {
+      "lucide": "ChevronRightIcon",
+      "tabler": "IconChevronRight",
+      "hugeicons": "ArrowRight01Icon",
+      "phosphor": "CaretRightIcon",
+      "remixicon": "RiArrowRightSLine"
+    },
+    {
+      "lucide": "CheckIcon",
+      "tabler": "IconCheck",
+      "hugeicons": "Tick02Icon",
+      "phosphor": "CheckIcon",
+      "remixicon": "RiCheckLine"
+    },
+    {
+      "lucide": "CheckIcon",
+      "tabler": "IconCheck",
+      "hugeicons": "Tick02Icon",
+      "phosphor": "CheckIcon",
+      "remixicon": "RiCheckLine"
+    }
+  ],
+  "components/ui/input-otp.tsx": [
+    {
+      "lucide": "MinusIcon",
+      "tabler": "IconMinus",
+      "hugeicons": "MinusSignIcon",
+      "phosphor": "MinusIcon",
+      "remixicon": "RiSubtractLine"
+    }
+  ],
+  "components/ui/menubar.tsx": [
+    {
+      "lucide": "CheckIcon",
+      "tabler": "IconCheck",
+      "hugeicons": "Tick02Icon",
+      "phosphor": "CheckIcon",
+      "remixicon": "RiCheckLine"
+    },
+    {
+      "lucide": "CheckIcon",
+      "tabler": "IconCheck",
+      "hugeicons": "Tick02Icon",
+      "phosphor": "CheckIcon",
+      "remixicon": "RiCheckLine"
+    }
+  ],
+  "components/ui/message-scroller.tsx": [
+    {
+      "lucide": "ArrowDownIcon",
+      "tabler": "IconArrowDown",
+      "hugeicons": "ArrowDown02Icon",
+      "phosphor": "ArrowDownIcon",
+      "remixicon": "RiArrowDownLine"
+    }
+  ],
+  "components/ui/native-select.tsx": [
+    {
+      "lucide": "ChevronDownIcon",
+      "tabler": "IconSelector",
+      "hugeicons": "UnfoldMoreIcon",
+      "phosphor": "CaretDownIcon",
+      "remixicon": "RiArrowDownSLine",
+      "hidden": "true",
+      "slot": "native-select-icon"
+    }
+  ],
+  "components/ui/navigation-menu.tsx": [
+    {
+      "lucide": "ChevronDownIcon",
+      "tabler": "IconChevronDown",
+      "hugeicons": "ArrowDown01Icon",
+      "phosphor": "CaretDownIcon",
+      "remixicon": "RiArrowDownSLine",
+      "hidden": "true"
+    }
+  ],
+  "components/ui/pagination.tsx": [
+    {
+      "lucide": "ChevronLeftIcon",
+      "tabler": "IconChevronLeft",
+      "hugeicons": "ArrowLeft01Icon",
+      "phosphor": "CaretLeftIcon",
+      "remixicon": "RiArrowLeftSLine",
+      "icon": "inline-start"
+    },
+    {
+      "lucide": "ChevronRightIcon",
+      "tabler": "IconChevronRight",
+      "hugeicons": "ArrowRight01Icon",
+      "phosphor": "CaretRightIcon",
+      "remixicon": "RiArrowRightSLine",
+      "icon": "inline-end"
+    },
+    {
+      "lucide": "MoreHorizontalIcon",
+      "tabler": "IconDots",
+      "hugeicons": "MoreHorizontalCircle01Icon",
+      "phosphor": "DotsThreeIcon",
+      "remixicon": "RiMoreLine"
+    }
+  ],
+  "components/ui/questionnaire.tsx": [
+    {
+      "slot": "questionnaire-choice-indicator-check",
+      "lucide": "CheckIcon",
+      "tabler": "IconCheck",
+      "hugeicons": "Tick02Icon",
+      "phosphor": "CheckIcon",
+      "remixicon": "RiCheckLine"
+    }
+  ],
+  "components/ui/select.tsx": [
+    {
+      "lucide": "ChevronDownIcon",
+      "tabler": "IconSelector",
+      "hugeicons": "UnfoldMoreIcon",
+      "phosphor": "CaretDownIcon",
+      "remixicon": "RiArrowDownSLine"
+    },
+    {
+      "lucide": "CheckIcon",
+      "tabler": "IconCheck",
+      "hugeicons": "Tick02Icon",
+      "phosphor": "CheckIcon",
+      "remixicon": "RiCheckLine"
+    },
+    {
+      "lucide": "ChevronUpIcon",
+      "tabler": "IconChevronUp",
+      "hugeicons": "ArrowUp01Icon",
+      "phosphor": "CaretUpIcon",
+      "remixicon": "RiArrowUpSLine"
+    },
+    {
+      "lucide": "ChevronDownIcon",
+      "tabler": "IconChevronDown",
+      "hugeicons": "ArrowDown01Icon",
+      "phosphor": "CaretDownIcon",
+      "remixicon": "RiArrowDownSLine"
+    }
+  ],
+  "components/ui/sheet.tsx": [
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    }
+  ],
+  "components/ui/sidebar.tsx": [
+    {
+      "lucide": "PanelLeftIcon",
+      "tabler": "IconLayoutSidebar",
+      "hugeicons": "SidebarLeftIcon",
+      "phosphor": "SidebarIcon",
+      "remixicon": "RiSideBarLine"
+    }
+  ],
+  "components/ui/sonner.tsx": [
+    {
+      "lucide": "CircleCheckIcon",
+      "tabler": "IconCircleCheck",
+      "hugeicons": "CheckmarkCircle02Icon",
+      "phosphor": "CheckCircleIcon",
+      "remixicon": "RiCheckboxCircleLine"
+    },
+    {
+      "lucide": "InfoIcon",
+      "tabler": "IconInfoCircle",
+      "hugeicons": "InformationCircleIcon",
+      "phosphor": "InfoIcon",
+      "remixicon": "RiInformationLine"
+    },
+    {
+      "lucide": "TriangleAlertIcon",
+      "tabler": "IconAlertTriangle",
+      "hugeicons": "Alert02Icon",
+      "phosphor": "WarningIcon",
+      "remixicon": "RiErrorWarningLine"
+    },
+    {
+      "lucide": "OctagonXIcon",
+      "tabler": "IconAlertOctagon",
+      "hugeicons": "MultiplicationSignCircleIcon",
+      "phosphor": "XCircleIcon",
+      "remixicon": "RiCloseCircleLine"
+    },
+    {
+      "lucide": "Loader2Icon",
+      "tabler": "IconLoader",
+      "hugeicons": "Loading03Icon",
+      "phosphor": "SpinnerIcon",
+      "remixicon": "RiLoaderLine"
+    }
+  ],
+  "components/ui/spinner.tsx": [
+    {
+      "lucide": "Loader2Icon",
+      "tabler": "IconLoader",
+      "hugeicons": "Loading03Icon",
+      "phosphor": "SpinnerIcon",
+      "remixicon": "RiLoaderLine",
+      "slot": "spinner",
+      "role": "status",
+      "label": "Loading"
+    }
+  ],
+  "components/ui/toast.tsx": [
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine",
+      "hidden": "true"
+    },
+    {
+      "lucide": "CircleCheckIcon",
+      "tabler": "IconCircleCheck",
+      "hugeicons": "CheckmarkCircle02Icon",
+      "phosphor": "CheckCircleIcon",
+      "remixicon": "RiCheckboxCircleLine",
+      "hidden": "true"
+    },
+    {
+      "lucide": "InfoIcon",
+      "tabler": "IconInfoCircle",
+      "hugeicons": "InformationCircleIcon",
+      "phosphor": "InfoIcon",
+      "remixicon": "RiInformationLine",
+      "hidden": "true"
+    },
+    {
+      "lucide": "TriangleAlertIcon",
+      "tabler": "IconAlertTriangle",
+      "hugeicons": "Alert02Icon",
+      "phosphor": "WarningIcon",
+      "remixicon": "RiErrorWarningLine",
+      "hidden": "true"
+    },
+    {
+      "lucide": "OctagonXIcon",
+      "tabler": "IconAlertOctagon",
+      "hugeicons": "MultiplicationSignCircleIcon",
+      "phosphor": "XCircleIcon",
+      "remixicon": "RiCloseCircleLine",
+      "hidden": "true"
+    },
+    {
+      "lucide": "Loader2Icon",
+      "tabler": "IconLoader",
+      "hugeicons": "Loading03Icon",
+      "phosphor": "SpinnerIcon",
+      "remixicon": "RiLoaderLine",
+      "hidden": "true"
+    }
+  ],
+  "components/ui/trace.tsx": [
+    {
+      "lucide": "ChevronRightIcon",
+      "tabler": "IconChevronRight",
+      "hugeicons": "ArrowRight01Icon",
+      "phosphor": "CaretRightIcon",
+      "remixicon": "RiArrowRightSLine"
+    }
+  ],
+  "examples/accordion-example.tsx": [
+    {
+      "lucide": "ArrowUpRightIcon",
+      "tabler": "IconArrowUpRight",
+      "hugeicons": "ArrowUpRight01Icon",
+      "phosphor": "ArrowUpRightIcon",
+      "remixicon": "RiArrowRightUpLine"
+    }
+  ],
+  "examples/alert-dialog-example.tsx": [
+    {
+      "lucide": "BluetoothIcon",
+      "tabler": "IconBluetooth",
+      "hugeicons": "BluetoothIcon",
+      "phosphor": "BluetoothIcon",
+      "remixicon": "RiBluetoothLine"
+    },
+    {
+      "lucide": "BluetoothIcon",
+      "tabler": "IconBluetooth",
+      "hugeicons": "BluetoothIcon",
+      "phosphor": "BluetoothIcon",
+      "remixicon": "RiBluetoothLine"
+    },
+    {
+      "lucide": "Trash2Icon",
+      "tabler": "IconTrash",
+      "hugeicons": "Delete02Icon",
+      "phosphor": "TrashIcon",
+      "remixicon": "RiDeleteBinLine"
+    }
+  ],
+  "examples/alert-example.tsx": [
+    {
+      "lucide": "CircleAlertIcon",
+      "tabler": "IconExclamationCircle",
+      "hugeicons": "AlertCircleIcon",
+      "phosphor": "WarningCircleIcon",
+      "remixicon": "RiErrorWarningLine"
+    },
+    {
+      "lucide": "CircleAlertIcon",
+      "tabler": "IconExclamationCircle",
+      "hugeicons": "AlertCircleIcon",
+      "phosphor": "WarningCircleIcon",
+      "remixicon": "RiErrorWarningLine"
+    },
+    {
+      "lucide": "CircleAlertIcon",
+      "tabler": "IconExclamationCircle",
+      "hugeicons": "AlertCircleIcon",
+      "phosphor": "WarningCircleIcon",
+      "remixicon": "RiErrorWarningLine"
+    },
+    {
+      "lucide": "CircleAlertIcon",
+      "tabler": "IconExclamationCircle",
+      "hugeicons": "AlertCircleIcon",
+      "phosphor": "WarningCircleIcon",
+      "remixicon": "RiErrorWarningLine"
+    },
+    {
+      "lucide": "CircleAlertIcon",
+      "tabler": "IconExclamationCircle",
+      "hugeicons": "AlertCircleIcon",
+      "phosphor": "WarningCircleIcon",
+      "remixicon": "RiErrorWarningLine"
+    },
+    {
+      "lucide": "CircleAlertIcon",
+      "tabler": "IconExclamationCircle",
+      "hugeicons": "AlertCircleIcon",
+      "phosphor": "WarningCircleIcon",
+      "remixicon": "RiErrorWarningLine"
+    },
+    {
+      "lucide": "CircleAlertIcon",
+      "tabler": "IconExclamationCircle",
+      "hugeicons": "AlertCircleIcon",
+      "phosphor": "WarningCircleIcon",
+      "remixicon": "RiErrorWarningLine"
+    },
+    {
+      "lucide": "CircleAlertIcon",
+      "tabler": "IconExclamationCircle",
+      "hugeicons": "AlertCircleIcon",
+      "phosphor": "WarningCircleIcon",
+      "remixicon": "RiErrorWarningLine"
+    },
+    {
+      "lucide": "CircleAlertIcon",
+      "tabler": "IconExclamationCircle",
+      "hugeicons": "AlertCircleIcon",
+      "phosphor": "WarningCircleIcon",
+      "remixicon": "RiErrorWarningLine"
+    },
+    {
+      "lucide": "CircleAlertIcon",
+      "tabler": "IconExclamationCircle",
+      "hugeicons": "AlertCircleIcon",
+      "phosphor": "WarningCircleIcon",
+      "remixicon": "RiErrorWarningLine"
+    }
+  ],
+  "examples/attachment-example.tsx": [
+    {
+      "lucide": "FileTextIcon",
+      "tabler": "IconFileText",
+      "hugeicons": "FileIcon",
+      "phosphor": "FileTextIcon",
+      "remixicon": "RiFileTextLine"
+    },
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    },
+    {
+      "lucide": "TableIcon",
+      "tabler": "IconTable",
+      "hugeicons": "TableIcon",
+      "phosphor": "TableIcon",
+      "remixicon": "RiTableLine"
+    },
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    },
+    {
+      "lucide": "FileCodeIcon",
+      "tabler": "IconFileCode",
+      "hugeicons": "File01Icon",
+      "phosphor": "FileCodeIcon",
+      "remixicon": "RiFileCodeLine"
+    },
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    },
+    {
+      "lucide": "FileTextIcon",
+      "tabler": "IconFileText",
+      "hugeicons": "FileIcon",
+      "phosphor": "FileTextIcon",
+      "remixicon": "RiFileTextLine"
+    },
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    },
+    {
+      "lucide": "TableIcon",
+      "tabler": "IconTable",
+      "hugeicons": "TableIcon",
+      "phosphor": "TableIcon",
+      "remixicon": "RiTableLine"
+    },
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    },
+    {
+      "lucide": "FileCodeIcon",
+      "tabler": "IconFileCode",
+      "hugeicons": "File01Icon",
+      "phosphor": "FileCodeIcon",
+      "remixicon": "RiFileCodeLine"
+    },
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    },
+    {
+      "lucide": "FileArchiveIcon",
+      "tabler": "IconFileZip",
+      "hugeicons": "File01Icon",
+      "phosphor": "FileZipIcon",
+      "remixicon": "RiFileZipLine"
+    },
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    },
+    {
+      "lucide": "PresentationIcon",
+      "tabler": "IconPresentation",
+      "hugeicons": "Presentation01Icon",
+      "phosphor": "PresentationIcon",
+      "remixicon": "RiSlideshowLine"
+    },
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    },
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    },
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    },
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    },
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    },
+    {
+      "lucide": "ClockIcon",
+      "tabler": "IconClock",
+      "hugeicons": "Clock01Icon",
+      "phosphor": "ClockIcon",
+      "remixicon": "RiTimeLine"
+    },
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    },
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    },
+    {
+      "lucide": "FileTextIcon",
+      "tabler": "IconFileText",
+      "hugeicons": "FileIcon",
+      "phosphor": "FileTextIcon",
+      "remixicon": "RiFileTextLine"
+    },
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    },
+    {
+      "lucide": "FileWarningIcon",
+      "tabler": "IconFileAlert",
+      "hugeicons": "FileCorruptIcon",
+      "phosphor": "FileXIcon",
+      "remixicon": "RiFileWarningLine"
+    },
+    {
+      "lucide": "RefreshCwIcon",
+      "tabler": "IconRefresh",
+      "hugeicons": "RefreshIcon",
+      "phosphor": "ArrowClockwiseIcon",
+      "remixicon": "RiRefreshLine"
+    },
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    },
+    {
+      "lucide": "CheckIcon",
+      "tabler": "IconCheck",
+      "hugeicons": "Tick02Icon",
+      "phosphor": "CheckIcon",
+      "remixicon": "RiCheckLine"
+    },
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    },
+    {
+      "lucide": "ClockIcon",
+      "tabler": "IconClock",
+      "hugeicons": "Clock01Icon",
+      "phosphor": "ClockIcon",
+      "remixicon": "RiTimeLine"
+    },
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    },
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    },
+    {
+      "lucide": "FileTextIcon",
+      "tabler": "IconFileText",
+      "hugeicons": "FileIcon",
+      "phosphor": "FileTextIcon",
+      "remixicon": "RiFileTextLine"
+    },
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    },
+    {
+      "lucide": "FileWarningIcon",
+      "tabler": "IconFileAlert",
+      "hugeicons": "FileCorruptIcon",
+      "phosphor": "FileXIcon",
+      "remixicon": "RiFileWarningLine"
+    },
+    {
+      "lucide": "RefreshCwIcon",
+      "tabler": "IconRefresh",
+      "hugeicons": "RefreshIcon",
+      "phosphor": "ArrowClockwiseIcon",
+      "remixicon": "RiRefreshLine"
+    },
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    },
+    {
+      "lucide": "CheckIcon",
+      "tabler": "IconCheck",
+      "hugeicons": "Tick02Icon",
+      "phosphor": "CheckIcon",
+      "remixicon": "RiCheckLine"
+    },
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    },
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    },
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    },
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    },
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    },
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    },
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    },
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    },
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    },
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    },
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    },
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    },
+    {
+      "lucide": "RefreshCwIcon",
+      "tabler": "IconRefresh",
+      "hugeicons": "RefreshIcon",
+      "phosphor": "ArrowClockwiseIcon",
+      "remixicon": "RiRefreshLine"
+    },
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    },
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    },
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    },
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    },
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    },
+    {
+      "lucide": "RefreshCwIcon",
+      "tabler": "IconRefresh",
+      "hugeicons": "RefreshIcon",
+      "phosphor": "ArrowClockwiseIcon",
+      "remixicon": "RiRefreshLine"
+    },
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    },
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    },
+    {
+      "lucide": "FileTextIcon",
+      "tabler": "IconFileText",
+      "hugeicons": "FileIcon",
+      "phosphor": "FileTextIcon",
+      "remixicon": "RiFileTextLine"
+    },
+    {
+      "lucide": "FileTextIcon",
+      "tabler": "IconFileText",
+      "hugeicons": "FileIcon",
+      "phosphor": "FileTextIcon",
+      "remixicon": "RiFileTextLine"
+    },
+    {
+      "lucide": "FileTextIcon",
+      "tabler": "IconFileText",
+      "hugeicons": "FileIcon",
+      "phosphor": "FileTextIcon",
+      "remixicon": "RiFileTextLine"
+    },
+    {
+      "lucide": "FileTextIcon",
+      "tabler": "IconFileText",
+      "hugeicons": "FileIcon",
+      "phosphor": "FileTextIcon",
+      "remixicon": "RiFileTextLine"
+    },
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    },
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    },
+    {
+      "lucide": "TableIcon",
+      "tabler": "IconTable",
+      "hugeicons": "TableIcon",
+      "phosphor": "TableIcon",
+      "remixicon": "RiTableLine"
+    },
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    },
+    {
+      "lucide": "FileCodeIcon",
+      "tabler": "IconFileCode",
+      "hugeicons": "File01Icon",
+      "phosphor": "FileCodeIcon",
+      "remixicon": "RiFileCodeLine"
+    },
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    },
+    {
+      "lucide": "FileTextIcon",
+      "tabler": "IconFileText",
+      "hugeicons": "FileIcon",
+      "phosphor": "FileTextIcon",
+      "remixicon": "RiFileTextLine"
+    },
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    },
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    },
+    {
+      "lucide": "FileArchiveIcon",
+      "tabler": "IconFileZip",
+      "hugeicons": "File01Icon",
+      "phosphor": "FileZipIcon",
+      "remixicon": "RiFileZipLine"
+    },
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    },
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    },
+    {
+      "lucide": "FileTextIcon",
+      "tabler": "IconFileText",
+      "hugeicons": "FileIcon",
+      "phosphor": "FileTextIcon",
+      "remixicon": "RiFileTextLine"
+    },
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    },
+    {
+      "lucide": "FileTextIcon",
+      "tabler": "IconFileText",
+      "hugeicons": "FileIcon",
+      "phosphor": "FileTextIcon",
+      "remixicon": "RiFileTextLine"
+    },
+    {
+      "lucide": "DownloadIcon",
+      "tabler": "IconDownload",
+      "hugeicons": "Download01Icon",
+      "phosphor": "DownloadIcon",
+      "remixicon": "RiDownloadLine"
+    },
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    },
+    {
+      "lucide": "FileSearchIcon",
+      "tabler": "IconFileSearch",
+      "hugeicons": "FileSearchIcon",
+      "phosphor": "FileSearchIcon",
+      "remixicon": "RiFileSearchLine"
+    },
+    {
+      "lucide": "CopyIcon",
+      "tabler": "IconCopy",
+      "hugeicons": "Copy01Icon",
+      "phosphor": "CopyIcon",
+      "remixicon": "RiFileCopyLine"
+    },
+    {
+      "lucide": "XIcon",
+      "tabler": "IconX",
+      "hugeicons": "Cancel01Icon",
+      "phosphor": "XIcon",
+      "remixicon": "RiCloseLine"
+    }
+  ],
+  "examples/avatar-example.tsx": [
+    {
+      "lucide": "PlusIcon",
+      "tabler": "IconPlus",
+      "hugeicons": "PlusSignIcon",
+      "phosphor": "PlusIcon",
+      "remixicon": "RiAddLine"
+    },
+    {
+      "lucide": "PlusIcon",
+      "tabler": "IconPlus",
+      "hugeicons": "PlusSignIcon",
+      "phosphor": "PlusIcon",
+      "remixicon": "RiAddLine"
+    },
+    {
+      "lucide": "PlusIcon",
+      "tabler": "IconPlus",
+      "hugeicons": "PlusSignIcon",
+      "phosphor": "PlusIcon",
+      "remixicon": "RiAddLine"
+    },
+    {
+      "lucide": "CheckIcon",
+      "tabler": "IconCheck",
+      "hugeicons": "Tick02Icon",
+      "phosphor": "CheckIcon",
+      "remixicon": "RiCheckLine"
+    },
+    {
+      "lucide": "CheckIcon",
+      "tabler": "IconCheck",
+      "hugeicons": "Tick02Icon",
+      "phosphor": "CheckIcon",
+      "remixicon": "RiCheckLine"
+    },
+    {
+      "lucide": "CheckIcon",
+      "tabler": "IconCheck",
+      "hugeicons": "Tick02Icon",
+      "phosphor": "CheckIcon",
+      "remixicon": "RiCheckLine"
+    },
+    {
+      "lucide": "PlusIcon",
+      "tabler": "IconPlus",
+      "hugeicons": "PlusSignIcon",
+      "phosphor": "PlusIcon",
+      "remixicon": "RiAddLine"
+    },
+    {
+      "lucide": "PlusIcon",
+      "tabler": "IconPlus",
+      "hugeicons": "PlusSignIcon",
+      "phosphor": "PlusIcon",
+      "remixicon": "RiAddLine"
+    },
+    {
+      "lucide": "PlusIcon",
+      "tabler": "IconPlus",
+      "hugeicons": "PlusSignIcon",
+      "phosphor": "PlusIcon",
+      "remixicon": "RiAddLine"
+    },
+    {
+      "lucide": "PlusIcon",
+      "tabler": "IconPlus",
+      "hugeicons": "PlusSignIcon",
+      "phosphor": "PlusIcon",
+      "remixicon": "RiAddLine"
+    },
+    {
+      "lucide": "PlusIcon",
+      "tabler": "IconPlus",
+      "hugeicons": "PlusSignIcon",
+      "phosphor": "PlusIcon",
+      "remixicon": "RiAddLine"
+    }
+  ],
+  "examples/badge-example.tsx": [
+    {
+      "lucide": "BadgeCheck",
+      "tabler": "IconRosetteDiscountCheck",
+      "hugeicons": "CheckmarkBadge02Icon",
+      "phosphor": "CheckCircleIcon",
+      "remixicon": "RiCheckboxCircleLine",
+      "icon": "inline-start"
+    },
+    {
+      "lucide": "BadgeCheck",
+      "tabler": "IconRosetteDiscountCheck",
+      "hugeicons": "CheckmarkBadge02Icon",
+      "phosphor": "CheckCircleIcon",
+      "remixicon": "RiCheckboxCircleLine",
+      "icon": "inline-start"
+    },
+    {
+      "lucide": "BadgeCheck",
+      "tabler": "IconRosetteDiscountCheck",
+      "hugeicons": "CheckmarkBadge02Icon",
+      "phosphor": "CheckCircleIcon",
+      "remixicon": "RiCheckboxCircleLine",
+      "icon": "inline-start"
+    },
+    {
+      "lucide": "BadgeCheck",
+      "tabler": "IconRosetteDiscountCheck",
+      "hugeicons": "CheckmarkBadge02Icon",
+      "phosphor": "CheckCircleIcon",
+      "remixicon": "RiCheckboxCircleLine",
+      "icon": "inline-start"
+    },
+    {
+      "lucide": "BadgeCheck",
+      "tabler": "IconRosetteDiscountCheck",
+      "hugeicons": "CheckmarkBadge02Icon",
+      "phosphor": "CheckCircleIcon",
+      "remixicon": "RiCheckboxCircleLine",
+      "icon": "inline-start"
+    },
+    {
+      "lucide": "BadgeCheck",
+      "tabler": "IconRosetteDiscountCheck",
+      "hugeicons": "CheckmarkBadge02Icon",
+      "phosphor": "CheckCircleIcon",
+      "remixicon": "RiCheckboxCircleLine",
+      "icon": "inline-start"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine",
+      "icon": "inline-end"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine",
+      "icon": "inline-end"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine",
+      "icon": "inline-end"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine",
+      "icon": "inline-end"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine",
+      "icon": "inline-end"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine",
+      "icon": "inline-end"
+    },
+    {
+      "lucide": "ArrowUpRightIcon",
+      "tabler": "IconArrowUpRight",
+      "hugeicons": "ArrowUpRightIcon",
+      "phosphor": "ArrowUpRightIcon",
+      "remixicon": "RiArrowRightUpLine",
+      "icon": "inline-end"
+    },
+    {
+      "lucide": "ArrowUpRightIcon",
+      "tabler": "IconArrowUpRight",
+      "hugeicons": "ArrowUpRightIcon",
+      "phosphor": "ArrowUpRightIcon",
+      "remixicon": "RiArrowRightUpLine",
+      "icon": "inline-end"
+    },
+    {
+      "lucide": "ArrowUpRightIcon",
+      "tabler": "IconArrowUpRight",
+      "hugeicons": "ArrowUpRightIcon",
+      "phosphor": "ArrowUpRightIcon",
+      "remixicon": "RiArrowRightUpLine",
+      "icon": "inline-end"
+    },
+    {
+      "lucide": "ArrowUpRightIcon",
+      "tabler": "IconArrowUpRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowUpRightIcon",
+      "remixicon": "RiArrowRightUpLine",
+      "icon": "inline-end"
+    }
+  ],
+  "examples/bubble-example.tsx": [
+    {
+      "lucide": "ChevronDownIcon",
+      "tabler": "IconChevronDown",
+      "hugeicons": "ArrowDown01Icon",
+      "phosphor": "CaretDownIcon",
+      "remixicon": "RiArrowDownSLine",
+      "icon": "inline-end"
+    },
+    {
+      "lucide": "ThumbsUpIcon",
+      "tabler": "IconThumbUp",
+      "hugeicons": "ThumbsUpIcon",
+      "phosphor": "ThumbsUpIcon",
+      "remixicon": "RiThumbUpLine"
+    },
+    {
+      "lucide": "ThumbsDownIcon",
+      "tabler": "IconThumbDown",
+      "hugeicons": "ThumbsDownIcon",
+      "phosphor": "ThumbsDownIcon",
+      "remixicon": "RiThumbDownLine"
+    }
+  ],
+  "examples/button-example.tsx": [
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine",
+      "icon": "inline-end"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine",
+      "icon": "inline-end"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine",
+      "icon": "inline-end"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine",
+      "icon": "inline-end"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine",
+      "icon": "inline-end"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine",
+      "icon": "inline-end"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine",
+      "icon": "inline-end"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine",
+      "icon": "inline-end"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine",
+      "icon": "inline-end"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine",
+      "icon": "inline-end"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine",
+      "icon": "inline-end"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine",
+      "icon": "inline-end"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine",
+      "icon": "inline-end"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine",
+      "icon": "inline-end"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine",
+      "icon": "inline-end"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine",
+      "icon": "inline-end"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine",
+      "icon": "inline-end"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine",
+      "icon": "inline-end"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine",
+      "icon": "inline-end"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine",
+      "icon": "inline-end"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine",
+      "icon": "inline-end"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine",
+      "icon": "inline-end"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine",
+      "icon": "inline-end"
+    },
+    {
+      "lucide": "ArrowLeftCircleIcon",
+      "hugeicons": "CircleArrowLeft02Icon",
+      "tabler": "IconCircleArrowLeft",
+      "phosphor": "ArrowCircleLeftIcon",
+      "remixicon": "RiArrowLeftCircleLine",
+      "icon": "inline-start"
+    },
+    {
+      "lucide": "ArrowLeftCircleIcon",
+      "hugeicons": "CircleArrowLeft02Icon",
+      "tabler": "IconCircleArrowLeft",
+      "phosphor": "ArrowCircleLeftIcon",
+      "remixicon": "RiArrowLeftCircleLine",
+      "icon": "inline-start"
+    },
+    {
+      "lucide": "ArrowLeftCircleIcon",
+      "hugeicons": "CircleArrowLeft02Icon",
+      "tabler": "IconCircleArrowLeft",
+      "phosphor": "ArrowCircleLeftIcon",
+      "remixicon": "RiArrowLeftCircleLine",
+      "icon": "inline-start"
+    },
+    {
+      "lucide": "ArrowLeftCircleIcon",
+      "hugeicons": "CircleArrowLeft02Icon",
+      "tabler": "IconCircleArrowLeft",
+      "phosphor": "ArrowCircleLeftIcon",
+      "remixicon": "RiArrowLeftCircleLine",
+      "icon": "inline-start"
+    },
+    {
+      "lucide": "ArrowLeftCircleIcon",
+      "hugeicons": "CircleArrowLeft02Icon",
+      "tabler": "IconCircleArrowLeft",
+      "phosphor": "ArrowCircleLeftIcon",
+      "remixicon": "RiArrowLeftCircleLine",
+      "icon": "inline-start"
+    },
+    {
+      "lucide": "ArrowLeftCircleIcon",
+      "hugeicons": "CircleArrowLeft02Icon",
+      "tabler": "IconCircleArrowLeft",
+      "phosphor": "ArrowCircleLeftIcon",
+      "remixicon": "RiArrowLeftCircleLine",
+      "icon": "inline-start"
+    },
+    {
+      "lucide": "ArrowLeftCircleIcon",
+      "hugeicons": "CircleArrowLeft02Icon",
+      "tabler": "IconCircleArrowLeft",
+      "phosphor": "ArrowCircleLeftIcon",
+      "remixicon": "RiArrowLeftCircleLine",
+      "icon": "inline-start"
+    },
+    {
+      "lucide": "ArrowLeftCircleIcon",
+      "hugeicons": "CircleArrowLeft02Icon",
+      "tabler": "IconCircleArrowLeft",
+      "phosphor": "ArrowCircleLeftIcon",
+      "remixicon": "RiArrowLeftCircleLine",
+      "icon": "inline-start"
+    },
+    {
+      "lucide": "ArrowLeftCircleIcon",
+      "hugeicons": "CircleArrowLeft02Icon",
+      "tabler": "IconCircleArrowLeft",
+      "phosphor": "ArrowCircleLeftIcon",
+      "remixicon": "RiArrowLeftCircleLine",
+      "icon": "inline-start"
+    },
+    {
+      "lucide": "ArrowLeftCircleIcon",
+      "hugeicons": "CircleArrowLeft02Icon",
+      "tabler": "IconCircleArrowLeft",
+      "phosphor": "ArrowCircleLeftIcon",
+      "remixicon": "RiArrowLeftCircleLine",
+      "icon": "inline-start"
+    },
+    {
+      "lucide": "ArrowLeftCircleIcon",
+      "hugeicons": "CircleArrowLeft02Icon",
+      "tabler": "IconCircleArrowLeft",
+      "phosphor": "ArrowCircleLeftIcon",
+      "remixicon": "RiArrowLeftCircleLine",
+      "icon": "inline-start"
+    },
+    {
+      "lucide": "ArrowLeftCircleIcon",
+      "hugeicons": "CircleArrowLeft02Icon",
+      "tabler": "IconCircleArrowLeft",
+      "phosphor": "ArrowCircleLeftIcon",
+      "remixicon": "RiArrowLeftCircleLine",
+      "icon": "inline-start"
+    },
+    {
+      "lucide": "ArrowLeftCircleIcon",
+      "hugeicons": "CircleArrowLeft02Icon",
+      "tabler": "IconCircleArrowLeft",
+      "phosphor": "ArrowCircleLeftIcon",
+      "remixicon": "RiArrowLeftCircleLine",
+      "icon": "inline-start"
+    },
+    {
+      "lucide": "ArrowLeftCircleIcon",
+      "hugeicons": "CircleArrowLeft02Icon",
+      "tabler": "IconCircleArrowLeft",
+      "phosphor": "ArrowCircleLeftIcon",
+      "remixicon": "RiArrowLeftCircleLine",
+      "icon": "inline-start"
+    },
+    {
+      "lucide": "ArrowLeftCircleIcon",
+      "hugeicons": "CircleArrowLeft02Icon",
+      "tabler": "IconCircleArrowLeft",
+      "phosphor": "ArrowCircleLeftIcon",
+      "remixicon": "RiArrowLeftCircleLine",
+      "icon": "inline-start"
+    },
+    {
+      "lucide": "ArrowLeftCircleIcon",
+      "hugeicons": "CircleArrowLeft02Icon",
+      "tabler": "IconCircleArrowLeft",
+      "phosphor": "ArrowCircleLeftIcon",
+      "remixicon": "RiArrowLeftCircleLine",
+      "icon": "inline-start"
+    },
+    {
+      "lucide": "ArrowLeftCircleIcon",
+      "hugeicons": "CircleArrowLeft02Icon",
+      "tabler": "IconCircleArrowLeft",
+      "phosphor": "ArrowCircleLeftIcon",
+      "remixicon": "RiArrowLeftCircleLine",
+      "icon": "inline-start"
+    },
+    {
+      "lucide": "ArrowLeftCircleIcon",
+      "hugeicons": "CircleArrowLeft02Icon",
+      "tabler": "IconCircleArrowLeft",
+      "phosphor": "ArrowCircleLeftIcon",
+      "remixicon": "RiArrowLeftCircleLine",
+      "icon": "inline-start"
+    },
+    {
+      "lucide": "ArrowLeftCircleIcon",
+      "hugeicons": "CircleArrowLeft02Icon",
+      "tabler": "IconCircleArrowLeft",
+      "phosphor": "ArrowCircleLeftIcon",
+      "remixicon": "RiArrowLeftCircleLine",
+      "icon": "inline-start"
+    },
+    {
+      "lucide": "ArrowLeftCircleIcon",
+      "hugeicons": "CircleArrowLeft02Icon",
+      "tabler": "IconCircleArrowLeft",
+      "phosphor": "ArrowCircleLeftIcon",
+      "remixicon": "RiArrowLeftCircleLine",
+      "icon": "inline-start"
+    },
+    {
+      "lucide": "ArrowLeftCircleIcon",
+      "hugeicons": "CircleArrowLeft02Icon",
+      "tabler": "IconCircleArrowLeft",
+      "phosphor": "ArrowCircleLeftIcon",
+      "remixicon": "RiArrowLeftCircleLine",
+      "icon": "inline-start"
+    },
+    {
+      "lucide": "ArrowLeftCircleIcon",
+      "hugeicons": "CircleArrowLeft02Icon",
+      "tabler": "IconCircleArrowLeft",
+      "phosphor": "ArrowCircleLeftIcon",
+      "remixicon": "RiArrowLeftCircleLine",
+      "icon": "inline-start"
+    },
+    {
+      "lucide": "ArrowLeftCircleIcon",
+      "hugeicons": "CircleArrowLeft02Icon",
+      "tabler": "IconCircleArrowLeft",
+      "phosphor": "ArrowCircleLeftIcon",
+      "remixicon": "RiArrowLeftCircleLine",
+      "icon": "inline-start"
+    },
+    {
+      "lucide": "ArrowLeftCircleIcon",
+      "hugeicons": "CircleArrowLeft02Icon",
+      "tabler": "IconCircleArrowLeft",
+      "phosphor": "ArrowCircleLeftIcon",
+      "remixicon": "RiArrowLeftCircleLine",
+      "icon": "inline-start"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine",
+      "icon": "inline-end"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine",
+      "icon": "inline-end"
+    }
+  ],
+  "examples/button-group-example.tsx": [
+    {
+      "lucide": "ChevronDownIcon",
+      "tabler": "IconChevronDown",
+      "hugeicons": "ArrowDown01Icon",
+      "phosphor": "CaretDownIcon",
+      "remixicon": "RiArrowDownSLine"
+    },
+    {
+      "lucide": "ChevronDownIcon",
+      "tabler": "IconChevronDown",
+      "hugeicons": "ArrowDown01Icon",
+      "phosphor": "CaretDownIcon",
+      "remixicon": "RiArrowDownSLine"
+    },
+    {
+      "lucide": "VolumeX",
+      "tabler": "IconVolume",
+      "hugeicons": "VolumeOffIcon",
+      "phosphor": "SpeakerSlashIcon",
+      "remixicon": "RiVolumeMuteLine"
+    },
+    {
+      "lucide": "CheckIcon",
+      "tabler": "IconCheck",
+      "hugeicons": "Tick02Icon",
+      "phosphor": "CheckIcon",
+      "remixicon": "RiCheckLine"
+    },
+    {
+      "lucide": "AlertTriangleIcon",
+      "tabler": "IconAlertTriangle",
+      "hugeicons": "AlertCircleIcon",
+      "phosphor": "WarningIcon",
+      "remixicon": "RiErrorWarningLine"
+    },
+    {
+      "lucide": "UserRoundXIcon",
+      "tabler": "IconUserX",
+      "hugeicons": "UserRemove01Icon",
+      "phosphor": "UserMinusIcon",
+      "remixicon": "RiUserUnfollowLine"
+    },
+    {
+      "lucide": "ShareIcon",
+      "tabler": "IconShare",
+      "hugeicons": "Share03Icon",
+      "phosphor": "ShareIcon",
+      "remixicon": "RiShareLine"
+    },
+    {
+      "lucide": "CopyIcon",
+      "tabler": "IconCopy",
+      "hugeicons": "Copy01Icon",
+      "phosphor": "CopyIcon",
+      "remixicon": "RiFileCopyLine"
+    },
+    {
+      "lucide": "TrashIcon",
+      "tabler": "IconTrash",
+      "hugeicons": "Delete02Icon",
+      "phosphor": "TrashIcon",
+      "remixicon": "RiDeleteBinLine"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight01Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine"
+    },
+    {
+      "lucide": "FlipHorizontalIcon",
+      "tabler": "IconFlipHorizontal",
+      "hugeicons": "FlipHorizontalIcon",
+      "phosphor": "ArrowsHorizontalIcon",
+      "remixicon": "RiArrowLeftRightLine"
+    },
+    {
+      "lucide": "FlipVerticalIcon",
+      "tabler": "IconFlipVertical",
+      "hugeicons": "FlipVerticalIcon",
+      "phosphor": "ArrowsVerticalIcon",
+      "remixicon": "RiArrowUpDownLine"
+    },
+    {
+      "lucide": "RotateCwIcon",
+      "tabler": "IconRotateClockwise2",
+      "hugeicons": "Rotate01Icon",
+      "phosphor": "ArrowClockwiseIcon",
+      "remixicon": "RiRefreshLine"
+    },
+    {
+      "lucide": "SearchIcon",
+      "tabler": "IconSearch",
+      "hugeicons": "Search01Icon",
+      "phosphor": "MagnifyingGlassIcon",
+      "remixicon": "RiSearchLine"
+    },
+    {
+      "lucide": "MinusIcon",
+      "tabler": "IconMinus",
+      "hugeicons": "MinusSignIcon",
+      "phosphor": "MinusIcon",
+      "remixicon": "RiSubtractLine"
+    },
+    {
+      "lucide": "PlusIcon",
+      "tabler": "IconPlus",
+      "hugeicons": "PlusSignIcon",
+      "phosphor": "PlusIcon",
+      "remixicon": "RiAddLine"
+    },
+    {
+      "lucide": "HeartIcon",
+      "tabler": "IconBell",
+      "hugeicons": "Notification02Icon",
+      "phosphor": "HeartIcon",
+      "remixicon": "RiHeartLine",
+      "icon": "inline-start"
+    },
+    {
+      "lucide": "PlusIcon",
+      "tabler": "IconPlus",
+      "hugeicons": "PlusSignIcon",
+      "phosphor": "PlusIcon",
+      "remixicon": "RiAddLine"
+    },
+    {
+      "lucide": "AudioLinesIcon",
+      "tabler": "IconHeadphones",
+      "hugeicons": "AudioWave01Icon",
+      "phosphor": "MicrophoneIcon",
+      "remixicon": "RiMicLine"
+    },
+    {
+      "lucide": "ArrowLeftIcon",
+      "tabler": "IconArrowLeft",
+      "hugeicons": "ArrowLeft02Icon",
+      "phosphor": "ArrowLeftIcon",
+      "remixicon": "RiArrowLeftLine",
+      "icon": "inline-start"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine",
+      "icon": "inline-end"
+    },
+    {
+      "lucide": "ArrowLeftIcon",
+      "tabler": "IconArrowLeft",
+      "hugeicons": "ArrowLeft01Icon",
+      "phosphor": "ArrowLeftIcon",
+      "remixicon": "RiArrowLeftLine"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight01Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine"
+    },
+    {
+      "lucide": "ArrowLeftIcon",
+      "tabler": "IconArrowLeft",
+      "hugeicons": "ArrowLeft01Icon",
+      "phosphor": "ArrowLeftIcon",
+      "remixicon": "RiArrowLeftLine"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight01Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine"
+    },
+    {
+      "lucide": "ArrowLeftIcon",
+      "tabler": "IconArrowLeft",
+      "hugeicons": "ArrowLeft01Icon",
+      "phosphor": "ArrowLeftIcon",
+      "remixicon": "RiArrowLeftLine"
+    },
+    {
+      "lucide": "PlusIcon",
+      "tabler": "IconPlus",
+      "hugeicons": "PlusSignIcon",
+      "phosphor": "PlusIcon",
+      "remixicon": "RiAddLine"
+    },
+    {
+      "lucide": "MinusIcon",
+      "tabler": "IconMinus",
+      "hugeicons": "MinusSignIcon",
+      "phosphor": "MinusIcon",
+      "remixicon": "RiSubtractLine"
+    },
+    {
+      "lucide": "SearchIcon",
+      "tabler": "IconSearch",
+      "hugeicons": "Search01Icon",
+      "phosphor": "MagnifyingGlassIcon",
+      "remixicon": "RiSearchLine"
+    },
+    {
+      "lucide": "CopyIcon",
+      "tabler": "IconCopy",
+      "hugeicons": "Copy01Icon",
+      "phosphor": "CopyIcon",
+      "remixicon": "RiFileCopyLine"
+    },
+    {
+      "lucide": "ShareIcon",
+      "tabler": "IconShare",
+      "hugeicons": "Share03Icon",
+      "phosphor": "ShareIcon",
+      "remixicon": "RiShareLine"
+    },
+    {
+      "lucide": "FlipHorizontalIcon",
+      "tabler": "IconFlipHorizontal",
+      "hugeicons": "FlipHorizontalIcon",
+      "phosphor": "ArrowsHorizontalIcon",
+      "remixicon": "RiArrowLeftRightLine"
+    },
+    {
+      "lucide": "FlipVerticalIcon",
+      "tabler": "IconFlipVertical",
+      "hugeicons": "FlipVerticalIcon",
+      "phosphor": "ArrowsVerticalIcon",
+      "remixicon": "RiArrowUpDownLine"
+    },
+    {
+      "lucide": "RotateCwIcon",
+      "tabler": "IconRotateClockwise2",
+      "hugeicons": "Rotate01Icon",
+      "phosphor": "ArrowClockwiseIcon",
+      "remixicon": "RiRefreshLine"
+    },
+    {
+      "lucide": "TrashIcon",
+      "tabler": "IconTrash",
+      "hugeicons": "Delete02Icon",
+      "phosphor": "TrashIcon",
+      "remixicon": "RiDeleteBinLine"
+    }
+  ],
+  "examples/calendar-example.tsx": [
+    {
+      "lucide": "CalendarIcon",
+      "tabler": "IconCalendar",
+      "hugeicons": "CalendarIcon",
+      "phosphor": "CalendarBlankIcon",
+      "remixicon": "RiCalendarLine",
+      "icon": "inline-start"
+    },
+    {
+      "lucide": "Clock2Icon",
+      "tabler": "IconClockHour2",
+      "hugeicons": "Clock03Icon",
+      "phosphor": "ClockIcon",
+      "remixicon": "RiTimeLine"
+    },
+    {
+      "lucide": "Clock2Icon",
+      "tabler": "IconClockHour2",
+      "hugeicons": "Clock03Icon",
+      "phosphor": "ClockIcon",
+      "remixicon": "RiTimeLine"
+    },
+    {
+      "lucide": "CalendarIcon",
+      "tabler": "IconCalendar",
+      "hugeicons": "CalendarIcon",
+      "phosphor": "CalendarBlankIcon",
+      "remixicon": "RiCalendarLine",
+      "icon": "inline-start"
+    },
+    {
+      "lucide": "CalendarIcon",
+      "tabler": "IconCalendar",
+      "hugeicons": "CalendarIcon",
+      "phosphor": "CalendarBlankIcon",
+      "remixicon": "RiCalendarLine",
+      "icon": "inline-start"
+    },
+    {
+      "lucide": "ChevronDownIcon",
+      "tabler": "IconChevronDown",
+      "hugeicons": "ArrowDownIcon",
+      "phosphor": "CaretDownIcon",
+      "remixicon": "RiArrowDownSLine",
+      "icon": "inline-start"
+    }
+  ],
+  "examples/card-example.tsx": [
+    {
+      "lucide": "CaptionsIcon",
+      "tabler": "IconTextCaption",
+      "hugeicons": "TextCheckIcon",
+      "phosphor": "TextTIcon",
+      "remixicon": "RiTextWrap",
+      "icon": "inline-start"
+    },
+    {
+      "lucide": "PlusIcon",
+      "tabler": "IconPlus",
+      "hugeicons": "Add01Icon",
+      "phosphor": "PlusIcon",
+      "remixicon": "RiAddLine",
+      "icon": "inline-start"
+    },
+    {
+      "lucide": "PlusIcon",
+      "tabler": "IconPlus",
+      "hugeicons": "Add01Icon",
+      "phosphor": "PlusIcon",
+      "remixicon": "RiAddLine",
+      "icon": "inline-start"
+    }
+  ],
+  "examples/chart-example.tsx": [
+    {
+      "lucide": "TrendingUpIcon",
+      "tabler": "IconTrendingUp",
+      "hugeicons": "ChartUpIcon",
+      "phosphor": "TrendUpIcon",
+      "remixicon": "RiLineChartLine"
+    },
+    {
+      "lucide": "TrendingUpIcon",
+      "tabler": "IconTrendingUp",
+      "hugeicons": "ChartUpIcon",
+      "phosphor": "TrendUpIcon",
+      "remixicon": "RiLineChartLine"
+    },
+    {
+      "lucide": "TrendingUpIcon",
+      "tabler": "IconTrendingUp",
+      "hugeicons": "ChartUpIcon",
+      "phosphor": "TrendUpIcon",
+      "remixicon": "RiLineChartLine"
+    },
+    {
+      "lucide": "TrendingUpIcon",
+      "tabler": "IconTrendingUp",
+      "hugeicons": "ChartUpIcon",
+      "phosphor": "TrendUpIcon",
+      "remixicon": "RiLineChartLine"
+    },
+    {
+      "lucide": "TrendingUpIcon",
+      "tabler": "IconTrendingUp",
+      "hugeicons": "ChartUpIcon",
+      "phosphor": "TrendUpIcon",
+      "remixicon": "RiLineChartLine"
+    },
+    {
+      "lucide": "TrendingUpIcon",
+      "tabler": "IconTrendingUp",
+      "hugeicons": "ChartUpIcon",
+      "phosphor": "TrendUpIcon",
+      "remixicon": "RiLineChartLine"
+    }
+  ],
+  "examples/code-block-example.tsx": [
+    {
+      "lucide": "TerminalIcon",
+      "tabler": "IconTerminal",
+      "hugeicons": "ComputerTerminal01Icon",
+      "phosphor": "TerminalIcon",
+      "remixicon": "RiTerminalBoxLine"
+    },
+    {
+      "lucide": "FileCodeIcon",
+      "tabler": "IconFileCode",
+      "hugeicons": "CodeIcon",
+      "phosphor": "FileCodeIcon",
+      "remixicon": "RiFileCodeLine"
+    },
+    {
+      "lucide": "TerminalIcon",
+      "tabler": "IconTerminal",
+      "hugeicons": "ComputerTerminal01Icon",
+      "phosphor": "TerminalIcon",
+      "remixicon": "RiTerminalBoxLine"
+    },
+    {
+      "lucide": "TerminalIcon",
+      "tabler": "IconTerminal",
+      "hugeicons": "ComputerTerminal01Icon",
+      "phosphor": "TerminalIcon",
+      "remixicon": "RiTerminalBoxLine"
+    },
+    {
+      "lucide": "TerminalIcon",
+      "tabler": "IconTerminal",
+      "hugeicons": "ComputerTerminal01Icon",
+      "phosphor": "TerminalIcon",
+      "remixicon": "RiTerminalBoxLine"
+    },
+    {
+      "lucide": "FileCodeIcon",
+      "tabler": "IconFileCode",
+      "hugeicons": "CodeIcon",
+      "phosphor": "FileCodeIcon",
+      "remixicon": "RiFileCodeLine"
+    },
+    {
+      "lucide": "WrapTextIcon",
+      "tabler": "IconTextWrap",
+      "hugeicons": "TextWrapIcon",
+      "phosphor": "ArrowUDownLeftIcon",
+      "remixicon": "RiTextWrap"
+    },
+    {
+      "lucide": "DownloadIcon",
+      "tabler": "IconDownload",
+      "hugeicons": "Download01Icon",
+      "phosphor": "DownloadSimpleIcon",
+      "remixicon": "RiDownloadLine"
+    },
+    {
+      "lucide": "ChevronDownIcon",
+      "tabler": "IconChevronDown",
+      "hugeicons": "ArrowDown01Icon",
+      "phosphor": "CaretDownIcon",
+      "remixicon": "RiArrowDownSLine"
+    },
+    {
+      "lucide": "ChevronDownIcon",
+      "tabler": "IconChevronDown",
+      "hugeicons": "ArrowDown01Icon",
+      "phosphor": "CaretDownIcon",
+      "remixicon": "RiArrowDownSLine"
+    },
+    {
+      "lucide": "FileCodeIcon",
+      "tabler": "IconFileCode",
+      "hugeicons": "CodeIcon",
+      "phosphor": "FileCodeIcon",
+      "remixicon": "RiFileCodeLine"
+    }
+  ],
+  "examples/collapsible-example.tsx": [
+    {
+      "lucide": "ChevronRightIcon",
+      "tabler": "IconChevronRight",
+      "hugeicons": "ArrowRight01Icon",
+      "phosphor": "CaretRightIcon",
+      "remixicon": "RiArrowRightSLine"
+    },
+    {
+      "lucide": "FolderIcon",
+      "tabler": "IconFolder",
+      "hugeicons": "Folder01Icon",
+      "phosphor": "FolderIcon",
+      "remixicon": "RiFolderLine"
+    },
+    {
+      "lucide": "FileIcon",
+      "tabler": "IconFile",
+      "hugeicons": "File01Icon",
+      "phosphor": "FileIcon",
+      "remixicon": "RiFileLine"
+    },
+    {
+      "lucide": "MinimizeIcon",
+      "tabler": "IconMinimize",
+      "hugeicons": "MinusSignIcon",
+      "phosphor": "MinusIcon",
+      "remixicon": "RiSubtractLine"
+    },
+    {
+      "lucide": "MaximizeIcon",
+      "tabler": "IconMaximize",
+      "hugeicons": "PlusSignIcon",
+      "phosphor": "PlusIcon",
+      "remixicon": "RiAddLine"
+    }
+  ],
+  "examples/combobox-example.tsx": [
+    {
+      "lucide": "GlobeIcon",
+      "tabler": "IconGlobe",
+      "hugeicons": "Globe02Icon",
+      "phosphor": "GlobeIcon",
+      "remixicon": "RiGlobeLine"
+    },
+    {
+      "lucide": "ChevronDownIcon",
+      "tabler": "IconSelector",
+      "hugeicons": "UnfoldMoreIcon",
+      "phosphor": "CaretDownIcon",
+      "remixicon": "RiArrowDownSLine"
+    },
+    {
+      "lucide": "ChevronDownIcon",
+      "tabler": "IconSelector",
+      "hugeicons": "UnfoldMoreIcon",
+      "phosphor": "CaretDownIcon",
+      "remixicon": "RiArrowDownSLine"
+    }
+  ],
+  "examples/command-example.tsx": [
+    {
+      "lucide": "CalendarIcon",
+      "tabler": "IconCalendar",
+      "hugeicons": "CalendarIcon",
+      "phosphor": "CalendarBlankIcon",
+      "remixicon": "RiCalendarLine"
+    },
+    {
+      "lucide": "SmileIcon",
+      "tabler": "IconMoodSmile",
+      "hugeicons": "SmileIcon",
+      "phosphor": "SmileyIcon",
+      "remixicon": "RiEmotionLine"
+    },
+    {
+      "lucide": "CalculatorIcon",
+      "tabler": "IconCalculator",
+      "hugeicons": "CalculatorIcon",
+      "phosphor": "CalculatorIcon",
+      "remixicon": "RiCalculatorLine"
+    },
+    {
+      "lucide": "UserIcon",
+      "tabler": "IconUser",
+      "hugeicons": "UserIcon",
+      "phosphor": "UserIcon",
+      "remixicon": "RiUserLine"
+    },
+    {
+      "lucide": "CreditCardIcon",
+      "tabler": "IconCreditCard",
+      "hugeicons": "CreditCardIcon",
+      "phosphor": "CreditCardIcon",
+      "remixicon": "RiBankCardLine"
+    },
+    {
+      "lucide": "SettingsIcon",
+      "tabler": "IconSettings",
+      "hugeicons": "SettingsIcon",
+      "phosphor": "GearIcon",
+      "remixicon": "RiSettingsLine"
+    },
+    {
+      "lucide": "UserIcon",
+      "tabler": "IconUser",
+      "hugeicons": "UserIcon",
+      "phosphor": "UserIcon",
+      "remixicon": "RiUserLine"
+    },
+    {
+      "lucide": "CreditCardIcon",
+      "tabler": "IconCreditCard",
+      "hugeicons": "CreditCardIcon",
+      "phosphor": "CreditCardIcon",
+      "remixicon": "RiBankCardLine"
+    },
+    {
+      "lucide": "SettingsIcon",
+      "tabler": "IconSettings",
+      "hugeicons": "SettingsIcon",
+      "phosphor": "GearIcon",
+      "remixicon": "RiSettingsLine"
+    },
+    {
+      "lucide": "CalendarIcon",
+      "tabler": "IconCalendar",
+      "hugeicons": "CalendarIcon",
+      "phosphor": "CalendarBlankIcon",
+      "remixicon": "RiCalendarLine"
+    },
+    {
+      "lucide": "SmileIcon",
+      "tabler": "IconMoodSmile",
+      "hugeicons": "SmileIcon",
+      "phosphor": "SmileyIcon",
+      "remixicon": "RiEmotionLine"
+    },
+    {
+      "lucide": "CalculatorIcon",
+      "tabler": "IconCalculator",
+      "hugeicons": "CalculatorIcon",
+      "phosphor": "CalculatorIcon",
+      "remixicon": "RiCalculatorLine"
+    },
+    {
+      "lucide": "UserIcon",
+      "tabler": "IconUser",
+      "hugeicons": "UserIcon",
+      "phosphor": "UserIcon",
+      "remixicon": "RiUserLine"
+    },
+    {
+      "lucide": "CreditCardIcon",
+      "tabler": "IconCreditCard",
+      "hugeicons": "CreditCardIcon",
+      "phosphor": "CreditCardIcon",
+      "remixicon": "RiBankCardLine"
+    },
+    {
+      "lucide": "SettingsIcon",
+      "tabler": "IconSettings",
+      "hugeicons": "SettingsIcon",
+      "phosphor": "GearIcon",
+      "remixicon": "RiSettingsLine"
+    },
+    {
+      "lucide": "HomeIcon",
+      "tabler": "IconHome",
+      "hugeicons": "HomeIcon",
+      "phosphor": "HouseIcon",
+      "remixicon": "RiHomeLine"
+    },
+    {
+      "lucide": "InboxIcon",
+      "tabler": "IconInbox",
+      "hugeicons": "InboxIcon",
+      "phosphor": "TrayIcon",
+      "remixicon": "RiInboxLine"
+    },
+    {
+      "lucide": "FileTextIcon",
+      "tabler": "IconFileText",
+      "hugeicons": "File02Icon",
+      "phosphor": "FileTextIcon",
+      "remixicon": "RiFileTextLine"
+    },
+    {
+      "lucide": "FolderIcon",
+      "tabler": "IconFolder",
+      "hugeicons": "FolderIcon",
+      "phosphor": "FolderIcon",
+      "remixicon": "RiFolderLine"
+    },
+    {
+      "lucide": "PlusIcon",
+      "tabler": "IconPlus",
+      "hugeicons": "PlusSignIcon",
+      "phosphor": "PlusIcon",
+      "remixicon": "RiAddLine"
+    },
+    {
+      "lucide": "FolderPlusIcon",
+      "tabler": "IconFolderPlus",
+      "hugeicons": "FolderAddIcon",
+      "phosphor": "FolderPlusIcon",
+      "remixicon": "RiFolderAddLine"
+    },
+    {
+      "lucide": "CopyIcon",
+      "tabler": "IconCopy",
+      "hugeicons": "CopyIcon",
+      "phosphor": "CopyIcon",
+      "remixicon": "RiFileCopyLine"
+    },
+    {
+      "lucide": "ScissorsIcon",
+      "tabler": "IconCut",
+      "hugeicons": "ScissorIcon",
+      "phosphor": "ScissorsIcon",
+      "remixicon": "RiScissorsLine"
+    },
+    {
+      "lucide": "ClipboardPasteIcon",
+      "tabler": "IconClipboard",
+      "hugeicons": "ClipboardIcon",
+      "phosphor": "ClipboardIcon",
+      "remixicon": "RiClipboardLine"
+    },
+    {
+      "lucide": "TrashIcon",
+      "tabler": "IconTrash",
+      "hugeicons": "DeleteIcon",
+      "phosphor": "TrashIcon",
+      "remixicon": "RiDeleteBinLine"
+    },
+    {
+      "lucide": "LayoutGridIcon",
+      "tabler": "IconLayoutGrid",
+      "hugeicons": "GridIcon",
+      "phosphor": "GridFourIcon",
+      "remixicon": "RiGridLine"
+    },
+    {
+      "lucide": "ListIcon",
+      "tabler": "IconList",
+      "hugeicons": "Menu05Icon",
+      "phosphor": "ListIcon",
+      "remixicon": "RiListUnordered"
+    },
+    {
+      "lucide": "ZoomInIcon",
+      "tabler": "IconZoomIn",
+      "hugeicons": "ZoomInAreaIcon",
+      "phosphor": "MagnifyingGlassPlusIcon",
+      "remixicon": "RiZoomInLine"
+    },
+    {
+      "lucide": "ZoomOutIcon",
+      "tabler": "IconZoomOut",
+      "hugeicons": "ZoomOutAreaIcon",
+      "phosphor": "MagnifyingGlassMinusIcon",
+      "remixicon": "RiSearchEyeLine"
+    },
+    {
+      "lucide": "UserIcon",
+      "tabler": "IconUser",
+      "hugeicons": "UserIcon",
+      "phosphor": "UserIcon",
+      "remixicon": "RiUserLine"
+    },
+    {
+      "lucide": "CreditCardIcon",
+      "tabler": "IconCreditCard",
+      "hugeicons": "CreditCardIcon",
+      "phosphor": "CreditCardIcon",
+      "remixicon": "RiBankCardLine"
+    },
+    {
+      "lucide": "SettingsIcon",
+      "tabler": "IconSettings",
+      "hugeicons": "SettingsIcon",
+      "phosphor": "GearIcon",
+      "remixicon": "RiSettingsLine"
+    },
+    {
+      "lucide": "BellIcon",
+      "tabler": "IconBell",
+      "hugeicons": "NotificationIcon",
+      "phosphor": "BellIcon",
+      "remixicon": "RiNotificationLine"
+    },
+    {
+      "lucide": "HelpCircleIcon",
+      "tabler": "IconHelpCircle",
+      "hugeicons": "HelpCircleIcon",
+      "phosphor": "QuestionIcon",
+      "remixicon": "RiQuestionLine"
+    },
+    {
+      "lucide": "CalculatorIcon",
+      "tabler": "IconCalculator",
+      "hugeicons": "CalculatorIcon",
+      "phosphor": "CalculatorIcon",
+      "remixicon": "RiCalculatorLine"
+    },
+    {
+      "lucide": "CalendarIcon",
+      "tabler": "IconCalendar",
+      "hugeicons": "CalendarIcon",
+      "phosphor": "CalendarBlankIcon",
+      "remixicon": "RiCalendarLine"
+    },
+    {
+      "lucide": "ImageIcon",
+      "tabler": "IconPhoto",
+      "hugeicons": "ImageIcon",
+      "phosphor": "ImageIcon",
+      "remixicon": "RiImageLine"
+    },
+    {
+      "lucide": "CodeIcon",
+      "tabler": "IconCode",
+      "hugeicons": "CodeIcon",
+      "phosphor": "CodeIcon",
+      "remixicon": "RiCodeLine"
+    }
+  ],
+  "examples/component-example.tsx": [
+    {
+      "lucide": "PlusIcon",
+      "tabler": "IconPlus",
+      "hugeicons": "PlusSignIcon",
+      "phosphor": "PlusIcon",
+      "remixicon": "RiAddLine",
+      "icon": "inline-start"
+    },
+    {
+      "lucide": "BluetoothIcon",
+      "tabler": "IconBluetooth",
+      "hugeicons": "BluetoothIcon",
+      "phosphor": "BluetoothIcon",
+      "remixicon": "RiBluetoothLine"
+    },
+    {
+      "lucide": "MoreVerticalIcon",
+      "tabler": "IconDotsVertical",
+      "hugeicons": "MoreVerticalCircle01Icon",
+      "phosphor": "DotsThreeVerticalIcon",
+      "remixicon": "RiMore2Line"
+    },
+    {
+      "lucide": "FileIcon",
+      "tabler": "IconFile",
+      "hugeicons": "FileIcon",
+      "phosphor": "FileIcon",
+      "remixicon": "RiFileLine"
+    },
+    {
+      "lucide": "FolderIcon",
+      "tabler": "IconFolder",
+      "hugeicons": "FolderIcon",
+      "phosphor": "FolderIcon",
+      "remixicon": "RiFolderLine"
+    },
+    {
+      "lucide": "FolderOpenIcon",
+      "tabler": "IconFolderOpen",
+      "hugeicons": "FolderOpenIcon",
+      "phosphor": "FolderOpenIcon",
+      "remixicon": "RiFolderOpenLine"
+    },
+    {
+      "lucide": "FileCodeIcon",
+      "tabler": "IconFileCode",
+      "hugeicons": "CodeIcon",
+      "phosphor": "CodeIcon",
+      "remixicon": "RiCodeLine"
+    },
+    {
+      "lucide": "FileCodeIcon",
+      "tabler": "IconFileCode",
+      "hugeicons": "CodeIcon",
+      "phosphor": "CodeIcon",
+      "remixicon": "RiCodeLine"
+    },
+    {
+      "lucide": "MoreHorizontalIcon",
+      "tabler": "IconDots",
+      "hugeicons": "MoreHorizontalCircle01Icon",
+      "phosphor": "DotsThreeOutlineIcon",
+      "remixicon": "RiMoreLine"
+    },
+    {
+      "lucide": "FileCodeIcon",
+      "tabler": "IconFileCode",
+      "hugeicons": "CodeIcon",
+      "phosphor": "CodeIcon",
+      "remixicon": "RiCodeLine"
+    },
+    {
+      "lucide": "FileCodeIcon",
+      "tabler": "IconFileCode",
+      "hugeicons": "CodeIcon",
+      "phosphor": "CodeIcon",
+      "remixicon": "RiCodeLine"
+    },
+    {
+      "lucide": "FolderSearchIcon",
+      "tabler": "IconFolderSearch",
+      "hugeicons": "SearchIcon",
+      "phosphor": "MagnifyingGlassIcon",
+      "remixicon": "RiSearchLine"
+    },
+    {
+      "lucide": "SaveIcon",
+      "tabler": "IconDeviceFloppy",
+      "hugeicons": "FloppyDiskIcon",
+      "phosphor": "FloppyDiskIcon",
+      "remixicon": "RiSaveLine"
+    },
+    {
+      "lucide": "DownloadIcon",
+      "tabler": "IconDownload",
+      "hugeicons": "DownloadIcon",
+      "phosphor": "DownloadIcon",
+      "remixicon": "RiDownloadLine"
+    },
+    {
+      "lucide": "EyeIcon",
+      "tabler": "IconEye",
+      "hugeicons": "EyeIcon",
+      "phosphor": "EyeIcon",
+      "remixicon": "RiEyeLine"
+    },
+    {
+      "lucide": "LayoutIcon",
+      "tabler": "IconLayout",
+      "hugeicons": "LayoutIcon",
+      "phosphor": "LayoutIcon",
+      "remixicon": "RiLayoutLine"
+    },
+    {
+      "lucide": "PaletteIcon",
+      "tabler": "IconPalette",
+      "hugeicons": "PaintBoardIcon",
+      "phosphor": "PaletteIcon",
+      "remixicon": "RiPaletteLine"
+    },
+    {
+      "lucide": "SunIcon",
+      "tabler": "IconSun",
+      "hugeicons": "SunIcon",
+      "phosphor": "SunIcon",
+      "remixicon": "RiSunLine"
+    },
+    {
+      "lucide": "MoonIcon",
+      "tabler": "IconMoon",
+      "hugeicons": "MoonIcon",
+      "phosphor": "MoonIcon",
+      "remixicon": "RiMoonLine"
+    },
+    {
+      "lucide": "MonitorIcon",
+      "tabler": "IconDeviceDesktop",
+      "hugeicons": "ComputerIcon",
+      "phosphor": "MonitorIcon",
+      "remixicon": "RiComputerLine"
+    },
+    {
+      "lucide": "UserIcon",
+      "tabler": "IconUser",
+      "hugeicons": "UserIcon",
+      "phosphor": "UserIcon",
+      "remixicon": "RiUserLine"
+    },
+    {
+      "lucide": "CreditCardIcon",
+      "tabler": "IconCreditCard",
+      "hugeicons": "CreditCardIcon",
+      "phosphor": "CreditCardIcon",
+      "remixicon": "RiBankCardLine"
+    },
+    {
+      "lucide": "SettingsIcon",
+      "tabler": "IconSettings",
+      "hugeicons": "SettingsIcon",
+      "phosphor": "GearIcon",
+      "remixicon": "RiSettingsLine"
+    },
+    {
+      "lucide": "KeyboardIcon",
+      "tabler": "IconKeyboard",
+      "hugeicons": "KeyboardIcon",
+      "phosphor": "KeyboardIcon",
+      "remixicon": "RiKeyboardLine"
+    },
+    {
+      "lucide": "LanguagesIcon",
+      "tabler": "IconLanguage",
+      "hugeicons": "LanguageCircleIcon",
+      "phosphor": "TranslateIcon",
+      "remixicon": "RiTranslate"
+    },
+    {
+      "lucide": "BellIcon",
+      "tabler": "IconBell",
+      "hugeicons": "NotificationIcon",
+      "phosphor": "BellIcon",
+      "remixicon": "RiNotificationLine"
+    },
+    {
+      "lucide": "BellIcon",
+      "tabler": "IconBell",
+      "hugeicons": "NotificationIcon",
+      "phosphor": "BellIcon",
+      "remixicon": "RiNotificationLine"
+    },
+    {
+      "lucide": "MailIcon",
+      "tabler": "IconMail",
+      "hugeicons": "MailIcon",
+      "phosphor": "EnvelopeIcon",
+      "remixicon": "RiMailLine"
+    },
+    {
+      "lucide": "ShieldIcon",
+      "tabler": "IconShield",
+      "hugeicons": "ShieldIcon",
+      "phosphor": "ShieldIcon",
+      "remixicon": "RiShieldLine"
+    },
+    {
+      "lucide": "HelpCircleIcon",
+      "tabler": "IconHelpCircle",
+      "hugeicons": "HelpCircleIcon",
+      "phosphor": "QuestionIcon",
+      "remixicon": "RiQuestionLine"
+    },
+    {
+      "lucide": "FileTextIcon",
+      "tabler": "IconFileText",
+      "hugeicons": "File01Icon",
+      "phosphor": "FileTextIcon",
+      "remixicon": "RiFileTextLine"
+    },
+    {
+      "lucide": "LogOutIcon",
+      "tabler": "IconLogout",
+      "hugeicons": "LogoutIcon",
+      "phosphor": "SignOutIcon",
+      "remixicon": "RiLogoutBoxLine"
+    }
+  ],
+  "examples/context-menu-example.tsx": [
+    {
+      "lucide": "CopyIcon",
+      "tabler": "IconCopy",
+      "hugeicons": "CopyIcon",
+      "phosphor": "CopyIcon",
+      "remixicon": "RiFileCopyLine"
+    },
+    {
+      "lucide": "ScissorsIcon",
+      "tabler": "IconCut",
+      "hugeicons": "ScissorIcon",
+      "phosphor": "ScissorsIcon",
+      "remixicon": "RiScissorsLine"
+    },
+    {
+      "lucide": "ClipboardPasteIcon",
+      "tabler": "IconClipboard",
+      "hugeicons": "ClipboardIcon",
+      "phosphor": "ClipboardIcon",
+      "remixicon": "RiClipboardLine"
+    },
+    {
+      "lucide": "TrashIcon",
+      "tabler": "IconTrash",
+      "hugeicons": "DeleteIcon",
+      "phosphor": "TrashIcon",
+      "remixicon": "RiDeleteBinLine"
+    },
+    {
+      "lucide": "PencilIcon",
+      "tabler": "IconPencil",
+      "hugeicons": "EditIcon",
+      "phosphor": "PencilIcon",
+      "remixicon": "RiPencilLine"
+    },
+    {
+      "lucide": "ShareIcon",
+      "tabler": "IconShare",
+      "hugeicons": "ShareIcon",
+      "phosphor": "ShareIcon",
+      "remixicon": "RiShareLine"
+    },
+    {
+      "lucide": "ArchiveIcon",
+      "tabler": "IconArchive",
+      "hugeicons": "Archive02Icon",
+      "phosphor": "ArchiveIcon",
+      "remixicon": "RiArchiveLine"
+    },
+    {
+      "lucide": "TrashIcon",
+      "tabler": "IconTrash",
+      "hugeicons": "DeleteIcon",
+      "phosphor": "TrashIcon",
+      "remixicon": "RiDeleteBinLine"
+    },
+    {
+      "lucide": "CopyIcon",
+      "tabler": "IconCopy",
+      "hugeicons": "CopyIcon",
+      "phosphor": "CopyIcon",
+      "remixicon": "RiFileCopyLine"
+    },
+    {
+      "lucide": "ScissorsIcon",
+      "tabler": "IconCut",
+      "hugeicons": "ScissorIcon",
+      "phosphor": "ScissorsIcon",
+      "remixicon": "RiScissorsLine"
+    },
+    {
+      "lucide": "ClipboardPasteIcon",
+      "tabler": "IconClipboard",
+      "hugeicons": "ClipboardIcon",
+      "phosphor": "ClipboardIcon",
+      "remixicon": "RiClipboardLine"
+    },
+    {
+      "lucide": "TrashIcon",
+      "tabler": "IconTrash",
+      "hugeicons": "DeleteIcon",
+      "phosphor": "TrashIcon",
+      "remixicon": "RiDeleteBinLine"
+    },
+    {
+      "lucide": "CopyIcon",
+      "tabler": "IconCopy",
+      "hugeicons": "CopyIcon",
+      "phosphor": "CopyIcon",
+      "remixicon": "RiFileCopyLine"
+    },
+    {
+      "lucide": "ScissorsIcon",
+      "tabler": "IconCut",
+      "hugeicons": "ScissorIcon",
+      "phosphor": "ScissorsIcon",
+      "remixicon": "RiScissorsLine"
+    }
+  ],
+  "examples/demo.tsx": [
+    {
+      "lucide": "CopyIcon",
+      "tabler": "IconCopy",
+      "hugeicons": "Copy01Icon",
+      "phosphor": "CopyIcon",
+      "remixicon": "RiFileCopyLine"
+    },
+    {
+      "lucide": "CircleAlertIcon",
+      "tabler": "IconExclamationCircle",
+      "hugeicons": "AlertCircleIcon",
+      "phosphor": "WarningCircleIcon",
+      "remixicon": "RiErrorWarningLine"
+    },
+    {
+      "lucide": "TrashIcon",
+      "tabler": "IconTrash",
+      "hugeicons": "Delete02Icon",
+      "phosphor": "TrashIcon",
+      "remixicon": "RiDeleteBinLine"
+    },
+    {
+      "lucide": "ShareIcon",
+      "tabler": "IconShare",
+      "hugeicons": "Share03Icon",
+      "phosphor": "ShareIcon",
+      "remixicon": "RiShareLine"
+    },
+    {
+      "lucide": "ShoppingBagIcon",
+      "tabler": "IconShoppingBag",
+      "hugeicons": "ShoppingBag01Icon",
+      "phosphor": "BagIcon",
+      "remixicon": "RiShoppingBagLine"
+    },
+    {
+      "lucide": "MoreHorizontalIcon",
+      "tabler": "IconDots",
+      "hugeicons": "MoreHorizontalCircle01Icon",
+      "phosphor": "DotsThreeIcon",
+      "remixicon": "RiMoreLine"
+    },
+    {
+      "lucide": "Loader2Icon",
+      "tabler": "IconLoader",
+      "hugeicons": "Loading03Icon",
+      "phosphor": "SpinnerIcon",
+      "remixicon": "RiLoaderLine"
+    },
+    {
+      "lucide": "PlusIcon",
+      "tabler": "IconPlus",
+      "hugeicons": "PlusSignIcon",
+      "phosphor": "PlusIcon",
+      "remixicon": "RiAddLine"
+    },
+    {
+      "lucide": "MinusIcon",
+      "tabler": "IconMinus",
+      "hugeicons": "MinusSignIcon",
+      "phosphor": "MinusIcon",
+      "remixicon": "RiSubtractLine"
+    },
+    {
+      "lucide": "ArrowLeftIcon",
+      "tabler": "IconArrowLeft",
+      "hugeicons": "ArrowLeft02Icon",
+      "phosphor": "ArrowLeftIcon",
+      "remixicon": "RiArrowLeftLine"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine"
+    },
+    {
+      "lucide": "CheckIcon",
+      "tabler": "IconCheck",
+      "hugeicons": "Tick02Icon",
+      "phosphor": "CheckIcon",
+      "remixicon": "RiCheckLine"
+    },
+    {
+      "lucide": "ChevronDownIcon",
+      "tabler": "IconChevronDown",
+      "hugeicons": "ArrowDown01Icon",
+      "phosphor": "CaretDownIcon",
+      "remixicon": "RiArrowDownSLine"
+    },
+    {
+      "lucide": "ChevronRightIcon",
+      "tabler": "IconChevronRight",
+      "hugeicons": "ArrowRight01Icon",
+      "phosphor": "CaretRightIcon",
+      "remixicon": "RiArrowRightSLine"
+    },
+    {
+      "lucide": "SearchIcon",
+      "tabler": "IconSearch",
+      "hugeicons": "Search01Icon",
+      "phosphor": "MagnifyingGlassIcon",
+      "remixicon": "RiSearchLine"
+    },
+    {
+      "lucide": "SettingsIcon",
+      "tabler": "IconSettings",
+      "hugeicons": "Settings01Icon",
+      "phosphor": "GearIcon",
+      "remixicon": "RiSettingsLine"
+    },
+    {
+      "lucide": "SearchIcon",
+      "tabler": "IconSearch",
+      "hugeicons": "Search01Icon",
+      "phosphor": "MagnifyingGlassIcon",
+      "remixicon": "RiSearchLine"
+    },
+    {
+      "lucide": "ChevronUpIcon",
+      "tabler": "IconChevronUp",
+      "hugeicons": "ArrowUp01Icon",
+      "phosphor": "CaretUpIcon",
+      "remixicon": "RiArrowUpSLine"
+    }
+  ],
+  "examples/dialog-example.tsx": [
+    {
+      "lucide": "InfoIcon",
+      "tabler": "IconInfoCircle",
+      "hugeicons": "AlertCircleIcon",
+      "phosphor": "InfoIcon",
+      "remixicon": "RiInformationLine"
+    }
+  ],
+  "examples/dropdown-menu-example.tsx": [
+    {
+      "lucide": "UserIcon",
+      "tabler": "IconUser",
+      "hugeicons": "UserIcon",
+      "phosphor": "UserIcon",
+      "remixicon": "RiUserLine"
+    },
+    {
+      "lucide": "CreditCardIcon",
+      "tabler": "IconCreditCard",
+      "hugeicons": "CreditCardIcon",
+      "phosphor": "CreditCardIcon",
+      "remixicon": "RiBankCardLine"
+    },
+    {
+      "lucide": "SettingsIcon",
+      "tabler": "IconSettings",
+      "hugeicons": "SettingsIcon",
+      "phosphor": "GearIcon",
+      "remixicon": "RiSettingsLine"
+    },
+    {
+      "lucide": "LogOutIcon",
+      "tabler": "IconLogout",
+      "hugeicons": "LogoutIcon",
+      "phosphor": "SignOutIcon",
+      "remixicon": "RiLogoutBoxLine"
+    },
+    {
+      "lucide": "LayoutIcon",
+      "tabler": "IconLayout",
+      "hugeicons": "LayoutIcon",
+      "phosphor": "LayoutIcon",
+      "remixicon": "RiLayoutLine"
+    },
+    {
+      "lucide": "ActivityIcon",
+      "tabler": "IconActivity",
+      "hugeicons": "ActivityIcon",
+      "phosphor": "ActivityIcon",
+      "remixicon": "RiPulseLine"
+    },
+    {
+      "lucide": "PanelLeftIcon",
+      "tabler": "IconLayoutSidebar",
+      "hugeicons": "LayoutLeftIcon",
+      "phosphor": "SidebarIcon",
+      "remixicon": "RiSideBarLine"
+    },
+    {
+      "lucide": "ArrowUpIcon",
+      "tabler": "IconArrowUp",
+      "hugeicons": "ArrowUp01Icon",
+      "phosphor": "ArrowUpIcon",
+      "remixicon": "RiArrowUpLine"
+    },
+    {
+      "lucide": "ArrowDownIcon",
+      "tabler": "IconArrowDown",
+      "hugeicons": "ArrowDown01Icon",
+      "phosphor": "ArrowDownIcon",
+      "remixicon": "RiArrowDownLine"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight01Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine"
+    },
+    {
+      "lucide": "MailIcon",
+      "tabler": "IconMail",
+      "hugeicons": "MailIcon",
+      "phosphor": "EnvelopeIcon",
+      "remixicon": "RiMailLine"
+    },
+    {
+      "lucide": "MessageSquareIcon",
+      "tabler": "IconMessage",
+      "hugeicons": "MessageIcon",
+      "phosphor": "ChatCircleIcon",
+      "remixicon": "RiChat1Line"
+    },
+    {
+      "lucide": "BellIcon",
+      "tabler": "IconBell",
+      "hugeicons": "NotificationIcon",
+      "phosphor": "BellIcon",
+      "remixicon": "RiNotificationLine"
+    },
+    {
+      "lucide": "CreditCardIcon",
+      "tabler": "IconCreditCard",
+      "hugeicons": "CreditCardIcon",
+      "phosphor": "CreditCardIcon",
+      "remixicon": "RiBankCardLine"
+    },
+    {
+      "lucide": "WalletIcon",
+      "tabler": "IconWallet",
+      "hugeicons": "WalletIcon",
+      "phosphor": "WalletIcon",
+      "remixicon": "RiWalletLine"
+    },
+    {
+      "lucide": "Building2Icon",
+      "tabler": "IconBuildingBank",
+      "hugeicons": "BankIcon",
+      "phosphor": "BankIcon",
+      "remixicon": "RiBankLine"
+    },
+    {
+      "lucide": "PencilIcon",
+      "tabler": "IconPencil",
+      "hugeicons": "EditIcon",
+      "phosphor": "PencilIcon",
+      "remixicon": "RiPencilLine"
+    },
+    {
+      "lucide": "ShareIcon",
+      "tabler": "IconShare",
+      "hugeicons": "ShareIcon",
+      "phosphor": "ShareIcon",
+      "remixicon": "RiShareLine"
+    },
+    {
+      "lucide": "ArchiveIcon",
+      "tabler": "IconArchive",
+      "hugeicons": "Archive02Icon",
+      "phosphor": "ArchiveIcon",
+      "remixicon": "RiArchiveLine"
+    },
+    {
+      "lucide": "TrashIcon",
+      "tabler": "IconTrash",
+      "hugeicons": "DeleteIcon",
+      "phosphor": "TrashIcon",
+      "remixicon": "RiDeleteBinLine"
+    },
+    {
+      "lucide": "BadgeCheckIcon",
+      "tabler": "IconRosetteDiscountCheck",
+      "hugeicons": "CheckmarkBadgeIcon",
+      "phosphor": "CheckCircleIcon",
+      "remixicon": "RiCheckboxCircleLine"
+    },
+    {
+      "lucide": "CreditCardIcon",
+      "tabler": "IconCreditCard",
+      "hugeicons": "CreditCardIcon",
+      "phosphor": "CreditCardIcon",
+      "remixicon": "RiBankCardLine"
+    },
+    {
+      "lucide": "BellIcon",
+      "tabler": "IconBell",
+      "hugeicons": "NotificationIcon",
+      "phosphor": "BellIcon",
+      "remixicon": "RiNotificationLine"
+    },
+    {
+      "lucide": "LogOutIcon",
+      "tabler": "IconLogout",
+      "hugeicons": "LogoutIcon",
+      "phosphor": "SignOutIcon",
+      "remixicon": "RiLogoutBoxLine"
+    },
+    {
+      "lucide": "ChevronsUpDownIcon",
+      "tabler": "IconSelector",
+      "hugeicons": "UnfoldMoreIcon",
+      "phosphor": "CaretUpDownIcon",
+      "remixicon": "RiArrowUpDownLine"
+    },
+    {
+      "lucide": "CopyIcon",
+      "tabler": "IconCopy",
+      "hugeicons": "CopyIcon",
+      "phosphor": "CopyIcon",
+      "remixicon": "RiFileCopyLine"
+    },
+    {
+      "lucide": "ScissorsIcon",
+      "tabler": "IconCut",
+      "hugeicons": "ScissorIcon",
+      "phosphor": "ScissorsIcon",
+      "remixicon": "RiScissorsLine"
+    },
+    {
+      "lucide": "ClipboardPasteIcon",
+      "tabler": "IconClipboard",
+      "hugeicons": "ClipboardIcon",
+      "phosphor": "ClipboardIcon",
+      "remixicon": "RiClipboardLine"
+    },
+    {
+      "lucide": "TrashIcon",
+      "tabler": "IconTrash",
+      "hugeicons": "DeleteIcon",
+      "phosphor": "TrashIcon",
+      "remixicon": "RiDeleteBinLine"
+    },
+    {
+      "lucide": "CopyIcon",
+      "tabler": "IconCopy",
+      "hugeicons": "CopyIcon",
+      "phosphor": "CopyIcon",
+      "remixicon": "RiFileCopyLine"
+    },
+    {
+      "lucide": "ScissorsIcon",
+      "tabler": "IconCut",
+      "hugeicons": "ScissorIcon",
+      "phosphor": "ScissorsIcon",
+      "remixicon": "RiScissorsLine"
+    },
+    {
+      "lucide": "UserIcon",
+      "tabler": "IconUser",
+      "hugeicons": "UserIcon",
+      "phosphor": "UserIcon",
+      "remixicon": "RiUserLine"
+    },
+    {
+      "lucide": "CreditCardIcon",
+      "tabler": "IconCreditCard",
+      "hugeicons": "CreditCardIcon",
+      "phosphor": "CreditCardIcon",
+      "remixicon": "RiBankCardLine"
+    },
+    {
+      "lucide": "SettingsIcon",
+      "tabler": "IconSettings",
+      "hugeicons": "SettingsIcon",
+      "phosphor": "GearIcon",
+      "remixicon": "RiSettingsLine"
+    },
+    {
+      "lucide": "PanelLeftIcon",
+      "tabler": "IconLayoutSidebar",
+      "hugeicons": "LayoutLeftIcon",
+      "phosphor": "SidebarIcon",
+      "remixicon": "RiSideBarLine"
+    },
+    {
+      "lucide": "LayoutIcon",
+      "tabler": "IconLayout",
+      "hugeicons": "LayoutIcon",
+      "phosphor": "LayoutIcon",
+      "remixicon": "RiLayoutLine"
+    },
+    {
+      "lucide": "UsersIcon",
+      "tabler": "IconUsers",
+      "hugeicons": "UserGroupIcon",
+      "phosphor": "UsersIcon",
+      "remixicon": "RiTeamLine"
+    },
+    {
+      "lucide": "MailIcon",
+      "tabler": "IconMail",
+      "hugeicons": "MailIcon",
+      "phosphor": "EnvelopeIcon",
+      "remixicon": "RiMailLine"
+    },
+    {
+      "lucide": "MessageSquareIcon",
+      "tabler": "IconMessage",
+      "hugeicons": "MessageIcon",
+      "phosphor": "ChatCircleIcon",
+      "remixicon": "RiChat1Line"
+    },
+    {
+      "lucide": "PlusCircleIcon",
+      "tabler": "IconCirclePlus",
+      "hugeicons": "AddCircleIcon",
+      "phosphor": "PlusCircleIcon",
+      "remixicon": "RiAddCircleLine"
+    },
+    {
+      "lucide": "HelpCircleIcon",
+      "tabler": "IconHelpCircle",
+      "hugeicons": "HelpCircleIcon",
+      "phosphor": "QuestionIcon",
+      "remixicon": "RiQuestionLine"
+    },
+    {
+      "lucide": "LogOutIcon",
+      "tabler": "IconLogout",
+      "hugeicons": "LogoutIcon",
+      "phosphor": "SignOutIcon",
+      "remixicon": "RiLogoutBoxLine"
+    }
+  ],
+  "examples/empty-example.tsx": [
+    {
+      "lucide": "ArrowUpRightIcon",
+      "tabler": "IconArrowUpRight",
+      "hugeicons": "ArrowUpRight01Icon",
+      "phosphor": "ArrowUpRightIcon",
+      "remixicon": "RiArrowRightUpLine"
+    },
+    {
+      "lucide": "ArrowUpRightIcon",
+      "tabler": "IconArrowUpRight",
+      "hugeicons": "ArrowUpRight01Icon",
+      "phosphor": "ArrowUpRightIcon",
+      "remixicon": "RiArrowRightUpLine"
+    },
+    {
+      "lucide": "CircleDashedIcon",
+      "tabler": "IconCircleDashed",
+      "hugeicons": "DashedLineCircleIcon",
+      "phosphor": "CircleDashedIcon",
+      "remixicon": "RiLoaderLine"
+    },
+    {
+      "lucide": "FolderIcon",
+      "tabler": "IconFolder",
+      "hugeicons": "Folder01Icon",
+      "phosphor": "FolderIcon",
+      "remixicon": "RiFolderLine"
+    },
+    {
+      "lucide": "PlusIcon",
+      "tabler": "IconPlus",
+      "hugeicons": "PlusSignIcon",
+      "phosphor": "PlusIcon",
+      "remixicon": "RiAddLine",
+      "icon": "inline-start"
+    },
+    {
+      "lucide": "CircleDashedIcon",
+      "tabler": "IconCircleDashed",
+      "hugeicons": "DashedLineCircleIcon",
+      "phosphor": "CircleDashedIcon",
+      "remixicon": "RiLoaderLine"
+    },
+    {
+      "lucide": "FolderIcon",
+      "tabler": "IconFolder",
+      "hugeicons": "Folder01Icon",
+      "phosphor": "FolderIcon",
+      "remixicon": "RiFolderLine"
+    },
+    {
+      "lucide": "ArrowUpRightIcon",
+      "tabler": "IconArrowUpRight",
+      "hugeicons": "ArrowUpRight01Icon",
+      "phosphor": "ArrowUpRightIcon",
+      "remixicon": "RiArrowRightUpLine"
+    }
+  ],
+  "examples/input-group-example.tsx": [
+    {
+      "lucide": "SearchIcon",
+      "tabler": "IconSearch",
+      "hugeicons": "SearchIcon",
+      "phosphor": "MagnifyingGlassIcon",
+      "remixicon": "RiSearchLine"
+    },
+    {
+      "lucide": "EyeOffIcon",
+      "tabler": "IconEyeClosed",
+      "hugeicons": "ViewOffIcon",
+      "phosphor": "EyeSlashIcon",
+      "remixicon": "RiEyeOffLine"
+    },
+    {
+      "lucide": "MicIcon",
+      "tabler": "IconMicrophone",
+      "hugeicons": "VoiceIcon",
+      "phosphor": "MicrophoneIcon",
+      "remixicon": "RiMicLine"
+    },
+    {
+      "lucide": "RadioIcon",
+      "tabler": "IconPlayerRecordFilled",
+      "hugeicons": "RecordIcon",
+      "phosphor": "RecordIcon",
+      "remixicon": "RiRecordCircleLine"
+    },
+    {
+      "lucide": "InfoIcon",
+      "tabler": "IconInfoCircle",
+      "hugeicons": "AlertCircleIcon",
+      "phosphor": "InfoIcon",
+      "remixicon": "RiInformationLine"
+    },
+    {
+      "lucide": "InfoIcon",
+      "tabler": "IconInfoCircle",
+      "hugeicons": "AlertCircleIcon",
+      "phosphor": "InfoIcon",
+      "remixicon": "RiInformationLine"
+    },
+    {
+      "lucide": "StarIcon",
+      "tabler": "IconStar",
+      "hugeicons": "StarIcon",
+      "phosphor": "StarIcon",
+      "remixicon": "RiStarLine"
+    },
+    {
+      "lucide": "CopyIcon",
+      "tabler": "IconCopy",
+      "hugeicons": "CopyIcon",
+      "phosphor": "CopyIcon",
+      "remixicon": "RiFileCopyLine"
+    },
+    {
+      "lucide": "RadioIcon",
+      "tabler": "IconPlayerRecordFilled",
+      "hugeicons": "RecordIcon",
+      "phosphor": "RecordIcon",
+      "remixicon": "RiRecordCircleLine"
+    },
+    {
+      "lucide": "InfoIcon",
+      "tabler": "IconInfoCircle",
+      "hugeicons": "AlertCircleIcon",
+      "phosphor": "InfoIcon",
+      "remixicon": "RiInformationLine"
+    },
+    {
+      "lucide": "CopyIcon",
+      "tabler": "IconCopy",
+      "hugeicons": "CopyIcon",
+      "phosphor": "CopyIcon",
+      "remixicon": "RiFileCopyLine"
+    },
+    {
+      "lucide": "TrashIcon",
+      "tabler": "IconTrash",
+      "hugeicons": "DeleteIcon",
+      "phosphor": "TrashIcon",
+      "remixicon": "RiDeleteBinLine"
+    },
+    {
+      "lucide": "InfoIcon",
+      "tabler": "IconInfoCircle",
+      "hugeicons": "AlertCircleIcon",
+      "phosphor": "InfoIcon",
+      "remixicon": "RiInformationLine"
+    },
+    {
+      "lucide": "ChevronDownIcon",
+      "tabler": "IconChevronDown",
+      "hugeicons": "ArrowDownIcon",
+      "phosphor": "CaretDownIcon",
+      "remixicon": "RiArrowDownSLine"
+    },
+    {
+      "lucide": "InfoIcon",
+      "tabler": "IconInfoCircle",
+      "hugeicons": "AlertCircleIcon",
+      "phosphor": "InfoIcon",
+      "remixicon": "RiInformationLine"
+    },
+    {
+      "lucide": "StarIcon",
+      "tabler": "IconStar",
+      "hugeicons": "StarIcon",
+      "phosphor": "StarIcon",
+      "remixicon": "RiStarLine"
+    },
+    {
+      "lucide": "InfoIcon",
+      "tabler": "IconInfoCircle",
+      "hugeicons": "AlertCircleIcon",
+      "phosphor": "InfoIcon",
+      "remixicon": "RiInformationLine"
+    },
+    {
+      "lucide": "SparklesIcon",
+      "tabler": "IconServerSpark",
+      "hugeicons": "SparklesIcon",
+      "phosphor": "SparkleIcon",
+      "remixicon": "RiSparklingLine"
+    },
+    {
+      "lucide": "CheckIcon",
+      "tabler": "IconCheck",
+      "hugeicons": "Tick02Icon",
+      "phosphor": "CheckIcon",
+      "remixicon": "RiCheckLine"
+    },
+    {
+      "lucide": "SearchIcon",
+      "tabler": "IconSearch",
+      "hugeicons": "SearchIcon",
+      "phosphor": "MagnifyingGlassIcon",
+      "remixicon": "RiSearchLine"
+    },
+    {
+      "lucide": "SearchIcon",
+      "tabler": "IconSearch",
+      "hugeicons": "SearchIcon",
+      "phosphor": "MagnifyingGlassIcon",
+      "remixicon": "RiSearchLine"
+    },
+    {
+      "lucide": "InfoIcon",
+      "tabler": "IconInfoCircle",
+      "hugeicons": "AlertCircleIcon",
+      "phosphor": "InfoIcon",
+      "remixicon": "RiInformationLine"
+    },
+    {
+      "lucide": "InfoIcon",
+      "tabler": "IconInfoCircle",
+      "hugeicons": "AlertCircleIcon",
+      "phosphor": "InfoIcon",
+      "remixicon": "RiInformationLine"
+    },
+    {
+      "lucide": "MailIcon",
+      "tabler": "IconMail",
+      "hugeicons": "MailIcon",
+      "phosphor": "EnvelopeIcon",
+      "remixicon": "RiMailLine"
+    },
+    {
+      "lucide": "ExternalLinkIcon",
+      "tabler": "IconExternalLink",
+      "hugeicons": "LinkSquare02Icon",
+      "phosphor": "ArrowSquareOutIcon",
+      "remixicon": "RiExternalLinkLine"
+    },
+    {
+      "lucide": "InfoIcon",
+      "tabler": "IconInfoCircle",
+      "hugeicons": "AlertCircleIcon",
+      "phosphor": "InfoIcon",
+      "remixicon": "RiInformationLine"
+    },
+    {
+      "lucide": "ArrowUpIcon",
+      "tabler": "IconArrowUp",
+      "hugeicons": "ArrowUpIcon",
+      "phosphor": "ArrowUpIcon",
+      "remixicon": "RiArrowUpLine"
+    },
+    {
+      "lucide": "CodeIcon",
+      "tabler": "IconBrandJavascript",
+      "hugeicons": "CodeIcon",
+      "phosphor": "CodeIcon",
+      "remixicon": "RiCodeLine"
+    },
+    {
+      "lucide": "RefreshCwIcon",
+      "tabler": "IconRefresh",
+      "hugeicons": "RefreshIcon",
+      "phosphor": "ArrowClockwiseIcon",
+      "remixicon": "RiRefreshLine"
+    },
+    {
+      "lucide": "CopyIcon",
+      "tabler": "IconCopy",
+      "hugeicons": "CopyIcon",
+      "phosphor": "CopyIcon",
+      "remixicon": "RiFileCopyLine"
+    }
+  ],
+  "examples/input-otp-example.tsx": [
+    {
+      "lucide": "RefreshCwIcon",
+      "hugeicons": "RefreshIcon",
+      "tabler": "IconRefresh",
+      "phosphor": "ArrowClockwiseIcon",
+      "remixicon": "RiRefreshLine",
+      "icon": "inline-start"
+    }
+  ],
+  "examples/item-example.tsx": [
+    {
+      "lucide": "InboxIcon",
+      "tabler": "IconArchive",
+      "hugeicons": "Archive02Icon",
+      "phosphor": "ArchiveIcon",
+      "remixicon": "RiArchiveLine"
+    },
+    {
+      "lucide": "InboxIcon",
+      "tabler": "IconArchive",
+      "hugeicons": "Archive02Icon",
+      "phosphor": "ArchiveIcon",
+      "remixicon": "RiArchiveLine"
+    },
+    {
+      "lucide": "InboxIcon",
+      "tabler": "IconArchive",
+      "hugeicons": "Archive02Icon",
+      "phosphor": "ArchiveIcon",
+      "remixicon": "RiArchiveLine"
+    },
+    {
+      "lucide": "InboxIcon",
+      "tabler": "IconArchive",
+      "hugeicons": "Archive02Icon",
+      "phosphor": "ArchiveIcon",
+      "remixicon": "RiArchiveLine"
+    },
+    {
+      "lucide": "InboxIcon",
+      "tabler": "IconArchive",
+      "hugeicons": "Archive02Icon",
+      "phosphor": "ArchiveIcon",
+      "remixicon": "RiArchiveLine"
+    },
+    {
+      "lucide": "InboxIcon",
+      "tabler": "IconArchive",
+      "hugeicons": "Archive02Icon",
+      "phosphor": "ArchiveIcon",
+      "remixicon": "RiArchiveLine"
+    },
+    {
+      "lucide": "InboxIcon",
+      "tabler": "IconArchive",
+      "hugeicons": "Archive02Icon",
+      "phosphor": "ArchiveIcon",
+      "remixicon": "RiArchiveLine"
+    },
+    {
+      "lucide": "InboxIcon",
+      "tabler": "IconArchive",
+      "hugeicons": "Archive02Icon",
+      "phosphor": "ArchiveIcon",
+      "remixicon": "RiArchiveLine"
+    },
+    {
+      "lucide": "InboxIcon",
+      "tabler": "IconArchive",
+      "hugeicons": "Archive02Icon",
+      "phosphor": "ArchiveIcon",
+      "remixicon": "RiArchiveLine"
+    },
+    {
+      "lucide": "InboxIcon",
+      "tabler": "IconArchive",
+      "hugeicons": "Archive02Icon",
+      "phosphor": "ArchiveIcon",
+      "remixicon": "RiArchiveLine"
+    },
+    {
+      "lucide": "InboxIcon",
+      "tabler": "IconArchive",
+      "hugeicons": "Archive02Icon",
+      "phosphor": "ArchiveIcon",
+      "remixicon": "RiArchiveLine"
+    },
+    {
+      "lucide": "InboxIcon",
+      "tabler": "IconArchive",
+      "hugeicons": "Archive02Icon",
+      "phosphor": "ArchiveIcon",
+      "remixicon": "RiArchiveLine"
+    },
+    {
+      "lucide": "InboxIcon",
+      "tabler": "IconArchive",
+      "hugeicons": "Archive02Icon",
+      "phosphor": "ArchiveIcon",
+      "remixicon": "RiArchiveLine"
+    },
+    {
+      "lucide": "InboxIcon",
+      "tabler": "IconArchive",
+      "hugeicons": "Archive02Icon",
+      "phosphor": "ArchiveIcon",
+      "remixicon": "RiArchiveLine"
+    },
+    {
+      "lucide": "InboxIcon",
+      "tabler": "IconArchive",
+      "hugeicons": "Archive02Icon",
+      "phosphor": "ArchiveIcon",
+      "remixicon": "RiArchiveLine"
+    },
+    {
+      "lucide": "InboxIcon",
+      "tabler": "IconArchive",
+      "hugeicons": "Archive02Icon",
+      "phosphor": "ArchiveIcon",
+      "remixicon": "RiArchiveLine"
+    },
+    {
+      "lucide": "InboxIcon",
+      "tabler": "IconArchive",
+      "hugeicons": "Archive02Icon",
+      "phosphor": "ArchiveIcon",
+      "remixicon": "RiArchiveLine"
+    },
+    {
+      "lucide": "InboxIcon",
+      "tabler": "IconArchive",
+      "hugeicons": "Archive02Icon",
+      "phosphor": "ArchiveIcon",
+      "remixicon": "RiArchiveLine"
+    },
+    {
+      "lucide": "InboxIcon",
+      "tabler": "IconArchive",
+      "hugeicons": "Archive02Icon",
+      "phosphor": "ArchiveIcon",
+      "remixicon": "RiArchiveLine"
+    },
+    {
+      "lucide": "InboxIcon",
+      "tabler": "IconArchive",
+      "hugeicons": "Archive02Icon",
+      "phosphor": "ArchiveIcon",
+      "remixicon": "RiArchiveLine"
+    },
+    {
+      "lucide": "InboxIcon",
+      "tabler": "IconArchive",
+      "hugeicons": "Archive02Icon",
+      "phosphor": "ArchiveIcon",
+      "remixicon": "RiArchiveLine"
+    },
+    {
+      "lucide": "InboxIcon",
+      "tabler": "IconArchive",
+      "hugeicons": "Archive02Icon",
+      "phosphor": "ArchiveIcon",
+      "remixicon": "RiArchiveLine"
+    },
+    {
+      "lucide": "InboxIcon",
+      "tabler": "IconArchive",
+      "hugeicons": "Archive02Icon",
+      "phosphor": "ArchiveIcon",
+      "remixicon": "RiArchiveLine"
+    },
+    {
+      "lucide": "InboxIcon",
+      "tabler": "IconArchive",
+      "hugeicons": "Archive02Icon",
+      "phosphor": "ArchiveIcon",
+      "remixicon": "RiArchiveLine"
+    },
+    {
+      "lucide": "InboxIcon",
+      "tabler": "IconArchive",
+      "hugeicons": "Archive02Icon",
+      "phosphor": "ArchiveIcon",
+      "remixicon": "RiArchiveLine"
+    },
+    {
+      "lucide": "InboxIcon",
+      "tabler": "IconArchive",
+      "hugeicons": "Archive02Icon",
+      "phosphor": "ArchiveIcon",
+      "remixicon": "RiArchiveLine"
+    },
+    {
+      "lucide": "InboxIcon",
+      "tabler": "IconArchive",
+      "hugeicons": "Archive02Icon",
+      "phosphor": "ArchiveIcon",
+      "remixicon": "RiArchiveLine"
+    },
+    {
+      "lucide": "InboxIcon",
+      "tabler": "IconArchive",
+      "hugeicons": "Archive02Icon",
+      "phosphor": "ArchiveIcon",
+      "remixicon": "RiArchiveLine"
+    },
+    {
+      "lucide": "InboxIcon",
+      "tabler": "IconArchive",
+      "hugeicons": "Archive02Icon",
+      "phosphor": "ArchiveIcon",
+      "remixicon": "RiArchiveLine"
+    },
+    {
+      "lucide": "InboxIcon",
+      "tabler": "IconArchive",
+      "hugeicons": "Archive02Icon",
+      "phosphor": "ArchiveIcon",
+      "remixicon": "RiArchiveLine"
+    },
+    {
+      "lucide": "InboxIcon",
+      "tabler": "IconArchive",
+      "hugeicons": "Archive02Icon",
+      "phosphor": "ArchiveIcon",
+      "remixicon": "RiArchiveLine"
+    },
+    {
+      "lucide": "InboxIcon",
+      "tabler": "IconArchive",
+      "hugeicons": "Archive02Icon",
+      "phosphor": "ArchiveIcon",
+      "remixicon": "RiArchiveLine"
+    },
+    {
+      "lucide": "InboxIcon",
+      "tabler": "IconArchive",
+      "hugeicons": "Archive02Icon",
+      "phosphor": "ArchiveIcon",
+      "remixicon": "RiArchiveLine"
+    },
+    {
+      "lucide": "InboxIcon",
+      "tabler": "IconArchive",
+      "hugeicons": "Archive02Icon",
+      "phosphor": "ArchiveIcon",
+      "remixicon": "RiArchiveLine"
+    },
+    {
+      "lucide": "InboxIcon",
+      "tabler": "IconArchive",
+      "hugeicons": "Archive02Icon",
+      "phosphor": "ArchiveIcon",
+      "remixicon": "RiArchiveLine"
+    },
+    {
+      "lucide": "InboxIcon",
+      "tabler": "IconArchive",
+      "hugeicons": "Archive02Icon",
+      "phosphor": "ArchiveIcon",
+      "remixicon": "RiArchiveLine"
+    },
+    {
+      "lucide": "InboxIcon",
+      "tabler": "IconArchive",
+      "hugeicons": "Archive02Icon",
+      "phosphor": "ArchiveIcon",
+      "remixicon": "RiArchiveLine"
+    },
+    {
+      "lucide": "InboxIcon",
+      "tabler": "IconArchive",
+      "hugeicons": "Archive02Icon",
+      "phosphor": "ArchiveIcon",
+      "remixicon": "RiArchiveLine"
+    },
+    {
+      "lucide": "InboxIcon",
+      "tabler": "IconArchive",
+      "hugeicons": "Archive02Icon",
+      "phosphor": "ArchiveIcon",
+      "remixicon": "RiArchiveLine"
+    },
+    {
+      "lucide": "InboxIcon",
+      "tabler": "IconArchive",
+      "hugeicons": "Archive02Icon",
+      "phosphor": "ArchiveIcon",
+      "remixicon": "RiArchiveLine"
+    },
+    {
+      "lucide": "InboxIcon",
+      "tabler": "IconArchive",
+      "hugeicons": "Archive02Icon",
+      "phosphor": "ArchiveIcon",
+      "remixicon": "RiArchiveLine"
+    },
+    {
+      "lucide": "InboxIcon",
+      "tabler": "IconArchive",
+      "hugeicons": "Archive02Icon",
+      "phosphor": "ArchiveIcon",
+      "remixicon": "RiArchiveLine"
+    },
+    {
+      "lucide": "InboxIcon",
+      "tabler": "IconArchive",
+      "hugeicons": "Archive02Icon",
+      "phosphor": "ArchiveIcon",
+      "remixicon": "RiArchiveLine"
+    },
+    {
+      "lucide": "InboxIcon",
+      "tabler": "IconArchive",
+      "hugeicons": "Archive02Icon",
+      "phosphor": "ArchiveIcon",
+      "remixicon": "RiArchiveLine"
+    },
+    {
+      "lucide": "InboxIcon",
+      "tabler": "IconArchive",
+      "hugeicons": "Archive02Icon",
+      "phosphor": "ArchiveIcon",
+      "remixicon": "RiArchiveLine"
+    },
+    {
+      "lucide": "InboxIcon",
+      "tabler": "IconArchive",
+      "hugeicons": "Archive02Icon",
+      "phosphor": "ArchiveIcon",
+      "remixicon": "RiArchiveLine"
+    },
+    {
+      "lucide": "InboxIcon",
+      "tabler": "IconArchive",
+      "hugeicons": "Archive02Icon",
+      "phosphor": "ArchiveIcon",
+      "remixicon": "RiArchiveLine"
+    },
+    {
+      "lucide": "InboxIcon",
+      "tabler": "IconArchive",
+      "hugeicons": "Archive02Icon",
+      "phosphor": "ArchiveIcon",
+      "remixicon": "RiArchiveLine"
+    },
+    {
+      "lucide": "InboxIcon",
+      "tabler": "IconArchive",
+      "hugeicons": "Archive02Icon",
+      "phosphor": "ArchiveIcon",
+      "remixicon": "RiArchiveLine"
+    }
+  ],
+  "examples/kbd-example.tsx": [
+    {
+      "lucide": "CircleDashedIcon",
+      "tabler": "IconCircleDashed",
+      "hugeicons": "DashedLineCircleIcon",
+      "phosphor": "CircleDashedIcon",
+      "remixicon": "RiLoaderLine"
+    },
+    {
+      "lucide": "ArrowLeftIcon",
+      "tabler": "IconArrowLeft",
+      "hugeicons": "ArrowLeft01Icon",
+      "phosphor": "ArrowLeftIcon",
+      "remixicon": "RiArrowLeftLine"
+    },
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight01Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine"
+    },
+    {
+      "lucide": "ArrowLeftIcon",
+      "tabler": "IconArrowLeft",
+      "hugeicons": "ArrowLeft01Icon",
+      "phosphor": "ArrowLeftIcon",
+      "remixicon": "RiArrowLeftLine"
+    },
+    {
+      "lucide": "CircleDashedIcon",
+      "tabler": "IconCircleDashed",
+      "hugeicons": "DashedLineCircleIcon",
+      "phosphor": "CircleDashedIcon",
+      "remixicon": "RiLoaderLine"
+    },
+    {
+      "lucide": "SaveIcon",
+      "tabler": "IconDeviceFloppy",
+      "hugeicons": "FloppyDiskIcon",
+      "phosphor": "FloppyDiskIcon",
+      "remixicon": "RiSaveLine"
+    }
+  ],
+  "examples/marker-example.tsx": [
+    {
+      "lucide": "FileTextIcon",
+      "tabler": "IconFileDescription",
+      "hugeicons": "File01Icon",
+      "phosphor": "FileTextIcon",
+      "remixicon": "RiFileTextLine"
+    },
+    {
+      "lucide": "GitBranchIcon",
+      "tabler": "IconGitBranch",
+      "hugeicons": "GitBranchIcon",
+      "phosphor": "GitBranchIcon",
+      "remixicon": "RiGitBranchLine"
+    },
+    {
+      "lucide": "ClockIcon",
+      "tabler": "IconClock",
+      "hugeicons": "Clock01Icon",
+      "phosphor": "ClockIcon",
+      "remixicon": "RiTimeLine"
+    },
+    {
+      "lucide": "ChevronRightIcon",
+      "tabler": "IconChevronRight",
+      "hugeicons": "ArrowRight01Icon",
+      "phosphor": "CaretRightIcon",
+      "remixicon": "RiArrowRightSLine"
+    },
+    {
+      "lucide": "CircleUserIcon",
+      "tabler": "IconUserCircle",
+      "hugeicons": "UserCircleIcon",
+      "phosphor": "UserCircleIcon",
+      "remixicon": "RiUserSmileLine"
+    },
+    {
+      "lucide": "FileTextIcon",
+      "tabler": "IconFileDescription",
+      "hugeicons": "File01Icon",
+      "phosphor": "FileTextIcon",
+      "remixicon": "RiFileTextLine"
+    },
+    {
+      "lucide": "GitBranchIcon",
+      "tabler": "IconGitBranch",
+      "hugeicons": "GitBranchIcon",
+      "phosphor": "GitBranchIcon",
+      "remixicon": "RiGitBranchLine"
+    },
+    {
+      "lucide": "SearchIcon",
+      "tabler": "IconSearch",
+      "hugeicons": "Search01Icon",
+      "phosphor": "MagnifyingGlassIcon",
+      "remixicon": "RiSearchLine"
+    },
+    {
+      "lucide": "FileTextIcon",
+      "tabler": "IconFileDescription",
+      "hugeicons": "File01Icon",
+      "phosphor": "FileTextIcon",
+      "remixicon": "RiFileTextLine"
+    },
+    {
+      "lucide": "CheckIcon",
+      "tabler": "IconCheck",
+      "hugeicons": "Tick02Icon",
+      "phosphor": "CheckIcon",
+      "remixicon": "RiCheckLine"
+    },
+    {
+      "lucide": "GitBranchIcon",
+      "tabler": "IconGitBranch",
+      "hugeicons": "GitBranchIcon",
+      "phosphor": "GitBranchIcon",
+      "remixicon": "RiGitBranchLine"
+    },
+    {
+      "lucide": "ClockIcon",
+      "tabler": "IconClock",
+      "hugeicons": "Clock01Icon",
+      "phosphor": "ClockIcon",
+      "remixicon": "RiTimeLine"
+    },
+    {
+      "lucide": "SearchIcon",
+      "tabler": "IconSearch",
+      "hugeicons": "SearchIcon",
+      "phosphor": "MagnifyingGlassIcon",
+      "remixicon": "RiSearchLine",
+      "icon": "inline-start"
+    }
+  ],
+  "examples/menubar-example.tsx": [
+    {
+      "lucide": "FileIcon",
+      "tabler": "IconFile",
+      "hugeicons": "FileIcon",
+      "phosphor": "FileIcon",
+      "remixicon": "RiFileLine"
+    },
+    {
+      "lucide": "FolderIcon",
+      "tabler": "IconFolder",
+      "hugeicons": "FolderIcon",
+      "phosphor": "FolderIcon",
+      "remixicon": "RiFolderLine"
+    },
+    {
+      "lucide": "SaveIcon",
+      "tabler": "IconDeviceFloppy",
+      "hugeicons": "FloppyDiskIcon",
+      "phosphor": "FloppyDiskIcon",
+      "remixicon": "RiSaveLine"
+    },
+    {
+      "lucide": "CircleDashedIcon",
+      "tabler": "IconCircleDashed",
+      "hugeicons": "DashedLineCircleIcon",
+      "phosphor": "CircleDashedIcon",
+      "remixicon": "RiLoaderLine"
+    },
+    {
+      "lucide": "CircleDashedIcon",
+      "tabler": "IconCircleDashed",
+      "hugeicons": "DashedLineCircleIcon",
+      "phosphor": "CircleDashedIcon",
+      "remixicon": "RiLoaderLine"
+    },
+    {
+      "lucide": "CircleDashedIcon",
+      "tabler": "IconCircleDashed",
+      "hugeicons": "DashedLineCircleIcon",
+      "phosphor": "CircleDashedIcon",
+      "remixicon": "RiLoaderLine"
+    },
+    {
+      "lucide": "BoldIcon",
+      "tabler": "IconBold",
+      "hugeicons": "TextBoldIcon",
+      "phosphor": "TextBIcon",
+      "remixicon": "RiBold"
+    },
+    {
+      "lucide": "ItalicIcon",
+      "tabler": "IconItalic",
+      "hugeicons": "TextItalicIcon",
+      "phosphor": "TextItalicIcon",
+      "remixicon": "RiItalic"
+    },
+    {
+      "lucide": "UnderlineIcon",
+      "tabler": "IconUnderline",
+      "hugeicons": "TextUnderlineIcon",
+      "phosphor": "TextUnderlineIcon",
+      "remixicon": "RiUnderline"
+    },
+    {
+      "lucide": "ImageIcon",
+      "tabler": "IconPhoto",
+      "hugeicons": "ImageIcon",
+      "phosphor": "ImageIcon",
+      "remixicon": "RiImageLine"
+    },
+    {
+      "lucide": "LinkIcon",
+      "tabler": "IconLink",
+      "hugeicons": "LinkIcon",
+      "phosphor": "LinkIcon",
+      "remixicon": "RiLinksLine"
+    },
+    {
+      "lucide": "TableIcon",
+      "tabler": "IconTable",
+      "hugeicons": "TableIcon",
+      "phosphor": "TableIcon",
+      "remixicon": "RiTableLine"
+    },
+    {
+      "lucide": "SearchIcon",
+      "tabler": "IconSearch",
+      "hugeicons": "SearchIcon",
+      "phosphor": "MagnifyingGlassIcon",
+      "remixicon": "RiSearchLine"
+    },
+    {
+      "lucide": "CheckIcon",
+      "tabler": "IconCheck",
+      "hugeicons": "Tick02Icon",
+      "phosphor": "CheckIcon",
+      "remixicon": "RiCheckLine"
+    },
+    {
+      "lucide": "FileIcon",
+      "tabler": "IconFile",
+      "hugeicons": "FileIcon",
+      "phosphor": "FileIcon",
+      "remixicon": "RiFileLine"
+    },
+    {
+      "lucide": "FolderIcon",
+      "tabler": "IconFolder",
+      "hugeicons": "FolderIcon",
+      "phosphor": "FolderIcon",
+      "remixicon": "RiFolderLine"
+    },
+    {
+      "lucide": "TrashIcon",
+      "tabler": "IconTrash",
+      "hugeicons": "DeleteIcon",
+      "phosphor": "TrashIcon",
+      "remixicon": "RiDeleteBinLine"
+    },
+    {
+      "lucide": "UserIcon",
+      "tabler": "IconUser",
+      "hugeicons": "UserIcon",
+      "phosphor": "UserIcon",
+      "remixicon": "RiUserLine"
+    },
+    {
+      "lucide": "SettingsIcon",
+      "tabler": "IconSettings",
+      "hugeicons": "SettingsIcon",
+      "phosphor": "GearIcon",
+      "remixicon": "RiSettingsLine"
+    },
+    {
+      "lucide": "LogOutIcon",
+      "tabler": "IconLogout",
+      "hugeicons": "LogoutIcon",
+      "phosphor": "SignOutIcon",
+      "remixicon": "RiLogoutBoxLine"
+    },
+    {
+      "lucide": "TrashIcon",
+      "tabler": "IconTrash",
+      "hugeicons": "DeleteIcon",
+      "phosphor": "TrashIcon",
+      "remixicon": "RiDeleteBinLine"
+    },
+    {
+      "lucide": "CopyIcon",
+      "tabler": "IconCopy",
+      "hugeicons": "CopyIcon",
+      "phosphor": "CopyIcon",
+      "remixicon": "RiFileCopyLine"
+    },
+    {
+      "lucide": "ScissorsIcon",
+      "tabler": "IconCut",
+      "hugeicons": "ScissorIcon",
+      "phosphor": "ScissorsIcon",
+      "remixicon": "RiScissorsLine"
+    },
+    {
+      "lucide": "ClipboardPasteIcon",
+      "tabler": "IconClipboard",
+      "hugeicons": "ClipboardIcon",
+      "phosphor": "ClipboardIcon",
+      "remixicon": "RiClipboardLine"
+    },
+    {
+      "lucide": "TrashIcon",
+      "tabler": "IconTrash",
+      "hugeicons": "DeleteIcon",
+      "phosphor": "TrashIcon",
+      "remixicon": "RiDeleteBinLine"
+    },
+    {
+      "lucide": "CopyIcon",
+      "tabler": "IconCopy",
+      "hugeicons": "CopyIcon",
+      "phosphor": "CopyIcon",
+      "remixicon": "RiFileCopyLine"
+    },
+    {
+      "lucide": "ScissorsIcon",
+      "tabler": "IconCut",
+      "hugeicons": "ScissorIcon",
+      "phosphor": "ScissorsIcon",
+      "remixicon": "RiScissorsLine"
+    }
+  ],
+  "examples/message-example.tsx": [
+    {
+      "lucide": "FileTextIcon",
+      "tabler": "IconFileText",
+      "hugeicons": "FileIcon",
+      "phosphor": "FileTextIcon",
+      "remixicon": "RiFileTextLine"
+    },
+    {
+      "lucide": "DownloadIcon",
+      "tabler": "IconDownload",
+      "hugeicons": "Download01Icon",
+      "phosphor": "DownloadIcon",
+      "remixicon": "RiDownloadLine"
+    },
+    {
+      "lucide": "FileTextIcon",
+      "tabler": "IconFileText",
+      "hugeicons": "FileIcon",
+      "phosphor": "FileTextIcon",
+      "remixicon": "RiFileTextLine"
+    },
+    {
+      "lucide": "DownloadIcon",
+      "tabler": "IconDownload",
+      "hugeicons": "Download01Icon",
+      "phosphor": "DownloadIcon",
+      "remixicon": "RiDownloadLine"
+    },
+    {
+      "lucide": "PresentationIcon",
+      "tabler": "IconPresentation",
+      "hugeicons": "Presentation01Icon",
+      "phosphor": "PresentationIcon",
+      "remixicon": "RiSlideshowLine"
+    },
+    {
+      "lucide": "DownloadIcon",
+      "tabler": "IconDownload",
+      "hugeicons": "Download01Icon",
+      "phosphor": "DownloadIcon",
+      "remixicon": "RiDownloadLine"
+    },
+    {
+      "lucide": "FileArchiveIcon",
+      "tabler": "IconFileZip",
+      "hugeicons": "File01Icon",
+      "phosphor": "FileZipIcon",
+      "remixicon": "RiFileZipLine"
+    },
+    {
+      "lucide": "DownloadIcon",
+      "tabler": "IconDownload",
+      "hugeicons": "Download01Icon",
+      "phosphor": "DownloadIcon",
+      "remixicon": "RiDownloadLine"
+    },
+    {
+      "lucide": "CopyIcon",
+      "tabler": "IconCopy",
+      "hugeicons": "Copy01Icon",
+      "phosphor": "CopyIcon",
+      "remixicon": "RiFileCopyLine"
+    },
+    {
+      "lucide": "RefreshCcwIcon",
+      "tabler": "IconRefresh",
+      "hugeicons": "ReloadIcon",
+      "phosphor": "ArrowClockwiseIcon",
+      "remixicon": "RiRefreshLine"
+    },
+    {
+      "lucide": "CopyIcon",
+      "tabler": "IconCopy",
+      "hugeicons": "Copy01Icon",
+      "phosphor": "CopyIcon",
+      "remixicon": "RiFileCopyLine"
+    },
+    {
+      "lucide": "ThumbsUpIcon",
+      "tabler": "IconThumbUp",
+      "hugeicons": "ThumbsUpIcon",
+      "phosphor": "ThumbsUpIcon",
+      "remixicon": "RiThumbUpLine"
+    },
+    {
+      "lucide": "ThumbsDownIcon",
+      "tabler": "IconThumbDown",
+      "hugeicons": "ThumbsDownIcon",
+      "phosphor": "ThumbsDownIcon",
+      "remixicon": "RiThumbDownLine"
+    }
+  ],
+  "examples/message-scroller-example.tsx": [
+    {
+      "lucide": "ArrowUpIcon",
+      "tabler": "IconArrowUp",
+      "hugeicons": "ArrowUp02Icon",
+      "phosphor": "ArrowUpIcon",
+      "remixicon": "RiArrowUpLine"
+    },
+    {
+      "lucide": "StopCircleIcon",
+      "tabler": "IconPlayerStop",
+      "hugeicons": "StopCircleIcon",
+      "phosphor": "StopCircleIcon",
+      "remixicon": "RiStopCircleLine"
+    }
+  ],
+  "examples/navigation-menu-example.tsx": [
+    {
+      "lucide": "CircleAlertIcon",
+      "tabler": "IconExclamationCircle",
+      "hugeicons": "AlertCircleIcon",
+      "phosphor": "WarningCircleIcon",
+      "remixicon": "RiErrorWarningLine"
+    },
+    {
+      "lucide": "CircleAlertIcon",
+      "tabler": "IconExclamationCircle",
+      "hugeicons": "AlertCircleIcon",
+      "phosphor": "WarningCircleIcon",
+      "remixicon": "RiErrorWarningLine"
+    },
+    {
+      "lucide": "CircleAlertIcon",
+      "tabler": "IconExclamationCircle",
+      "hugeicons": "AlertCircleIcon",
+      "phosphor": "WarningCircleIcon",
+      "remixicon": "RiErrorWarningLine"
+    }
+  ],
+  "examples/progress-example.tsx": [
+    {
+      "lucide": "FileIcon",
+      "tabler": "IconFile",
+      "hugeicons": "FileIcon",
+      "phosphor": "FileIcon",
+      "remixicon": "RiFileLine"
+    }
+  ],
+  "examples/select-example.tsx": [
+    {
+      "lucide": "ChartLineIcon",
+      "tabler": "IconChartLine",
+      "hugeicons": "Chart03Icon",
+      "phosphor": "ChartLineIcon",
+      "remixicon": "RiLineChartLine"
+    },
+    {
+      "lucide": "ChartLineIcon",
+      "tabler": "IconChartLine",
+      "hugeicons": "Chart03Icon",
+      "phosphor": "ChartLineIcon",
+      "remixicon": "RiLineChartLine"
+    },
+    {
+      "lucide": "ChartBarIcon",
+      "tabler": "IconChartBar",
+      "hugeicons": "Chart03Icon",
+      "phosphor": "ChartBarIcon",
+      "remixicon": "RiBarChartLine"
+    },
+    {
+      "lucide": "ChartPieIcon",
+      "tabler": "IconChartPie",
+      "hugeicons": "Chart03Icon",
+      "phosphor": "ChartPieIcon",
+      "remixicon": "RiPieChartLine"
+    }
+  ],
+  "examples/sidebar-example.tsx": [
+    {
+      "lucide": "ChevronsUpDownIcon",
+      "tabler": "IconSelector",
+      "hugeicons": "UnfoldMoreIcon",
+      "phosphor": "CaretUpDownIcon",
+      "remixicon": "RiArrowUpDownLine"
+    },
+    {
+      "lucide": "CheckIcon",
+      "tabler": "IconCheck",
+      "hugeicons": "Tick02Icon",
+      "phosphor": "CheckIcon",
+      "remixicon": "RiCheckLine"
+    },
+    {
+      "lucide": "SearchIcon",
+      "tabler": "IconSearch",
+      "hugeicons": "SearchIcon",
+      "phosphor": "MagnifyingGlassIcon",
+      "remixicon": "RiSearchLine"
+    }
+  ],
+  "examples/sidebar-floating-example.tsx": [
+    {
+      "lucide": "MoreHorizontalIcon",
+      "tabler": "IconDots",
+      "hugeicons": "MoreHorizontalCircle01Icon",
+      "phosphor": "DotsThreeOutlineIcon",
+      "remixicon": "RiMoreLine"
+    }
+  ],
+  "examples/sidebar-icon-example.tsx": [
+    {
+      "lucide": "TerminalSquareIcon",
+      "tabler": "IconTerminal2",
+      "hugeicons": "ComputerTerminalIcon",
+      "phosphor": "TerminalIcon",
+      "remixicon": "RiTerminalBoxLine"
+    },
+    {
+      "lucide": "BotIcon",
+      "tabler": "IconRobot",
+      "hugeicons": "RoboticIcon",
+      "phosphor": "RobotIcon",
+      "remixicon": "RiRobotLine"
+    },
+    {
+      "lucide": "BookOpen",
+      "tabler": "IconBook",
+      "hugeicons": "BookOpen02Icon",
+      "phosphor": "BookOpenIcon",
+      "remixicon": "RiBookOpenLine"
+    },
+    {
+      "lucide": "Settings2Icon",
+      "tabler": "IconSettings",
+      "hugeicons": "Settings05Icon",
+      "phosphor": "GearIcon",
+      "remixicon": "RiSettingsLine"
+    },
+    {
+      "lucide": "FrameIcon",
+      "tabler": "IconFrame",
+      "hugeicons": "CropIcon",
+      "phosphor": "CropIcon",
+      "remixicon": "RiCropLine"
+    },
+    {
+      "lucide": "PieChartIcon",
+      "tabler": "IconChartPie",
+      "hugeicons": "PieChartIcon",
+      "phosphor": "ChartPieIcon",
+      "remixicon": "RiPieChartLine"
+    },
+    {
+      "lucide": "MapIcon",
+      "tabler": "IconMap",
+      "hugeicons": "MapsIcon",
+      "phosphor": "MapTrifoldIcon",
+      "remixicon": "RiMapLine"
+    },
+    {
+      "lucide": "ChevronsUpDownIcon",
+      "tabler": "IconSelector",
+      "hugeicons": "UnfoldMoreIcon",
+      "phosphor": "CaretUpDownIcon",
+      "remixicon": "RiArrowUpDownLine"
+    },
+    {
+      "lucide": "ChevronRightIcon",
+      "tabler": "IconChevronRight",
+      "hugeicons": "ArrowRight01Icon",
+      "phosphor": "CaretRightIcon",
+      "remixicon": "RiArrowRightSLine"
+    },
+    {
+      "lucide": "ChevronsUpDownIcon",
+      "tabler": "IconSelector",
+      "hugeicons": "UnfoldMoreIcon",
+      "phosphor": "CaretUpDownIcon",
+      "remixicon": "RiArrowUpDownLine"
+    }
+  ],
+  "examples/sidebar-inset-example.tsx": [
+    {
+      "lucide": "HomeIcon",
+      "tabler": "IconHome",
+      "hugeicons": "Home01Icon",
+      "phosphor": "HouseIcon",
+      "remixicon": "RiHomeLine"
+    },
+    {
+      "lucide": "ChartLineIcon",
+      "tabler": "IconChartLine",
+      "hugeicons": "ChartIcon",
+      "phosphor": "ChartLineIcon",
+      "remixicon": "RiLineChartLine"
+    },
+    {
+      "lucide": "ShoppingBagIcon",
+      "tabler": "IconShoppingBag",
+      "hugeicons": "ShoppingBag01Icon",
+      "phosphor": "BagIcon",
+      "remixicon": "RiShoppingBagLine"
+    },
+    {
+      "lucide": "ShoppingCartIcon",
+      "tabler": "IconShoppingCart",
+      "hugeicons": "ShoppingCart01Icon",
+      "phosphor": "ShoppingCartIcon",
+      "remixicon": "RiShoppingCartLine"
+    },
+    {
+      "lucide": "FileIcon",
+      "tabler": "IconFile",
+      "hugeicons": "File01Icon",
+      "phosphor": "FileIcon",
+      "remixicon": "RiFileLine"
+    },
+    {
+      "lucide": "UserIcon",
+      "tabler": "IconUser",
+      "hugeicons": "UserIcon",
+      "phosphor": "UserIcon",
+      "remixicon": "RiUserLine"
+    },
+    {
+      "lucide": "Settings2Icon",
+      "tabler": "IconSettings",
+      "hugeicons": "Settings05Icon",
+      "phosphor": "GearIcon",
+      "remixicon": "RiSettingsLine"
+    },
+    {
+      "lucide": "LifeBuoy",
+      "tabler": "IconLifebuoy",
+      "hugeicons": "ChartRingIcon",
+      "phosphor": "LifebuoyIcon",
+      "remixicon": "RiLifebuoyLine"
+    },
+    {
+      "lucide": "Send",
+      "tabler": "IconSend",
+      "hugeicons": "SentIcon",
+      "phosphor": "PaperPlaneTiltIcon",
+      "remixicon": "RiSendPlaneLine"
+    },
+    {
+      "lucide": "ChevronRightIcon",
+      "tabler": "IconChevronRight",
+      "hugeicons": "ArrowRight01Icon",
+      "phosphor": "CaretRightIcon",
+      "remixicon": "RiArrowRightSLine"
+    }
+  ],
+  "examples/spinner-example.tsx": [
+    {
+      "lucide": "ArrowRightIcon",
+      "tabler": "IconArrowRight",
+      "hugeicons": "ArrowRight02Icon",
+      "phosphor": "ArrowRightIcon",
+      "remixicon": "RiArrowRightLine"
+    }
+  ],
+  "examples/table-example.tsx": [
+    {
+      "lucide": "MoreHorizontalIcon",
+      "tabler": "IconDots",
+      "hugeicons": "MoreHorizontalCircle01Icon",
+      "phosphor": "DotsThreeOutlineIcon",
+      "remixicon": "RiMoreLine"
+    },
+    {
+      "lucide": "MoreHorizontalIcon",
+      "tabler": "IconDots",
+      "hugeicons": "MoreHorizontalCircle01Icon",
+      "phosphor": "DotsThreeOutlineIcon",
+      "remixicon": "RiMoreLine"
+    },
+    {
+      "lucide": "MoreHorizontalIcon",
+      "tabler": "IconDots",
+      "hugeicons": "MoreHorizontalCircle01Icon",
+      "phosphor": "DotsThreeOutlineIcon",
+      "remixicon": "RiMoreLine"
+    }
+  ],
+  "examples/tabs-example.tsx": [
+    {
+      "lucide": "AppWindowIcon",
+      "tabler": "IconAppWindow",
+      "hugeicons": "CursorInWindowIcon",
+      "phosphor": "AppWindowIcon",
+      "remixicon": "RiWindowLine"
+    },
+    {
+      "lucide": "CodeIcon",
+      "tabler": "IconCode",
+      "hugeicons": "CodeIcon",
+      "phosphor": "CodeIcon",
+      "remixicon": "RiCodeLine"
+    },
+    {
+      "lucide": "HomeIcon",
+      "tabler": "IconHome",
+      "hugeicons": "HomeIcon",
+      "phosphor": "HouseIcon",
+      "remixicon": "RiHomeLine"
+    },
+    {
+      "lucide": "SearchIcon",
+      "tabler": "IconSearch",
+      "hugeicons": "SearchIcon",
+      "phosphor": "MagnifyingGlassIcon",
+      "remixicon": "RiSearchLine"
+    },
+    {
+      "lucide": "SettingsIcon",
+      "tabler": "IconSettings",
+      "hugeicons": "SettingsIcon",
+      "phosphor": "GearIcon",
+      "remixicon": "RiSettingsLine"
+    },
+    {
+      "lucide": "MoreHorizontalIcon",
+      "tabler": "IconDots",
+      "hugeicons": "MoreHorizontalCircle01Icon",
+      "phosphor": "DotsThreeOutlineIcon",
+      "remixicon": "RiMoreLine"
+    }
+  ],
+  "examples/toggle-example.tsx": [
+    {
+      "lucide": "BoldIcon",
+      "tabler": "IconBold",
+      "hugeicons": "TextBoldIcon",
+      "phosphor": "TextBIcon",
+      "remixicon": "RiBold"
+    },
+    {
+      "lucide": "ItalicIcon",
+      "tabler": "IconItalic",
+      "hugeicons": "TextItalicIcon",
+      "phosphor": "TextItalicIcon",
+      "remixicon": "RiItalic"
+    },
+    {
+      "lucide": "UnderlineIcon",
+      "tabler": "IconUnderline",
+      "hugeicons": "TextUnderlineIcon",
+      "phosphor": "TextUnderlineIcon",
+      "remixicon": "RiUnderline"
+    },
+    {
+      "lucide": "ItalicIcon",
+      "tabler": "IconItalic",
+      "hugeicons": "TextItalicIcon",
+      "phosphor": "TextItalicIcon",
+      "remixicon": "RiItalic"
+    },
+    {
+      "lucide": "BoldIcon",
+      "tabler": "IconBold",
+      "hugeicons": "TextBoldIcon",
+      "phosphor": "TextBIcon",
+      "remixicon": "RiBold"
+    },
+    {
+      "lucide": "BoldIcon",
+      "tabler": "IconBold",
+      "hugeicons": "TextBoldIcon",
+      "phosphor": "TextBIcon",
+      "remixicon": "RiBold"
+    },
+    {
+      "lucide": "BoldIcon",
+      "tabler": "IconBold",
+      "hugeicons": "TextBoldIcon",
+      "phosphor": "TextBIcon",
+      "remixicon": "RiBold"
+    },
+    {
+      "lucide": "ItalicIcon",
+      "tabler": "IconItalic",
+      "hugeicons": "TextItalicIcon",
+      "phosphor": "TextItalicIcon",
+      "remixicon": "RiItalic"
+    },
+    {
+      "lucide": "ItalicIcon",
+      "tabler": "IconItalic",
+      "hugeicons": "TextItalicIcon",
+      "phosphor": "TextItalicIcon",
+      "remixicon": "RiItalic"
+    },
+    {
+      "lucide": "UnderlineIcon",
+      "tabler": "IconUnderline",
+      "hugeicons": "TextUnderlineIcon",
+      "phosphor": "TextUnderlineIcon",
+      "remixicon": "RiUnderline"
+    },
+    {
+      "lucide": "UnderlineIcon",
+      "tabler": "IconUnderline",
+      "hugeicons": "TextUnderlineIcon",
+      "phosphor": "TextUnderlineIcon",
+      "remixicon": "RiUnderline"
+    },
+    {
+      "lucide": "BoldIcon",
+      "tabler": "IconBold",
+      "hugeicons": "TextBoldIcon",
+      "phosphor": "TextBIcon",
+      "remixicon": "RiBold",
+      "icon": "inline-start"
+    },
+    {
+      "lucide": "BoldIcon",
+      "tabler": "IconBold",
+      "hugeicons": "TextBoldIcon",
+      "phosphor": "TextBIcon",
+      "remixicon": "RiBold"
+    },
+    {
+      "lucide": "ItalicIcon",
+      "tabler": "IconItalic",
+      "hugeicons": "TextItalicIcon",
+      "phosphor": "TextItalicIcon",
+      "remixicon": "RiItalic",
+      "icon": "inline-start"
+    },
+    {
+      "lucide": "ItalicIcon",
+      "tabler": "IconItalic",
+      "hugeicons": "TextItalicIcon",
+      "phosphor": "TextItalicIcon",
+      "remixicon": "RiItalic"
+    },
+    {
+      "lucide": "UnderlineIcon",
+      "tabler": "IconUnderline",
+      "hugeicons": "TextUnderlineIcon",
+      "phosphor": "TextUnderlineIcon",
+      "remixicon": "RiUnderline",
+      "icon": "inline-start"
+    },
+    {
+      "lucide": "UnderlineIcon",
+      "tabler": "IconUnderline",
+      "hugeicons": "TextUnderlineIcon",
+      "phosphor": "TextUnderlineIcon",
+      "remixicon": "RiUnderline"
+    },
+    {
+      "lucide": "BookmarkIcon",
+      "tabler": "IconBookmark",
+      "hugeicons": "BookmarkIcon",
+      "phosphor": "BookmarkIcon",
+      "remixicon": "RiBookmarkLine"
+    },
+    {
+      "lucide": "BookmarkIcon",
+      "tabler": "IconBookmark",
+      "hugeicons": "BookmarkIcon",
+      "phosphor": "BookmarkIcon",
+      "remixicon": "RiBookmarkLine"
+    }
+  ],
+  "examples/toggle-group-example.tsx": [
+    {
+      "lucide": "BoldIcon",
+      "tabler": "IconBold",
+      "hugeicons": "TextBoldIcon",
+      "phosphor": "TextBIcon",
+      "remixicon": "RiBold"
+    },
+    {
+      "lucide": "ItalicIcon",
+      "tabler": "IconItalic",
+      "hugeicons": "TextItalicIcon",
+      "phosphor": "TextItalicIcon",
+      "remixicon": "RiItalic"
+    },
+    {
+      "lucide": "UnderlineIcon",
+      "tabler": "IconUnderline",
+      "hugeicons": "TextUnderlineIcon",
+      "phosphor": "TextUnderlineIcon",
+      "remixicon": "RiUnderline"
+    },
+    {
+      "lucide": "BoldIcon",
+      "tabler": "IconBold",
+      "hugeicons": "TextBoldIcon",
+      "phosphor": "TextBIcon",
+      "remixicon": "RiBold"
+    },
+    {
+      "lucide": "ItalicIcon",
+      "tabler": "IconItalic",
+      "hugeicons": "TextItalicIcon",
+      "phosphor": "TextItalicIcon",
+      "remixicon": "RiItalic"
+    },
+    {
+      "lucide": "UnderlineIcon",
+      "tabler": "IconUnderline",
+      "hugeicons": "TextUnderlineIcon",
+      "phosphor": "TextUnderlineIcon",
+      "remixicon": "RiUnderline"
+    },
+    {
+      "lucide": "StarIcon",
+      "tabler": "IconStar",
+      "hugeicons": "StarIcon",
+      "phosphor": "StarIcon",
+      "remixicon": "RiStarLine"
+    },
+    {
+      "lucide": "HeartIcon",
+      "tabler": "IconHeart",
+      "hugeicons": "FavouriteIcon",
+      "phosphor": "HeartIcon",
+      "remixicon": "RiHeartLine"
+    },
+    {
+      "lucide": "BookmarkIcon",
+      "tabler": "IconBookmark",
+      "hugeicons": "BookmarkIcon",
+      "phosphor": "BookmarkIcon",
+      "remixicon": "RiBookmarkLine"
+    },
+    {
+      "lucide": "ArrowDownIcon",
+      "tabler": "IconArrowDown",
+      "hugeicons": "ArrowDownIcon",
+      "phosphor": "ArrowDownIcon",
+      "remixicon": "RiArrowDownLine"
+    },
+    {
+      "lucide": "ArrowUpIcon",
+      "tabler": "IconArrowUp",
+      "hugeicons": "ArrowUpIcon",
+      "phosphor": "ArrowUpIcon",
+      "remixicon": "RiArrowUpLine"
+    },
+    {
+      "lucide": "TrendingUpIcon",
+      "tabler": "IconTrendingUp",
+      "hugeicons": "TradeUpIcon",
+      "phosphor": "TrendUpIcon",
+      "remixicon": "RiLineChartLine"
+    },
+    {
+      "lucide": "BoldIcon",
+      "tabler": "IconBold",
+      "hugeicons": "TextBoldIcon",
+      "phosphor": "TextBIcon",
+      "remixicon": "RiBold"
+    },
+    {
+      "lucide": "ItalicIcon",
+      "tabler": "IconItalic",
+      "hugeicons": "TextItalicIcon",
+      "phosphor": "TextItalicIcon",
+      "remixicon": "RiItalic"
+    },
+    {
+      "lucide": "UnderlineIcon",
+      "tabler": "IconUnderline",
+      "hugeicons": "TextUnderlineIcon",
+      "phosphor": "TextUnderlineIcon",
+      "remixicon": "RiUnderline"
+    },
+    {
+      "lucide": "BoldIcon",
+      "tabler": "IconBold",
+      "hugeicons": "TextBoldIcon",
+      "phosphor": "TextBIcon",
+      "remixicon": "RiBold"
+    },
+    {
+      "lucide": "ItalicIcon",
+      "tabler": "IconItalic",
+      "hugeicons": "TextItalicIcon",
+      "phosphor": "TextItalicIcon",
+      "remixicon": "RiItalic"
+    },
+    {
+      "lucide": "UnderlineIcon",
+      "tabler": "IconUnderline",
+      "hugeicons": "TextUnderlineIcon",
+      "phosphor": "TextUnderlineIcon",
+      "remixicon": "RiUnderline"
+    }
+  ],
+  "examples/tooltip-example.tsx": [
+    {
+      "lucide": "InfoIcon",
+      "tabler": "IconInfoCircle",
+      "hugeicons": "AlertCircleIcon",
+      "phosphor": "InfoIcon",
+      "remixicon": "RiInformationLine"
+    },
+    {
+      "lucide": "SaveIcon",
+      "tabler": "IconDeviceFloppy",
+      "hugeicons": "FloppyDiskIcon",
+      "phosphor": "FloppyDiskIcon",
+      "remixicon": "RiSaveLine"
+    }
+  ],
+  "examples/trace-example.tsx": [
+    {
+      "lucide": "ChevronRightIcon",
+      "tabler": "IconChevronRight",
+      "hugeicons": "ArrowRight01Icon",
+      "phosphor": "CaretRightIcon",
+      "remixicon": "RiArrowRightSLine"
+    },
+    {
+      "lucide": "ArrowUpRightIcon",
+      "tabler": "IconArrowUpRight",
+      "hugeicons": "ArrowUpRight01Icon",
+      "phosphor": "ArrowUpRightIcon",
+      "remixicon": "RiArrowRightUpLine"
+    },
+    {
+      "lucide": "BrainIcon",
+      "tabler": "IconBrain",
+      "hugeicons": "AiBrainIcon",
+      "phosphor": "BrainIcon",
+      "remixicon": "RiBrainLine"
+    },
+    {
+      "lucide": "SearchIcon",
+      "tabler": "IconSearch",
+      "hugeicons": "Search01Icon",
+      "phosphor": "MagnifyingGlassIcon",
+      "remixicon": "RiSearchLine"
+    },
+    {
+      "lucide": "FileTextIcon",
+      "tabler": "IconFileText",
+      "hugeicons": "File02Icon",
+      "phosphor": "FileTextIcon",
+      "remixicon": "RiFileTextLine"
+    },
+    {
+      "lucide": "FileSearchIcon",
+      "tabler": "IconFileSearch",
+      "hugeicons": "FileSearchIcon",
+      "phosphor": "FileSearchIcon",
+      "remixicon": "RiFileSearchLine"
+    },
+    {
+      "lucide": "TerminalIcon",
+      "tabler": "IconTerminal",
+      "hugeicons": "ComputerTerminal01Icon",
+      "phosphor": "TerminalIcon",
+      "remixicon": "RiTerminalBoxLine"
+    },
+    {
+      "lucide": "SunIcon",
+      "tabler": "IconSun",
+      "hugeicons": "Sun03Icon",
+      "phosphor": "SunIcon",
+      "remixicon": "RiSunLine"
+    },
+    {
+      "lucide": "BookOpenIcon",
+      "tabler": "IconBook",
+      "hugeicons": "BookOpen02Icon",
+      "phosphor": "BookOpenIcon",
+      "remixicon": "RiBookOpenLine"
+    },
+    {
+      "lucide": "LinkIcon",
+      "tabler": "IconLink",
+      "hugeicons": "LinkIcon",
+      "phosphor": "LinkIcon",
+      "remixicon": "RiLinksLine"
+    },
+    {
+      "lucide": "GlobeIcon",
+      "tabler": "IconGlobe",
+      "hugeicons": "Globe02Icon",
+      "phosphor": "GlobeIcon",
+      "remixicon": "RiGlobeLine"
+    }
+  ]
+}

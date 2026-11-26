@@ -1,11 +1,14 @@
 // A preset of shadcn/ui, its components and its blocks, in its folder of
 // src/presets, as shadcn's CLI writes them into a project of that preset:
 //   node tools/preset.js <preset> [block...]
+//   node tools/preset.js <preset> --icons
 // Its components, its hooks and its lib, the helpers aside, which every preset
 // shares; then each block in a folder of its own of blocks/, its page beside
-// its components, each imported as ./name, which is where Python looks first.
-// Given blocks, those alone. The CLI writes a block's page only into a Next.js
-// project: the files are read with --dry-run from one made for the purpose.
+// its components, each imported as ./name, which is where Python looks first;
+// then icons.json, each icon's name in every library the CLI writes icons in.
+// Given blocks, those alone; given --icons, icons.json alone. The CLI writes a
+// block's page only into a Next.js project: the files are read with --dry-run
+// from one made for the purpose, its icons Lucide's.
 import { spawnSync } from 'node:child_process';
 import { copyFileSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -26,6 +29,45 @@ async function blockNames() {
     const { items } = await response.json();
 
     return items.filter((item) => item.type === 'registry:block').map((item) => item.name);
+}
+
+// Each icon of each file in the other libraries, in the file's order, as
+// shadcn's own registry writes it for its CLI, which writes each in its place:
+// `<IconPlaceholder lucide="ChevronDownIcon" hugeicons="UnfoldMoreIcon" … />`,
+// the same Lucide icon another one of Hugeicons elsewhere in the file.
+async function icons() {
+    const base = `https://ui.shadcn.com/r/styles/${preset}`;
+    const { items } = await (await fetch(`${base}/registry.json`)).json();
+    const files = [];
+    const names = {};
+
+    // Ten at a time, which the resolver keeps up with.
+    for (let at = 0; at < items.length; at += 10) {
+        files.push(...(await Promise.all(items.slice(at, at + 10).map(async ({ name }) => (await (await fetch(`${base}/${name}.json`)).json()).files ?? []))));
+    }
+
+    // Its path as the preset's folder has it: ui/x.tsx in components/ui, a
+    // block's components beside its page.
+    const placed = (path) =>
+        path
+            .replace(`registry/${preset}/`, '')
+            .replace(/^ui\//, 'components/ui/')
+            .replace(/^(blocks\/[^/]+)\/components\//, '$1/');
+
+    for (const file of files.flat()) {
+        const found = [...(file.content ?? '').matchAll(/<IconPlaceholder[\s\S]*?\/>/g)].map(([tag]) => {
+            const { className, ...names } = Object.fromEntries([...tag.matchAll(/(\w+)="([^"]*)"/g)].map(([, key, value]) => [key, value]));
+
+            return names;
+        });
+
+        if (found.length) names[placed(file.path)] = found;
+    }
+
+    const sorted = Object.fromEntries(Object.keys(names).sort().map((path) => [path, names[path]]));
+
+    writeFileSync(join(root, 'icons.json'), `${JSON.stringify(sorted, null, 2)}\n`);
+    console.log(`${root}/icons.json: ${Object.keys(sorted).length} files`);
 }
 
 function nextProject() {
@@ -116,11 +158,16 @@ function block(project, name) {
     console.log(`${folder}: ${[...files.keys()].join(', ')}`);
 }
 
-const project = nextProject();
+if (given[0] === '--icons') {
+    await icons();
+} else {
+    const project = nextProject();
 
-try {
-    if (!given.length) components(project);
-    for (const name of given.length ? given : await blockNames()) block(project, name);
-} finally {
-    rmSync(project, { recursive: true, force: true });
+    try {
+        if (!given.length) components(project);
+        for (const name of given.length ? given : await blockNames()) block(project, name);
+        if (!given.length) await icons();
+    } finally {
+        rmSync(project, { recursive: true, force: true });
+    }
 }

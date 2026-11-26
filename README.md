@@ -38,7 +38,10 @@ npx reacthon-ui add dialog
 copies `dialog.py`, and the `button.py` and `lib/utils.py` it needs, as
 `npx shadcn add dialog` copies `dialog.tsx`: shadcn's own CLI does the copying,
 from the registry the package carries for the project's preset, which its
-`components.json` names. Reacthon finds them by the folders it is given:
+`components.json` names. Their icons are in the library it names too, Lucide,
+Tabler, Hugeicons, Phosphor or Remix Icon, each written in its place as
+shadcn's CLI writes it in the TSX. Reacthon finds them by the folders it is
+given:
 
 ```js
 // vite.config.ts
@@ -54,8 +57,10 @@ from dialog import Dialog, DialogTrigger, DialogContent, DialogTitle
 A preset of shadcn/ui is a style on a base, the library its components behave
 by. All 24 of them: the eight styles, Vega, Nova, Maia, Lyra, Mira, Luma,
 Rhea and Sera, on each of the three bases, Radix, Base UI and React Aria,
-`base-nova` being the preset `npx shadcn init --defaults` makes; their icons
-Lucide's. Each
+`base-nova` being the preset `npx shadcn init --defaults` makes. Their Python
+is written with Lucide's icons, and `icons.json` holds each icon of each file
+in the other libraries, as shadcn's registry has them for its CLI, in the
+file's order: `bin/icons.js` writes them in the project's library. Each
 stands in its own folder of `src/presets`, laid out as a project of that
 preset: `components/ui`, `hooks`, `lib` and the blocks, the helpers of
 `src/lib` aside, which every preset shares. `tools/preset.js` fetches its TSX
@@ -102,6 +107,10 @@ and is skipped as such: 3 a preset of React Aria, 24 in all.
   code block's copy button: the same page after each step, 26 scenes.
 - `tests/blocks.test.tsx` renders each translated block's page against its TSX
   one: the same page, to the character.
+- `tests/icons.test.tsx` writes every component's icons in each of the four
+  other libraries, each found, none of Lucide's left. The pages were twinned,
+  once for each library and each base, against the TSX shadcn's CLI writes
+  for it: the same pages.
 - The demo, `src/App.py`, runs on the Python ones alone; in Chrome, Radix's
   focus, keyboard and portals behave as with the TSX ones.
 

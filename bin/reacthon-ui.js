@@ -1,8 +1,11 @@
 #!/usr/bin/env node
 import { spawnSync } from "node:child_process"
-import { existsSync, readdirSync, readFileSync } from "node:fs"
-import { join } from "node:path"
+import { existsSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs"
+import { tmpdir } from "node:os"
+import { basename, join } from "node:path"
 import { fileURLToPath } from "node:url"
+
+import { withIcons } from "./icons.js"
 
 const registries = fileURLToPath(new URL("../public/r/", import.meta.url))
 const valued = new Set(["-c", "--cwd", "-p", "--path"])
@@ -20,7 +23,7 @@ if (!existsSync(config)) {
   console.error("reacthon-ui: no components.json: npx shadcn init makes it")
   process.exit(1)
 }
-const { style } = JSON.parse(readFileSync(config, "utf8"))
+const { style, iconLibrary = "lucide" } = JSON.parse(readFileSync(config, "utf8"))
 const registry = join(registries, style, "/")
 if (!existsSync(registry)) {
   console.error(`reacthon-ui: no preset ${style} yet, only ${readdirSync(registries).join(", ")}`)
@@ -46,6 +49,18 @@ for (let i = 0; i < args.length; i++) {
   }
 }
 
+// The items with their icons in the project's library, as shadcn's CLI writes
+// its own for it.
+const written = mkdtempSync(join(tmpdir(), "reacthon-ui-"))
+const items = passed.map((one) => {
+  if (!one.startsWith(registry)) return one
+
+  const path = join(written, basename(one))
+  writeFileSync(path, JSON.stringify(withIcons(JSON.parse(readFileSync(one, "utf8")), iconLibrary)))
+  return path
+})
+
 const shadcn = fileURLToPath(import.meta.resolve("shadcn"))
-const { status } = spawnSync(process.execPath, [shadcn, "add", ...passed], { stdio: "inherit" })
+const { status } = spawnSync(process.execPath, [shadcn, "add", ...items], { stdio: "inherit" })
+rmSync(written, { recursive: true, force: true })
 process.exit(status ?? 1)

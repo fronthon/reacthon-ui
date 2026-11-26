@@ -25,14 +25,20 @@ function read(path) {
     return {
         modules: [...text.matchAll(/^from (\w+) import /gm)].map((match) => match[1]).filter((one) => !['browser', 'javascript', 'reacthon'].includes(one)),
         packages: froms.filter((from) => !from.startsWith('@/')).map(packageOf),
-        items: froms.filter((from) => from.startsWith('@/')).map((from) => from.split('/').pop())
+        items: froms.filter((from) => from.startsWith('@/')).map((from) => from.split('/').pop()),
+        icons: [...(/"lucide-react": \[([^\]]*)\]/.exec(js)?.[1] ?? '').matchAll(/"([^"]+)"/g)].map((match) => match[1])
     };
 }
 
-function item(ui, name) {
+// An item and what it takes with it: and, in `meta.icons`, the icons of each
+// of its files in the other libraries, in the file's order, by which the CLI
+// writes them in the project's (bin/icons.js).
+function item(ui, name, iconNames) {
     const files = [];
     const packages = new Set();
     const items = new Set();
+    const icons = {};
+    const targetOf = (path) => (path === UTILS ? path : `src/components/ui/${path.split('/').pop()}`);
     const pathOf = (module) => (module === 'utils' ? UTILS : `${ui}/${module}.py`);
     const visit = (path) => {
         if (files.includes(path)) return;
@@ -43,6 +49,7 @@ function item(ui, name) {
 
         own.packages.forEach((one) => packages.add(one));
         own.items.forEach((one) => items.add(one));
+        if (own.icons.length) icons[targetOf(path)] = iconNames[`components/ui/${path.split('/').pop().replace(/_/g, '-').replace(/\.py$/, '.tsx')}`];
         own.modules.forEach((module) => visit(pathOf(module)));
     };
 
@@ -56,7 +63,8 @@ function item(ui, name) {
         title: `${title[0].toUpperCase()}${title.slice(1)}, in Python`,
         dependencies: [...packages].sort(),
         ...(items.size ? { registryDependencies: [...items].sort() } : {}),
-        files: files.map((path) => ({ path, type: 'registry:file', target: path === UTILS ? path : `src/components/ui/${path.split('/').pop()}` }))
+        files: files.map((path) => ({ path, type: 'registry:file', target: targetOf(path) })),
+        ...(Object.keys(icons).length ? { meta: { icons } } : {})
     };
 }
 
@@ -66,9 +74,10 @@ for (const preset of readdirSync('src/presets')) {
         .filter((file) => file.endsWith('.py'))
         .map((file) => file.slice(0, -3))
         .sort();
+    const iconNames = JSON.parse(readFileSync(`src/presets/${preset}/icons.json`, 'utf8'));
     const items = names.flatMap((name) => {
         try {
-            return [item(ui, name)];
+            return [item(ui, name, iconNames)];
         } catch (error) {
             console.log(`${preset}: left out ${name}: ${error.message}`);
             return [];
