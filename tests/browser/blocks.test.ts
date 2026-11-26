@@ -1,5 +1,6 @@
-// The demo's blocks in Chrome, where a page is laid out: each block's page in
-// Python against its TSX twin, each loaded afresh with the same random draws,
+// The demo's pages in Chrome, where a page is laid out: shadcn's showcases and
+// each block's page, in Python against its TSX twin, each loaded afresh with
+// the same random draws,
 // the same page as it loads and after each gesture of a mouse, and nothing
 // thrown. jsdom renders neither recharts' tooltip, which it lays out by
 // size, nor a drag, nor what a collapsed sidebar's tooltips show.
@@ -12,17 +13,21 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest"
 
 import { chrome } from "./chrome"
 
-// The preset the demo is built on, one of each base, as the project says.
+// The preset the demo is built on, one of each base, as the project says, and
+// its pages: shadcn's showcases and its blocks.
 const preset = process.env.DEMO_PRESET ?? "radix-nova"
-const blocks = readdirSync(`src/presets/${preset}/blocks`).sort()
+const pages = ["previews", "blocks"].flatMap((folder) => readdirSync(`src/presets/${preset}/${folder}`).sort())
 const outDir = join(tmpdir(), `reacthon-ui-demo-${preset}-${process.pid}`)
 const SEEDED = "{ let seed = 1; Math.random = () => (seed = (seed * 16807) % 2147483647) / 2147483647 }"
-// The page, its ids numbered as they first appear; the span recharts measures
-// a text in holds the last it measured, which the order of its measures
-// decides, and shows nothing.
+// The page, its ids numbered as they first appear, the demo's toolbar aside,
+// which says which side it shows; the span recharts measures a text in holds
+// the last it measured, which the order of its measures decides, and shows
+// nothing.
 const PAGE = `(() => {
   const ids = new Map()
-  return document.body.innerHTML
+  const body = document.body.cloneNode(true)
+  body.querySelector("[data-demo-toolbar]")?.remove()
+  return body.innerHTML
     .replace(/(<span id="recharts_measurement_span"[^>]*>)[^<]*/, "$1")
     .replace(/_r_[0-9a-z]+_|\\bDnd\\w+-\\d+/g, (id) => {
       if (!ids.has(id)) ids.set(id, ids.size)
@@ -85,6 +90,8 @@ async function played(hash: string) {
   await sleep(100)
   page.thrown.length = 0
   await page.send("Page.navigate", { url: `${site}${hash}` })
+  // The page itself shown, past the toolbar and the toaster, which come first.
+  for (let tries = 0; tries < 300 && (await page.evaluate("document.documentElement.dataset.shown").catch(() => null)) !== hash; tries++) await sleep(100)
 
   const pages: [string, string][] = [["loaded", await settled()]]
 
@@ -113,8 +120,8 @@ afterAll(async () => {
   rmSync(outDir, { recursive: true, force: true })
 })
 
-describe(`the demo's blocks in Chrome, on ${preset}`, () => {
-  it.for(blocks)("%s is its TSX twin, loaded and after a mouse's gestures", async (name) => {
+describe(`the demo's pages in Chrome, on ${preset}`, () => {
+  it.for(pages)("%s is its TSX twin, loaded and after a mouse's gestures", async (name) => {
     const python = await played(`#/${name}`)
     const tsx = await played(`#/${name}/tsx`)
 

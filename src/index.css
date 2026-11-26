@@ -128,3 +128,10 @@
     @apply font-sans;
     }
 }
+
+/* The canvas of shadcn/ui's showcases, wider than the window, scrolled by the
+   page: its scrollbar at the window's foot, not at the end of the canvas. */
+div:has(> div > [data-slot="capture-target"]) {
+  overflow: visible;
+  contain: none;
+}

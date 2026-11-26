@@ -3,6 +3,8 @@
 //   node tools/preset.js <preset> [block...]
 //   node tools/preset.js <preset> --icons
 //   node tools/preset.js <preset> --items
+//   node tools/preset.js <preset> --examples
+//   node tools/preset.js <preset> --previews
 // Its components, its hooks and its lib, the helpers aside, which every preset
 // shares; then each block in a folder of its own of blocks/, its page beside
 // its components, each imported as ./name, which is where Python looks first;
@@ -229,10 +231,91 @@ async function examples(project) {
     console.log(`${root}/examples: ${names.length} examples`);
 }
 
+// shadcn/ui's showcases, the canvas of its site's create page, each in a
+// folder of previews/: its page as the registry has it for the preset, and
+// its cards, which the registry leaves out, from shadcn's repository, where
+// they are written once for each base and each style dresses them by its
+// components; their icons Lucide's, as its CLI writes a project's. A card that
+// reads shadcn's site, its fonts or its icons, is left out of the page; the
+// style its site's search params name is the preset's.
+const SOURCE = 'https://raw.githubusercontent.com/shadcn-ui/ui/main/apps/v4/registry/bases';
+const PREVIEWS = ['preview', 'preview-02'];
+const ICON_LIBRARIES = ['lucide', 'tabler', 'hugeicons', 'phosphor', 'remixicon'];
+
+// `<IconPlaceholder lucide="CheckIcon" tabler="…" className="size-4" />`, its
+// Lucide icon with the rest of its props.
+function lucide(text) {
+    const used = new Set();
+    const written = text.replace(/<IconPlaceholder([\s\S]*?)\/>/g, (tag, props) => {
+        const name = /\blucide="(\w+)"/.exec(props)?.[1];
+
+        if (!name) return tag;
+        used.add(name);
+        return `<${name}${props.replace(new RegExp(`\\s*\\b(${ICON_LIBRARIES.join('|')})="[^"]*"`, 'g'), '')}/>`;
+    });
+
+    if (written.includes('<IconPlaceholder')) return written;
+
+    const placeholder = written.replace(/^import \{ IconPlaceholder \} from "[^"]+"\n/m, '');
+
+    return used.size ? placeholder.replace(/^import /m, `import { ${[...used].sort().join(', ')} } from "lucide-react"\nimport `) : placeholder;
+}
+
+async function previews() {
+    const [library, style] = preset.split('-');
+
+    for (const name of PREVIEWS) {
+        const folder = join(root, 'previews', name);
+        let page = (await (await fetch(`${base}/${name}.json`)).json()).files[0].content;
+        const files = new Map();
+
+        for (const [, card] of page.matchAll(new RegExp(`@/registry/${preset}/blocks/${name}/cards/([\\w-]+)`, 'g'))) {
+            const text = await (await fetch(`${SOURCE}/${library}/blocks/${name}/cards/${card}.tsx`)).text();
+
+            files.set(
+                `${card}.tsx`,
+                lucide(text)
+                    .replaceAll(`@/registry/bases/${library}/ui/`, '@/components/ui/')
+                    .replaceAll('from "cn"', 'from "@/lib/utils"')
+                    .replace(/"@\/app\/\((?:app\)\/create|create\))\/lib\/search-params"/, '"./design-system"')
+            );
+        }
+
+        const site = (text) => [...text.matchAll(/from "([^"]+)"/g)].map((match) => match[1]).find((from) => /^@\/(app|registry)\/|^shadcn\//.test(from));
+
+        for (const [file, text] of files) {
+            const from = site(text);
+            const card = file.replace(/\.tsx$/, '');
+
+            if (!from) continue;
+            files.delete(file);
+            console.log(`left out ${name}/${card}: it imports ${from}, which is shadcn's site`);
+
+            const component = new RegExp(`^import \\{ (\\w+) \\} from "@/registry/${preset}/blocks/${name}/cards/${card}"\\n`, 'm').exec(page)[1];
+
+            page = page.replace(new RegExp(`^import \\{ ${component} \\} from "[^"]+"\\n`, 'm'), '').replace(new RegExp(`^\\s*<${component} />\\n`, 'gm'), '');
+        }
+        if ([...files.values()].some((text) => text.includes('"./design-system"'))) {
+            files.set(
+                'design-system.tsx',
+                `// What shadcn's site reads of the design system it shows: its style, here the preset's.\nexport function useDesignSystemSearchParams() {\n  return [{ style: "${style}" }] as const\n}\n`
+            );
+        }
+        files.set('page.tsx', page.replaceAll(`@/registry/${preset}/blocks/${name}/cards/`, './').replaceAll(`@/registry/${preset}/ui/`, '@/components/ui/'));
+
+        rmSync(folder, { recursive: true, force: true });
+        mkdirSync(folder, { recursive: true });
+        for (const [file, text] of files) writeFileSync(join(folder, file), text);
+        console.log(`${folder}: ${files.size - 1} files`);
+    }
+}
+
 if (given[0] === '--icons') {
     await icons();
 } else if (given[0] === '--items') {
     await items();
+} else if (given[0] === '--previews') {
+    await previews();
 } else if (given[0] === '--examples') {
     const project = nextProject();
 

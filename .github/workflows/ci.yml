@@ -51,9 +51,9 @@ jobs:
         working-directory: reacthon-ui
         run: npm test
 
-  # The demo, src/App.py, is built with paths relative to its page, so it is
-  # served as well under the repository's name. Only from main, and only once
-  # the tests pass.
+  # The demo, each preset a build of its own, is built with paths relative to
+  # its page, so it is served as well under the repository's name. Only from
+  # main, and only once the tests pass.
   build:
     needs: test
     if: github.event_name != 'pull_request'
@@ -86,7 +86,7 @@ jobs:
 
       - name: Build the demo
         working-directory: reacthon-ui
-        run: npm run build
+        run: npm run build:demo
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

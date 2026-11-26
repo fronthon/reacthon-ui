@@ -138,6 +138,14 @@ shadcn's CLI writes them. All 27 of each preset are translated: the logins,
 the signups, the 16 sidebars and the dashboard, its chart, and its table on
 TanStack's with rows dragged by dnd-kit.
 
+So are shadcn/ui's showcases, the canvas of its site's create page, `preview`
+and `preview-02`, 61 cards of its components put to use, on every preset, each
+in its folder of the preset's `previews`: the page its registry has for the
+preset, and its cards, which the registry leaves out, from shadcn's
+repository, where each is written once for each base and each style dresses it
+by its components, its icons Lucide's. The three that read shadcn's site, its
+fonts and its icons, are left out of the page.
+
 ## Tested against shadcn/ui's own
 
 The twins run on each preset, a Vitest project of its own, where `@` is the
@@ -165,26 +173,33 @@ that none passes by rendering nothing on either side.
   dashboard's rows selected, its next page and its form sent, its toast shown
   in the application's toaster: the same page after each step, and the same
   errors.
-- `tests/examples/examples.test.tsx` converts shadcn/ui's examples, the pages
-  of its site that show each component, as `reacthon-ui convert` converts a
-  project's own TSX, on Nova on each base: 187 of them, each converted, its
-  Python page the same as its TSX one, to the character. `npm run preset
-  radix-nova -- --examples` fetches them as shadcn's CLI writes them, leaving
-  out one that imports a file of shadcn's site, which works in no project.
+- `tests/examples/examples.test.tsx` converts the pages of shadcn/ui's site, as
+  `reacthon-ui convert` converts a project's own TSX: its two showcases on
+  every preset, and its examples, which show each component, on Nova on each
+  base, 187 of them; each converted, its Python page the same as its TSX one,
+  to the character. `npm run preset radix-nova -- --previews` fetches the
+  showcases, and `-- --examples` the examples as shadcn's CLI writes them,
+  leaving out one that imports a file of shadcn's site, which works in no
+  project.
 - `tests/icons.test.tsx` writes every component's and block's icons in each
   of the four other libraries, each found, none of Lucide's left. The pages
   were twinned, once for each library and each base, against the TSX shadcn's
   CLI writes for it: the same pages; and blocks, written by the two CLIs into
   a Next.js project, the TSX by shadcn's and the Python by `reacthon-ui add`:
   the same pages.
-- The demo, `src/App.py`, runs on the Python ones alone; in Chrome, Radix's
-  focus, keyboard and portals behave as with the TSX ones. Its 27 blocks are
-  each at `#/<name>`, and its TSX twin at `#/<name>/tsx`.
-- `tests/browser/blocks.test.ts` builds the demo and opens each block in
-  Chrome, where a page is laid out, its Python page against its TSX twin:
-  the same page as it loads and after a mouse collapses the sidebar, hovers a
-  menu's button and the chart, and drags a row of the dashboard's table, and
-  nothing thrown. jsdom renders neither recharts' tooltip nor a drag.
+- The demo shows the showcases and the 27 blocks, each page at `#/<name>` in
+  Python and its TSX twin at `#/<name>/tsx`, under a toolbar written in Python
+  with the preset's components: the page, the style and the base, each of the
+  24 presets a build of its own, which `npm run build:demo` builds side by
+  side; the colors of shadcn's create page, its 7 grays and its 17 colors over
+  neutral, painted at once on any preset, which `npm run colors` fetches;
+  Python or TSX, and the theme.
+- `tests/browser/blocks.test.ts` builds the demo and opens each page in
+  Chrome, where a page is laid out, its Python page against its TSX twin, the
+  toolbar aside: the same page as it loads and after a mouse collapses the
+  sidebar, hovers a menu's button and the chart, and drags a row of the
+  dashboard's table, and nothing thrown. jsdom renders neither recharts'
+  tooltip nor a drag.
 
 ```sh
 npm install
@@ -193,7 +208,8 @@ npm run preset radix-nova   # its components and blocks, from shadcn/ui
 npm run convert        # each preset's components/ui/*.tsx into their .py
 npm run convert:blocks
 npm run convert:examples
-npm run dev            # the demo, on radix-nova
+npm run dev            # the demo, on radix-nova, or the preset DEMO_PRESET names
+npm run build:demo     # the demo of every preset, into dist/
 npm run registry       # a registry a preset, its components and blocks, built into public/r/<preset>/
 ```
 

@@ -1,21 +1,27 @@
 // @vitest-environment jsdom
-// shadcn/ui's examples of each component, the pages of its site, converted by
-// `reacthon-ui convert` as a project's own TSX is: each converted, and its
-// Python rendered against its TSX, the same page to the character. On one
-// preset of each base, whose examples are fetched: a style is the same parts
-// in other classes, which the twins compare.
+// The pages of shadcn/ui's site, converted by `reacthon-ui convert` as a
+// project's own TSX is: each converted, and its Python rendered against its
+// TSX, the same page to the character. Its showcases on every preset, the
+// canvas of its create page; and its examples of each component on one preset
+// of each base, whose examples are fetched: a style is the same parts in other
+// classes, which the twins compare.
 import { act, createElement, Fragment, type ComponentType } from "react"
 import { createRoot } from "react-dom/client"
 import { beforeAll, describe, expect, it } from "vitest"
 
 import * as tooltip from "@/components/ui/tooltip"
-import { loadHighlighter } from "@/lib/highlighter"
+
+const highlighter = import.meta.glob<{ loadHighlighter: (language: string) => Promise<unknown> }>("@/lib/highlighter.tsx")
 
 // Each language of shiki that the lib lists, loaded before the pages: the first
 // page to ask for one renders before it has loaded, the next ones after.
-beforeAll(() =>
-  Promise.all(["bash", "css", "diff", "html", "javascript", "json", "jsx", "markdown", "python", "sql", "tsx", "typescript", "yaml"].map(loadHighlighter))
-)
+beforeAll(async () => {
+  for (const load of Object.values(highlighter)) {
+    const { loadHighlighter } = await load()
+
+    await Promise.all(["bash", "css", "diff", "html", "javascript", "json", "jsx", "markdown", "python", "sql", "tsx", "typescript", "yaml"].map(loadHighlighter))
+  }
+})
 
 // The provider the application's root holds tooltips in, where the preset has one.
 const TooltipProvider = ("TooltipProvider" in tooltip ? tooltip.TooltipProvider : Fragment) as ComponentType
@@ -37,8 +43,8 @@ document.elementFromPoint ??= () => null
 let seed = 1
 Math.random = () => (seed = (seed * 16807) % 2147483647) / 2147483647
 
-const tsx = import.meta.glob("@/examples/*/*-example.tsx")
-const py = import.meta.glob("@/examples/*/*_example.py")
+const tsx = import.meta.glob(["@/examples/*/*-example.tsx", "@/previews/*/page.tsx"])
+const py = import.meta.glob(["@/examples/*/*_example.py", "@/previews/*/page.py"])
 
 // input-otp marks the selection of the second input it sees, whichever renders it.
 function numbered(page: string) {

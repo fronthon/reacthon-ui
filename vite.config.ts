@@ -18,12 +18,20 @@ const preset = (name: string) => ({
     // Reacthon is linked from ../reacthon, which has a React of its own.
     dedupe: ["react", "react-dom"],
   },
+  // The demo's preset, and with DEMO_ALL the presets `tools/demo.js` builds
+  // beside it, which its toolbar switches between.
+  define: {
+    __DEMO_PRESET__: JSON.stringify(name),
+    __DEMO_PRESETS__: process.env.DEMO_ALL ? JSON.stringify(readdirSync("src/presets")) : "null",
+  },
 })
 
 // https://vite.dev/config/
 export default defineConfig({
   // Relative paths, so that Pages serves the demo under the repository's name.
   base: "./",
+  // The registry, which `tools/demo.js` copies once beside the presets' builds.
+  publicDir: process.env.DEMO_ALL ? false : "public",
   // The demo, on the preset the project was made with, or the one DEMO_PRESET
   // names.
   ...preset(process.env.DEMO_PRESET ?? "radix-nova"),
@@ -36,12 +44,16 @@ export default defineConfig({
     projects: [
       ...readdirSync("src/presets").map((name) => ({
         ...preset(name),
-        // shadcn/ui's examples where the preset has them fetched, one of each
-        // base, Next.js's image and link theirs as a page renders them elsewhere.
+        // The pages of shadcn/ui's site the preset has fetched, its showcases
+        // and on one of each base its examples, Next.js's image and link theirs
+        // as a page renders them elsewhere.
         test: {
           name,
-          include: ["tests/*.test.tsx", ...(existsSync(`src/presets/${name}/examples`) ? ["tests/examples/*.test.tsx"] : [])],
+          include: ["tests/*.test.tsx", ...(["examples", "previews"].some((one) => existsSync(`src/presets/${name}/${one}`)) ? ["tests/examples/*.test.tsx"] : [])],
           env: { PRESET: name },
+          // A page of shadcn's showcases, its 30 cards twice, under the load
+          // of the 24 presets at once.
+          testTimeout: 30_000,
           alias: { "next/image": resolve(import.meta.dirname, "tests/examples/next.tsx"), "next/link": resolve(import.meta.dirname, "tests/examples/next.tsx") },
         },
       })),
