@@ -524,7 +524,7 @@ def SliderFields():
                         step={0.1}
                     />
                     <{FieldDescription}>
-                        Range: {temperature[0].toFixed(1)} - {temperature[1].toFixed(1)}
+                        Range: {format(temperature[0], f".{1}f")} - {format(temperature[1], f".{1}f")}
                     </{FieldDescription}>
                 </{Field}>
                 <{Field}>

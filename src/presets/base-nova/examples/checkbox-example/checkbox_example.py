@@ -1,3 +1,4 @@
+from browser import window
 from reacthon import use_state
 from example import Example, ExampleWrapper
 from checkbox import Checkbox
@@ -108,18 +109,18 @@ table_data = [
 
 
 def CheckboxInTable():
-    selected_rows, set_selected_rows = use_state(Set.new(["1"]))
+    selected_rows, set_selected_rows = use_state(window.Set.new(["1"]))
 
     select_all = selected_rows.size == len(table_data)
 
     def handle_select_all(checked):
         if checked:
-            set_selected_rows(Set.new([row["id"] for row in table_data]))
+            set_selected_rows(window.Set.new([row["id"] for row in table_data]))
         else:
-            set_selected_rows(Set.new())
+            set_selected_rows(window.Set.new())
 
     def handle_select_row(id_, checked):
-        new_selected = Set.new(selected_rows)
+        new_selected = window.Set.new(selected_rows)
         if checked:
             new_selected.add(id_)
         else:

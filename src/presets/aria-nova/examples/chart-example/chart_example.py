@@ -241,7 +241,7 @@ pie_chart_config = {
 
 
 def ChartPieExample():
-    total_visitors = use_memo(lambda: pie_chart_data.reduce(lambda acc, curr: acc + curr["visitors"], 0), [])
+    total_visitors = use_memo(lambda: sum((curr["visitors"] for curr in pie_chart_data), 0), [])
 
     def content(props):
         view_box = props.get("viewBox")

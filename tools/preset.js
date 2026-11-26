@@ -202,11 +202,29 @@ async function examples(project) {
     for (const name of names) {
         const folder = join(root, 'examples', name);
 
-        rmSync(folder, { recursive: true, force: true });
-        mkdirSync(folder, { recursive: true });
+        const files = new Map();
+
         for (const [path, text] of viewed(project, [name])) {
-            if (/^src\/components\/[^/]+$/.test(path)) writeFileSync(join(folder, basename(path)), text.replace(/"@\/components\/(?!ui\/)([\w-]+)"/g, '"./$1"'));
+            if (/^src\/components\/[^/]+$/.test(path)) files.set(basename(path), text.replace(/"@\/components\/(?!ui\/)([\w-]+)"/g, '"./$1"'));
         }
+
+        // One that imports a file of shadcn/ui's site, which its CLI does not
+        // write, works in no project.
+        const missing = [...files.values()]
+            .flatMap((text) => [...text.matchAll(/from "(\.\/[^"]+|@\/[^"]+)"/g)].map((match) => match[1]))
+            .find((from) =>
+                from.startsWith('./')
+                    ? !files.has(`${from.slice(2)}.tsx`) && !files.has(from.slice(2))
+                    : from !== '@/lib/utils' && !['.tsx', '.ts'].some((ext) => existsSync(`${root}${from.slice(1)}${ext}`))
+            );
+
+        rmSync(folder, { recursive: true, force: true });
+        if (missing) {
+            console.log(`left out ${name}: it imports ${missing}, which shadcn's CLI does not write`);
+            continue;
+        }
+        mkdirSync(folder, { recursive: true });
+        for (const [file, text] of files) writeFileSync(join(folder, file), text);
     }
     console.log(`${root}/examples: ${names.length} examples`);
 }

@@ -1,3 +1,4 @@
+from browser import window
 from javascript import Date
 from reacthon import use_state
 from example import Example, ExampleWrapper
@@ -305,7 +306,7 @@ def DatePickerWithRange():
                 <{PopoverTrigger}>
                     <{Button} variant="outline" id="date-picker-range" class="justify-start px-2.5 font-normal">
                         <{CalendarIcon} data-icon="inline-start" />
-                        {Intl.DateTimeFormat.new(None, {"dateStyle": "long"}).formatRange(date["start"].toDate(getLocalTimeZone()), date["end"].toDate(getLocalTimeZone())) if (date["start"] if date else None) and date["end"] else t'<span>Pick a date</span>'}
+                        {window.Intl.DateTimeFormat.new(None, {"dateStyle": "long"}).formatRange(date["start"].toDate(getLocalTimeZone()), date["end"].toDate(getLocalTimeZone())) if (date["start"] if date else None) and date["end"] else t'<span>Pick a date</span>'}
                     </{Button}>
                     <{Popover} class="w-auto p-0" placement="bottom start">
                         <{RangeCalendar} value={date} onChange={set_date} numberOfMonths={2} />

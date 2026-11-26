@@ -57,13 +57,13 @@ def CollapsibleFileTree():
 
     def render_item(file_item):
         if "items" in file_item:
-        button = t"""
-            <{Button}
-                variant="ghost"
-                size="sm"
-                class="group w-full justify-start transition-none hover:bg-accent hover:text-accent-foreground"
-            />
-        """
+            button = t"""
+                <{Button}
+                    variant="ghost"
+                    size="sm"
+                    class="group w-full justify-start transition-none hover:bg-accent hover:text-accent-foreground"
+                />
+            """
 
             return t"""
                 <{Collapsible} key={file_item["name"]}>

@@ -1,3 +1,5 @@
+from browser import window
+
 __js__ = {"react-aria-components": ["I18nProvider", "useLocale"]}
 
 
@@ -7,7 +9,7 @@ def DirectionProvider(**props):
     current_locale = useLocale().get("locale")
     locale = props.get("locale")
     if not locale and props.get("direction"):
-        locale = str(Intl.Locale.new(current_locale, {"script": "Arab" if props.get("direction") == "rtl" else "Latn"}))
+        locale = str(window.Intl.Locale.new(current_locale, {"script": "Arab" if props.get("direction") == "rtl" else "Latn"}))
 
     return t"<{I18nProvider} ...{props} locale={locale} />"
 

@@ -4,7 +4,7 @@ from separator import Separator
 
 __js__ = {"next/image": ["default as Image"], "react": ["Fragment"]}
 
-tags = [f"v1.2.0-beta.{len(a) - i}" for i in range(50)]
+tags = [f"v1.2.0-beta.{len(a) - i}" for a in [[None] * 50] for i in range(len(a))]
 
 works = [
     {

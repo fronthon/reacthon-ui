@@ -1,3 +1,4 @@
+from browser import window
 from reacthon import use_state
 from example import Example, ExampleWrapper
 from button import Button
@@ -271,7 +272,7 @@ def ContextMenuWithGroups():
 
 
 def ContextMenuWithCheckboxes():
-    selected_keys, set_selected_keys = use_state(Set.new(["bookmarks-bar", "developer-tools"]))
+    selected_keys, set_selected_keys = use_state(window.Set.new(["bookmarks-bar", "developer-tools"]))
 
     return t"""
         <{Example} title="With Checkboxes">
@@ -487,7 +488,7 @@ def ContextMenuInDialog():
 
 
 def ContextMenuWithInset():
-    selected_keys, set_selected_keys = use_state(Set.new(["bookmarks"]))
+    selected_keys, set_selected_keys = use_state(window.Set.new(["bookmarks"]))
     theme, set_theme = use_state("system")
 
     def on_selection_change(keys):

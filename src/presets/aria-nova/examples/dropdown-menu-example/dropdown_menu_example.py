@@ -1,3 +1,4 @@
+from browser import window
 from reacthon import use_state
 from example import Example, ExampleWrapper
 from avatar import Avatar, AvatarFallback, AvatarImage
@@ -207,7 +208,7 @@ def DropdownMenuWithSubmenu():
 
 
 def DropdownMenuWithCheckboxes():
-    selected_keys, set_selected_keys = use_state(Set.new(["status-bar"]))
+    selected_keys, set_selected_keys = use_state(window.Set.new(["status-bar"]))
 
     return t"""
         <{Example} title="With Checkboxes">
@@ -276,7 +277,7 @@ def DropdownMenuWithRadio():
 
 
 def DropdownMenuWithCheckboxesIcons():
-    selected_keys, set_selected_keys = use_state(Set.new(["email", "push"]))
+    selected_keys, set_selected_keys = use_state(window.Set.new(["email", "push"]))
 
     return t"""
         <{Example} title="Checkboxes with Icons">
@@ -480,7 +481,7 @@ def DropdownMenuInDialog():
 
 
 def DropdownMenuWithInset():
-    selected_keys, set_selected_keys = use_state(Set.new(["bookmarks"]))
+    selected_keys, set_selected_keys = use_state(window.Set.new(["bookmarks"]))
     theme, set_theme = use_state("system")
 
     def on_selection_change(keys):
@@ -541,7 +542,7 @@ def DropdownMenuWithInset():
 
 
 def DropdownMenuComplex():
-    selected_keys, set_selected_keys = use_state(Set.new(["sidebar"]))
+    selected_keys, set_selected_keys = use_state(window.Set.new(["sidebar"]))
 
     return t"""
         <{Example} title="Complex">

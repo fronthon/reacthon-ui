@@ -157,7 +157,7 @@ def CodeBlockDestructive():
 
 
 def CodeBlockDiff():
-    lines = useHighlightedCode("\n".join([line["text"] for line in diff]), "tsx")
+    lines = useHighlightedCode("\n".join(str(one) for one in [line["text"] for line in diff]), "tsx")
 
     return t"""
         <{Example} title="Diff">
@@ -563,7 +563,7 @@ def CodeBlockStartLine():
 
 
 def CodeBlockDiffWrap():
-    lines = useHighlightedCode("\n".join([line["text"] for line in long_diff]), "ts")
+    lines = useHighlightedCode("\n".join(str(one) for one in [line["text"] for line in long_diff]), "ts")
 
     return t"""
         <{Example} title="Diff, Wrap and Highlighting">
@@ -647,7 +647,7 @@ def CodeBlockSmallest():
 
 
 def CodeBlockSmallCombinations():
-    lines = useHighlightedCode("\n".join([line["text"] for line in diff]), "tsx")
+    lines = useHighlightedCode("\n".join(str(one) for one in [line["text"] for line in diff]), "tsx")
 
     return t"""
         <{Example} title="Small Combinations">
@@ -696,9 +696,9 @@ streamed = [
     },
 ]
 
-offsets = [streamed[0:index].reduce(lambda total, block: total + len(block["code"]), 0) for index, _ in enumerate(streamed)]
+offsets = [sum((len(block["code"]) for block in streamed[0:index]), 0) for index, _ in enumerate(streamed)]
 
-streamed_length = streamed.reduce(lambda sum_, block: sum_ + len(block["code"]), 0)
+streamed_length = sum((len(block["code"]) for block in streamed), 0)
 
 
 def StreamedBlock(block=None, code=None, **_):
@@ -931,7 +931,7 @@ def CodeBlockTabs():
                             key={file["id"]}
                             id={file["id"]}
                         >
-                            {file["title"].split("/").at(-1)}
+                            {file["title"].split("/")[-1]}
                         </{TabsTrigger}>
                     ''' for file in files]}
                 </{TabsList}>

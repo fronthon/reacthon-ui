@@ -1,3 +1,4 @@
+from browser import window
 from javascript import NULL
 from reacthon import use_state
 from example import Example, ExampleWrapper
@@ -133,8 +134,8 @@ role_items = [
 
 
 def FormExample():
-    notifications, set_notifications = use_state(Set.new(["email", "push"]))
-    view, set_view = use_state(Set.new(["sidebar"]))
+    notifications, set_notifications = use_state(window.Set.new(["email", "push"]))
+    view, set_view = use_state(window.Set.new(["sidebar"]))
     theme, set_theme = use_state("light")
 
     def on_selection_change(keys):

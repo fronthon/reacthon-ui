@@ -74,7 +74,7 @@ def SliderControlled():
             <div class="grid w-full gap-3">
                 <div class="flex items-center justify-between gap-2">
                     <{Label} for="slider-demo-temperature">Temperature</{Label}>
-                    <span class="text-sm text-muted-foreground">{", ".join(value)}</span>
+                    <span class="text-sm text-muted-foreground">{", ".join(str(one) for one in value)}</span>
                 </div>
                 <{Slider}
                     aria-label="Controlled slider"

@@ -366,6 +366,6 @@ def handle_submit(event):
     toast(
         "Questionnaire submitted",
         {
-            "description": f"Direction: {values["direction"] if values["direction"] not in (None, NULL) else "None"} · Progress signals: {", ".join(values["signals"]) or "None"} · Timing: {values["timing"] if values["timing"] not in (None, NULL) else "None"}",
+            "description": f"Direction: {values["direction"] if values["direction"] not in (None, NULL) else "None"} · Progress signals: {", ".join(str(one) for one in values["signals"]) or "None"} · Timing: {values["timing"] if values["timing"] not in (None, NULL) else "None"}",
         },
     )

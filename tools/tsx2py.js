@@ -530,8 +530,9 @@ function moduleTranslator(source, checker, program, translated = new Set()) {
             need('browser', 'window');
             return `window.${text}`;
         }
-        // Any other global of the browser's, `URL` or `Blob`: the window's.
-        if (checker.getSymbolAtLocation(node)?.getDeclarations()?.some((one) => /[\\/]lib\.dom\.d\.ts$/.test(one.getSourceFile().fileName))) {
+        // Any other global of the browser's or of the language's, `URL`, `Blob`
+        // or `Set`, TypeScript's own libraries declare: the window's.
+        if (checker.getSymbolAtLocation(node)?.getDeclarations()?.some((one) => /[\\/]typescript[\\/]lib[\\/]lib\.[\w.]+\.d\.ts$/.test(one.getSourceFile().fileName))) {
             need('browser', 'window');
             return `window.${text}`;
         }
@@ -1045,7 +1046,33 @@ function moduleTranslator(source, checker, program, translated = new Set()) {
                     return [`${own}.replace(${expr(args[0], inner)}, ${expr(args[1], inner)}, 1)`, PRIMARY];
                 }
             }
-            if (method === 'join' && sized(object)) return [`${expr(args[0] ?? ts.factory.createStringLiteral(','), inner, PRIMARY)}.join(${expr(object, inner)})`, PRIMARY];
+            if (method === 'join' && sized(object)) {
+                const separator = expr(args[0] ?? ts.factory.createStringLiteral(','), inner, PRIMARY);
+                const item = checker.getIndexTypeOfType(checker.getNonNullableType(typeOf(object)), ts.IndexKind.Number);
+
+                // JavaScript joins what it is handed as text, Python strs alone.
+                if (item && !(checker.getNonNullableType(item).flags & ts.TypeFlags.StringLike)) return [`${separator}.join(str(one) for one in ${expr(object, inner)})`, PRIMARY];
+                return [`${separator}.join(${expr(object, inner)})`, PRIMARY];
+            }
+            // `parts.at(-1)`, Python's own index where it is a number written.
+            if (method === 'at' && args.length === 1 && sized(object) && (ts.isPrefixUnaryExpression(unwrap(args[0])) || ts.isNumericLiteral(unwrap(args[0])))) {
+                return [`${expr(object, inner, PRIMARY)}[${expr(args[0], inner)}]`, PRIMARY];
+            }
+            // `n.toFixed(2)`, the digits Python's format writes.
+            if (method === 'toFixed' && args.length <= 1 && numeric(object)) return [`format(${expr(object, inner)}, ${args[0] ? `f".{${expr(args[0], inner)}}f"` : '".0f"'})`, PRIMARY];
+            // `rows.reduce((total, row) => total + row.n, 0)`, a sum.
+            if (method === 'reduce' && args.length === 2 && isFunction(args[0]) && sized(object)) {
+                const fn = unwrap(args[0]);
+                const value = body(fn);
+
+                if (fn.parameters.length === 2 && value && ts.isBinaryExpression(unwrap(value)) && unwrap(value).operatorToken.kind === k.PlusToken && unwrap(unwrap(value).left).getText() === fn.parameters[0].name.getText()) {
+                    const scope = new Set(inner.scope);
+                    const one = target(fn.parameters[1].name, scope);
+
+                    return [`sum((${expr(unwrap(value).right, { ...inner, scope })} for ${one} in ${expr(object, inner)}), ${expr(args[1], inner)})`, PRIMARY];
+                }
+                unsupported(node, 'a reduce other than a sum');
+            }
             if (method === 'replace' && args.length === 2 && ts.isRegularExpressionLiteral(args[0]) && ts.isStringLiteral(args[1])) {
                 const done = replaced(args[0], args[1].text);
 
@@ -1094,8 +1121,12 @@ function moduleTranslator(source, checker, program, translated = new Set()) {
             const length = unwrap(inner.arguments[0]).properties.find((one) => one.name?.text === 'length');
             const scope = new Set(cx.scope);
             const index = fn.parameters[1] ? target(fn.parameters[1].name, scope) : '_';
+            // `(_, i, a) =>`, the array itself, of as many Nones as undefineds.
+            const whole = fn.parameters[2] ? target(fn.parameters[2].name, scope) : null;
+            const size = expr(length.initializer, cx);
+            const over = whole ? `for ${whole} in [[None] * ${size}] for ${index} in range(len(${whole}))` : `for ${index} in range(${size})`;
 
-            return `[${element_(fn, { ...cx, scope, inChain: false })} for ${index} in range(${expr(length.initializer, cx)})]`;
+            return `[${element_(fn, { ...cx, scope, inChain: false })} ${over}]`;
         }
 
         if (ts.isCallExpression(inner) && ts.isPropertyAccessExpression(inner.expression) && inner.expression.name.text === 'filter' && isFunction(inner.arguments[0])) {
@@ -1712,7 +1743,8 @@ function moduleTranslator(source, checker, program, translated = new Set()) {
 
         if (ts.isReturnStatement(node)) {
             if (!node.expression) lines = [`${indent}return`];
-            else return returned(node.expression, cx);
+            // What it takes out before it, at its own level, inside an `if`'s body.
+            else return returned(node.expression, { ...cx, statementLevel: cx.level });
         } else if (ts.isVariableStatement(node)) {
             lines = node.declarationList.declarations.flatMap((one) => declaration(one, at));
         } else if (ts.isExpressionStatement(node)) {
