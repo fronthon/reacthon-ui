@@ -563,6 +563,16 @@ function moduleTranslator(source, checker, program, translated = new Set()) {
                 return ['True', PRIMARY];
             case k.FalseKeyword:
                 return ['False', PRIMARY];
+            // `void x`, x read and None handed back, JavaScript's undefined.
+            case k.VoidExpression:
+                return [`(${expr(node.expression, inner)}, None)[1]`, PRIMARY];
+            // JavaScript's own, which Python's `re`, not shipped, would not be.
+            case k.RegularExpressionLiteral: {
+                const [, pattern, flags] = /^\/(.*)\/(\w*)$/s.exec(node.text);
+
+                need('browser', 'window');
+                return [`window.RegExp.new(${string(pattern)}${flags ? `, ${string(flags)}` : ''})`, PRIMARY];
+            }
             // null is javascript.NULL, undefined None, as Bryntime hands them.
             case k.NullKeyword:
                 if (rendered(node)) return ['None', PRIMARY];
@@ -1506,14 +1516,17 @@ function moduleTranslator(source, checker, program, translated = new Set()) {
 
             return `{\n${lines.join('\n')}\n${pad(level)}}`;
         }
+        // An item spread among the others, `...rows`, Python's `*rows`.
+        const item = (node) => (ts.isSpreadElement(node) ? `*${pretty(node.expression, at, level + 1)}` : pretty(node, at, level + 1));
+
         if (ts.isArrayLiteralExpression(one)) {
-            return `[\n${one.elements.map((item) => `${indent}${pretty(item, at, level + 1)},`).join('\n')}\n${pad(level)}]`;
+            return `[\n${one.elements.map((node) => `${indent}${item(node)},`).join('\n')}\n${pad(level)}]`;
         }
         if (ts.isCallExpression(one) && !flat.endsWith(']') && one.arguments.length) {
             const head = flat.slice(0, flat.indexOf('('));
             const hook = reactName(unwrap(one.expression));
             const args = hook ? hookArguments(hook, one.arguments, at) : null;
-            const texts = args ?? one.arguments.map((arg) => pretty(arg, at, level + 1));
+            const texts = args ?? one.arguments.map(item);
 
             if (head && !head.includes(' ')) {
                 return `${head}(\n${texts.map((text, at_) => `${indent}${args ? prettyText(one.arguments[at_], text, at, level + 1) : text},`).join('\n')}\n${pad(level)})`;
@@ -1921,7 +1934,10 @@ function moduleTranslator(source, checker, program, translated = new Set()) {
 
     const expressionStatement = (node, cx) => {
         const indent = pad(cx.level);
-        const one = unwrap(node);
+        let one = unwrap(node);
+
+        // `void sendMessage(x)`, what it reads left unread, as a statement's is.
+        while (ts.isVoidExpression(one)) one = unwrap(one.expression);
 
         // `f?.(x)` and `a?.b()`: called where it stands.
         if (one.flags & ts.NodeFlags.OptionalChain) {

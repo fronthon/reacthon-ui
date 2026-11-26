@@ -193,10 +193,36 @@ function block(project, name) {
     console.log(`${folder}: ${[...files.keys()].join(', ')}`);
 }
 
+// shadcn/ui's examples of each component, the pages of its site, each in a
+// folder of its own of examples/, beside example.tsx, the frame its examples
+// are shown in, as its CLI writes them.
+async function examples(project) {
+    const names = (await index()).filter((item) => item.type === 'registry:example').map((item) => item.name);
+
+    for (const name of names) {
+        const folder = join(root, 'examples', name);
+
+        rmSync(folder, { recursive: true, force: true });
+        mkdirSync(folder, { recursive: true });
+        for (const [path, text] of viewed(project, [name])) {
+            if (/^src\/components\/[^/]+$/.test(path)) writeFileSync(join(folder, basename(path)), text.replace(/"@\/components\/(?!ui\/)([\w-]+)"/g, '"./$1"'));
+        }
+    }
+    console.log(`${root}/examples: ${names.length} examples`);
+}
+
 if (given[0] === '--icons') {
     await icons();
 } else if (given[0] === '--items') {
     await items();
+} else if (given[0] === '--examples') {
+    const project = nextProject();
+
+    try {
+        await examples(project);
+    } finally {
+        rmSync(project, { recursive: true, force: true });
+    }
 } else {
     const project = nextProject();
 

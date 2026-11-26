@@ -1,0 +1,1100 @@
+from reacthon import use_state
+from example import Example, ExampleWrapper
+from attachment import (
+    Attachment,
+    AttachmentAction,
+    AttachmentActions,
+    AttachmentContent,
+    AttachmentDescription,
+    AttachmentGroup,
+    AttachmentMedia,
+    AttachmentTitle,
+    AttachmentTrigger,
+)
+from button import Button
+from dialog import Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger
+from spinner import Spinner
+
+__js__ = {
+    "lucide-react": [
+        "FileTextIcon",
+        "XIcon",
+        "TableIcon",
+        "FileCodeIcon",
+        "FileArchiveIcon",
+        "PresentationIcon",
+        "ClockIcon",
+        "FileWarningIcon",
+        "RefreshCwIcon",
+        "CheckIcon",
+        "DownloadIcon",
+        "FileSearchIcon",
+        "CopyIcon",
+    ],
+}
+
+
+def AttachmentExample():
+    return t"""
+        <{ExampleWrapper}>
+            <{AttachmentFiles} />
+            <{AttachmentContentOnly} />
+            <{AttachmentStates} />
+            <{AttachmentImages} />
+            <{AttachmentImageStates} />
+            <{AttachmentSizes} />
+            <{AttachmentScrollableGroup} />
+            <{AttachmentTriggers} />
+        </{ExampleWrapper}>
+    """
+
+
+def AttachmentFiles():
+    return t"""
+        <{Example} title="Files" class="gap-8">
+            <div class="flex w-full flex-col gap-2">
+                <div class="px-1 text-xs font-medium text-muted-foreground">Horizontal</div>
+                <div class="flex flex-col gap-3">
+                    <{Attachment} class="w-full">
+                        <{AttachmentMedia}>
+                            <{FileTextIcon} />
+                        </{AttachmentMedia}>
+                        <{AttachmentContent}>
+                            <{AttachmentTitle}>sales-dashboard.pdf</{AttachmentTitle}>
+                            <{AttachmentDescription}>PDF · 2.4 MB</{AttachmentDescription}>
+                        </{AttachmentContent}>
+                        <{AttachmentActions}>
+                            <{AttachmentAction} aria-label="Remove sales-dashboard.pdf">
+                                <{XIcon} />
+                            </{AttachmentAction}>
+                        </{AttachmentActions}>
+                    </{Attachment}>
+                    <{Attachment} class="w-full">
+                        <{AttachmentMedia}>
+                            <{TableIcon} />
+                        </{AttachmentMedia}>
+                        <{AttachmentContent}>
+                            <{AttachmentTitle}>customer-import.csv</{AttachmentTitle}>
+                            <{AttachmentDescription}>CSV · 18 KB</{AttachmentDescription}>
+                        </{AttachmentContent}>
+                        <{AttachmentActions}>
+                            <{AttachmentAction} aria-label="Remove customer-import.csv">
+                                <{XIcon} />
+                            </{AttachmentAction}>
+                        </{AttachmentActions}>
+                    </{Attachment}>
+                    <{Attachment} class="w-full">
+                        <{AttachmentMedia}>
+                            <{FileCodeIcon} />
+                        </{AttachmentMedia}>
+                        <{AttachmentContent}>
+                            <{AttachmentTitle}>message-renderer.tsx</{AttachmentTitle}>
+                            <{AttachmentDescription}>TypeScript · 12 KB</{AttachmentDescription}>
+                        </{AttachmentContent}>
+                        <{AttachmentActions}>
+                            <{AttachmentAction} aria-label="Remove message-renderer.tsx">
+                                <{XIcon} />
+                            </{AttachmentAction}>
+                        </{AttachmentActions}>
+                    </{Attachment}>
+                </div>
+            </div>
+            <div class="flex w-full flex-col gap-2">
+                <div class="px-1 text-xs font-medium text-muted-foreground">Vertical</div>
+                <{AttachmentGroup} class="w-full">
+                    <{Attachment} orientation="vertical">
+                        <{AttachmentMedia}>
+                            <{FileTextIcon} />
+                        </{AttachmentMedia}>
+                        <{AttachmentContent}>
+                            <{AttachmentTitle}>sales-dashboard.pdf</{AttachmentTitle}>
+                            <{AttachmentDescription}>PDF · 2.4 MB</{AttachmentDescription}>
+                        </{AttachmentContent}>
+                        <{AttachmentActions}>
+                            <{AttachmentAction} aria-label="Remove sales-dashboard.pdf">
+                                <{XIcon} />
+                            </{AttachmentAction}>
+                        </{AttachmentActions}>
+                    </{Attachment}>
+                    <{Attachment} orientation="vertical">
+                        <{AttachmentMedia}>
+                            <{TableIcon} />
+                        </{AttachmentMedia}>
+                        <{AttachmentContent}>
+                            <{AttachmentTitle}>customer-import.csv</{AttachmentTitle}>
+                            <{AttachmentDescription}>CSV · 18 KB</{AttachmentDescription}>
+                        </{AttachmentContent}>
+                        <{AttachmentActions}>
+                            <{AttachmentAction} aria-label="Remove customer-import.csv">
+                                <{XIcon} />
+                            </{AttachmentAction}>
+                        </{AttachmentActions}>
+                    </{Attachment}>
+                    <{Attachment} orientation="vertical">
+                        <{AttachmentMedia}>
+                            <{FileCodeIcon} />
+                        </{AttachmentMedia}>
+                        <{AttachmentContent}>
+                            <{AttachmentTitle}>message-renderer.tsx</{AttachmentTitle}>
+                            <{AttachmentDescription}>TypeScript · 12 KB</{AttachmentDescription}>
+                        </{AttachmentContent}>
+                        <{AttachmentActions}>
+                            <{AttachmentAction} aria-label="Remove message-renderer.tsx">
+                                <{XIcon} />
+                            </{AttachmentAction}>
+                        </{AttachmentActions}>
+                    </{Attachment}>
+                    <{Attachment} orientation="vertical">
+                        <{AttachmentMedia}>
+                            <{FileArchiveIcon} />
+                        </{AttachmentMedia}>
+                        <{AttachmentContent}>
+                            <{AttachmentTitle}>source-assets.zip</{AttachmentTitle}>
+                            <{AttachmentDescription}>ZIP · 4.2 MB</{AttachmentDescription}>
+                        </{AttachmentContent}>
+                        <{AttachmentActions}>
+                            <{AttachmentAction} aria-label="Remove source-assets.zip">
+                                <{XIcon} />
+                            </{AttachmentAction}>
+                        </{AttachmentActions}>
+                    </{Attachment}>
+                    <{Attachment} orientation="vertical">
+                        <{AttachmentMedia}>
+                            <{PresentationIcon} />
+                        </{AttachmentMedia}>
+                        <{AttachmentContent}>
+                            <{AttachmentTitle}>quarterly-review.key</{AttachmentTitle}>
+                            <{AttachmentDescription}>Keynote · 9 MB</{AttachmentDescription}>
+                        </{AttachmentContent}>
+                        <{AttachmentActions}>
+                            <{AttachmentAction} aria-label="Remove quarterly-review.key">
+                                <{XIcon} />
+                            </{AttachmentAction}>
+                        </{AttachmentActions}>
+                    </{Attachment}>
+                </{AttachmentGroup}>
+            </div>
+        </{Example}>
+    """
+
+
+def AttachmentContentOnly():
+    a = t'<a href="https://ui.shadcn.com" target="_blank" rel="noopener noreferrer" aria-label="Open shadcn/ui" />'
+
+    a_2 = t"""
+        <a
+            href="https://ui.shadcn.com/docs"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Open Compound components in React"
+        />
+    """
+
+    return t"""
+        <{Example} title="Content Only" class="gap-8">
+            <div class="flex w-full flex-col gap-2">
+                <div class="px-1 text-xs font-medium text-muted-foreground">Title</div>
+                <div class="flex flex-col gap-3">
+                    <{Attachment} class="w-full">
+                        <{AttachmentContent}>
+                            <{AttachmentTitle}>React Documentation</{AttachmentTitle}>
+                        </{AttachmentContent}>
+                        <{AttachmentActions}>
+                            <{AttachmentAction} aria-label="Remove React Documentation">
+                                <{XIcon} />
+                            </{AttachmentAction}>
+                        </{AttachmentActions}>
+                    </{Attachment}>
+                    <{Attachment} class="w-full">
+                        <{AttachmentContent}>
+                            <{AttachmentTitle}>Tailwind CSS</{AttachmentTitle}>
+                        </{AttachmentContent}>
+                        <{AttachmentActions}>
+                            <{AttachmentAction} aria-label="Remove Tailwind CSS">
+                                <{XIcon} />
+                            </{AttachmentAction}>
+                        </{AttachmentActions}>
+                    </{Attachment}>
+                    <{Attachment} size="sm" class="w-48">
+                        <{AttachmentContent}>
+                            <{AttachmentTitle}>shadcn/ui</{AttachmentTitle}>
+                        </{AttachmentContent}>
+                        <{AttachmentTrigger} render={a} />
+                    </{Attachment}>
+                </div>
+            </div>
+            <div class="flex w-full flex-col gap-2">
+                <div class="px-1 text-xs font-medium text-muted-foreground">Title and Description</div>
+                <div class="flex flex-col gap-3">
+                    <{Attachment} class="w-full">
+                        <{AttachmentContent}>
+                            <{AttachmentTitle}>Building accessible components</{AttachmentTitle}>
+                            <{AttachmentDescription}>react.dev · 8 min read</{AttachmentDescription}>
+                        </{AttachmentContent}>
+                        <{AttachmentActions}>
+                            <{AttachmentAction} aria-label="Remove Building accessible components">
+                                <{XIcon} />
+                            </{AttachmentAction}>
+                        </{AttachmentActions}>
+                    </{Attachment}>
+                    <{Attachment} class="w-full">
+                        <{AttachmentContent}>
+                            <{AttachmentTitle}>Utility-first CSS framework</{AttachmentTitle}>
+                            <{AttachmentDescription}>tailwindcss.com</{AttachmentDescription}>
+                        </{AttachmentContent}>
+                        <{AttachmentActions}>
+                            <{AttachmentAction} aria-label="Remove Utility-first CSS framework">
+                                <{XIcon} />
+                            </{AttachmentAction}>
+                        </{AttachmentActions}>
+                    </{Attachment}>
+                    <{Attachment} size="sm" class="w-full max-w-80">
+                        <{AttachmentContent}>
+                            <{AttachmentTitle}>Compound components in React</{AttachmentTitle}>
+                            <{AttachmentDescription}>ui.shadcn.com/docs</{AttachmentDescription}>
+                        </{AttachmentContent}>
+                        <{AttachmentTrigger} render={a_2} />
+                    </{Attachment}>
+                </div>
+            </div>
+        </{Example}>
+    """
+
+
+def AttachmentStates():
+    return t"""
+        <{Example} title="States" class="gap-8">
+            <div class="flex w-full flex-col gap-3">
+                <div class="px-1 text-xs font-medium text-muted-foreground">Horizontal</div>
+                <div class="flex flex-col gap-2">
+                    <{Attachment} state="idle" class="w-full">
+                        <{AttachmentMedia}>
+                            <{ClockIcon} />
+                        </{AttachmentMedia}>
+                        <{AttachmentContent}>
+                            <{AttachmentTitle}>selected-file.pdf</{AttachmentTitle}>
+                            <{AttachmentDescription}>Ready to upload</{AttachmentDescription}>
+                        </{AttachmentContent}>
+                        <{AttachmentActions}>
+                            <{AttachmentAction} aria-label="Remove selected-file.pdf">
+                                <{XIcon} />
+                            </{AttachmentAction}>
+                        </{AttachmentActions}>
+                    </{Attachment}>
+                    <{Attachment} state="uploading" class="w-full">
+                        <{AttachmentMedia}>
+                            <{Spinner} />
+                        </{AttachmentMedia}>
+                        <{AttachmentContent}>
+                            <{AttachmentTitle}>design-system.zip</{AttachmentTitle}>
+                            <{AttachmentDescription}>Uploading · 64%</{AttachmentDescription}>
+                        </{AttachmentContent}>
+                        <{AttachmentActions}>
+                            <{AttachmentAction} aria-label="Remove design-system.zip">
+                                <{XIcon} />
+                            </{AttachmentAction}>
+                        </{AttachmentActions}>
+                    </{Attachment}>
+                    <{Attachment} state="processing" class="w-full">
+                        <{AttachmentMedia}>
+                            <{FileTextIcon} />
+                        </{AttachmentMedia}>
+                        <{AttachmentContent}>
+                            <{AttachmentTitle}>market-research.pdf</{AttachmentTitle}>
+                            <{AttachmentDescription}>Processing document</{AttachmentDescription}>
+                        </{AttachmentContent}>
+                        <{AttachmentActions}>
+                            <{AttachmentAction} aria-label="Remove market-research.pdf">
+                                <{XIcon} />
+                            </{AttachmentAction}>
+                        </{AttachmentActions}>
+                    </{Attachment}>
+                    <{Attachment} state="error" class="w-full">
+                        <{AttachmentMedia}>
+                            <{FileWarningIcon} />
+                        </{AttachmentMedia}>
+                        <{AttachmentContent}>
+                            <{AttachmentTitle}>financial-model.xlsx</{AttachmentTitle}>
+                            <{AttachmentDescription}>Upload failed. Try again.</{AttachmentDescription}>
+                        </{AttachmentContent}>
+                        <{AttachmentActions}>
+                            <{AttachmentAction} aria-label="Retry upload">
+                                <{RefreshCwIcon} />
+                            </{AttachmentAction}>
+                            <{AttachmentAction} aria-label="Remove attachment">
+                                <{XIcon} />
+                            </{AttachmentAction}>
+                        </{AttachmentActions}>
+                    </{Attachment}>
+                    <{Attachment} state="done" class="w-full">
+                        <{AttachmentMedia}>
+                            <{CheckIcon} />
+                        </{AttachmentMedia}>
+                        <{AttachmentContent}>
+                            <{AttachmentTitle}>uploaded-report.pdf</{AttachmentTitle}>
+                            <{AttachmentDescription}>Uploaded · 1.8 MB</{AttachmentDescription}>
+                        </{AttachmentContent}>
+                        <{AttachmentActions}>
+                            <{AttachmentAction} aria-label="Remove uploaded-report.pdf">
+                                <{XIcon} />
+                            </{AttachmentAction}>
+                        </{AttachmentActions}>
+                    </{Attachment}>
+                </div>
+            </div>
+            <div class="flex w-full flex-col gap-3">
+                <div class="px-1 text-xs font-medium text-muted-foreground">Vertical</div>
+                <{AttachmentGroup} class="w-full">
+                    <{Attachment} state="idle" orientation="vertical">
+                        <{AttachmentMedia}>
+                            <{ClockIcon} />
+                        </{AttachmentMedia}>
+                        <{AttachmentContent}>
+                            <{AttachmentTitle}>selected-file.pdf</{AttachmentTitle}>
+                            <{AttachmentDescription}>Ready</{AttachmentDescription}>
+                        </{AttachmentContent}>
+                        <{AttachmentActions}>
+                            <{AttachmentAction} aria-label="Remove selected-file.pdf">
+                                <{XIcon} />
+                            </{AttachmentAction}>
+                        </{AttachmentActions}>
+                    </{Attachment}>
+                    <{Attachment} state="uploading" orientation="vertical">
+                        <{AttachmentMedia}>
+                            <{Spinner} />
+                        </{AttachmentMedia}>
+                        <{AttachmentContent}>
+                            <{AttachmentTitle}>design-system.zip</{AttachmentTitle}>
+                            <{AttachmentDescription}>Uploading</{AttachmentDescription}>
+                        </{AttachmentContent}>
+                        <{AttachmentActions}>
+                            <{AttachmentAction} aria-label="Remove design-system.zip">
+                                <{XIcon} />
+                            </{AttachmentAction}>
+                        </{AttachmentActions}>
+                    </{Attachment}>
+                    <{Attachment} state="processing" orientation="vertical">
+                        <{AttachmentMedia}>
+                            <{FileTextIcon} />
+                        </{AttachmentMedia}>
+                        <{AttachmentContent}>
+                            <{AttachmentTitle}>market-research.pdf</{AttachmentTitle}>
+                            <{AttachmentDescription}>Processing</{AttachmentDescription}>
+                        </{AttachmentContent}>
+                        <{AttachmentActions}>
+                            <{AttachmentAction} aria-label="Remove market-research.pdf">
+                                <{XIcon} />
+                            </{AttachmentAction}>
+                        </{AttachmentActions}>
+                    </{Attachment}>
+                    <{Attachment} state="error" orientation="vertical">
+                        <{AttachmentMedia}>
+                            <{FileWarningIcon} />
+                        </{AttachmentMedia}>
+                        <{AttachmentContent}>
+                            <{AttachmentTitle}>financial-model.xlsx</{AttachmentTitle}>
+                            <{AttachmentDescription}>Failed</{AttachmentDescription}>
+                        </{AttachmentContent}>
+                        <{AttachmentActions}>
+                            <{AttachmentAction} aria-label="Retry financial-model.xlsx">
+                                <{RefreshCwIcon} />
+                            </{AttachmentAction}>
+                            <{AttachmentAction} aria-label="Remove financial-model.xlsx">
+                                <{XIcon} />
+                            </{AttachmentAction}>
+                        </{AttachmentActions}>
+                    </{Attachment}>
+                    <{Attachment} state="done" orientation="vertical">
+                        <{AttachmentMedia}>
+                            <{CheckIcon} />
+                        </{AttachmentMedia}>
+                        <{AttachmentContent}>
+                            <{AttachmentTitle}>uploaded-report.pdf</{AttachmentTitle}>
+                            <{AttachmentDescription}>Done</{AttachmentDescription}>
+                        </{AttachmentContent}>
+                        <{AttachmentActions}>
+                            <{AttachmentAction} aria-label="Remove uploaded-report.pdf">
+                                <{XIcon} />
+                            </{AttachmentAction}>
+                        </{AttachmentActions}>
+                    </{Attachment}>
+                </{AttachmentGroup}>
+            </div>
+        </{Example}>
+    """
+
+
+def AttachmentImages():
+    a = t"""
+        <a
+            href="https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=900&auto=format&fit=crop&q=80"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Open workspace.png"
+        />
+    """
+
+    a_2 = t"""
+        <a
+            href="https://images.unsplash.com/photo-1497215728101-856f4ea42174?w=900&auto=format&fit=crop&q=80"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Open desk-reference.jpg"
+        />
+    """
+
+    a_3 = t"""
+        <a
+            href="https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=900&auto=format&fit=crop&q=80"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Open office-reference.jpg"
+        />
+    """
+
+    a_4 = t"""
+        <a
+            href="https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=900&auto=format&fit=crop&q=80"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Open workspace.png"
+        />
+    """
+
+    a_5 = t"""
+        <a
+            href="https://images.unsplash.com/photo-1497215728101-856f4ea42174?w=900&auto=format&fit=crop&q=80"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Open desk-reference.jpg"
+        />
+    """
+
+    a_6 = t"""
+        <a
+            href="https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=900&auto=format&fit=crop&q=80"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Open office-reference.jpg"
+        />
+    """
+
+    a_7 = t"""
+        <a
+            href="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=900&auto=format&fit=crop&q=80"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Open patio-reference.jpg"
+        />
+    """
+
+    a_8 = t"""
+        <a
+            href="https://images.unsplash.com/photo-1494526585095-c41746248156?w=900&auto=format&fit=crop&q=80"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Open house-exterior.jpg"
+        />
+    """
+
+    return t"""
+        <{Example} title="Images" class="gap-8">
+            <div class="flex w-full flex-col gap-3">
+                <div class="px-1 text-xs font-medium text-muted-foreground">Horizontal</div>
+                <div class="flex flex-col gap-2">
+                    <{Attachment} class="w-full">
+                        <{AttachmentMedia} variant="image">
+                            <img
+                                src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=900&auto=format&fit=crop&q=80"
+                                alt="Workspace"
+                            />
+                        </{AttachmentMedia}>
+                        <{AttachmentContent}>
+                            <{AttachmentTitle}>workspace.png</{AttachmentTitle}>
+                            <{AttachmentDescription}>PNG · 820 KB</{AttachmentDescription}>
+                        </{AttachmentContent}>
+                        <{AttachmentActions}>
+                            <{AttachmentAction} aria-label="Remove workspace.png">
+                                <{XIcon} />
+                            </{AttachmentAction}>
+                        </{AttachmentActions}>
+                        <{AttachmentTrigger} render={a} />
+                    </{Attachment}>
+                    <{Attachment} class="w-full">
+                        <{AttachmentMedia} variant="image">
+                            <img
+                                src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?w=900&auto=format&fit=crop&q=80"
+                                alt="Desk"
+                            />
+                        </{AttachmentMedia}>
+                        <{AttachmentContent}>
+                            <{AttachmentTitle}>desk-reference.jpg</{AttachmentTitle}>
+                            <{AttachmentDescription}>JPG · 1.1 MB</{AttachmentDescription}>
+                        </{AttachmentContent}>
+                        <{AttachmentActions}>
+                            <{AttachmentAction} aria-label="Remove desk-reference.jpg">
+                                <{XIcon} />
+                            </{AttachmentAction}>
+                        </{AttachmentActions}>
+                        <{AttachmentTrigger} render={a_2} />
+                    </{Attachment}>
+                    <{Attachment} class="w-full">
+                        <{AttachmentMedia} variant="image">
+                            <img
+                                src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=900&auto=format&fit=crop&q=80"
+                                alt="Office"
+                            />
+                        </{AttachmentMedia}>
+                        <{AttachmentContent}>
+                            <{AttachmentTitle}>office-reference.jpg</{AttachmentTitle}>
+                            <{AttachmentDescription}>JPG · 940 KB</{AttachmentDescription}>
+                        </{AttachmentContent}>
+                        <{AttachmentActions}>
+                            <{AttachmentAction} aria-label="Remove office-reference.jpg">
+                                <{XIcon} />
+                            </{AttachmentAction}>
+                        </{AttachmentActions}>
+                        <{AttachmentTrigger} render={a_3} />
+                    </{Attachment}>
+                </div>
+            </div>
+            <div class="flex w-full flex-col gap-2">
+                <div class="px-1 text-xs font-medium text-muted-foreground">Vertical</div>
+                <{AttachmentGroup} class="w-full">
+                    <{Attachment} orientation="vertical">
+                        <{AttachmentMedia} variant="image">
+                            <img
+                                src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=900&auto=format&fit=crop&q=80"
+                                alt="Workspace"
+                            />
+                        </{AttachmentMedia}>
+                        <{AttachmentContent}>
+                            <{AttachmentTitle}>workspace.png</{AttachmentTitle}>
+                            <{AttachmentDescription}>PNG · 820 KB</{AttachmentDescription}>
+                        </{AttachmentContent}>
+                        <{AttachmentActions}>
+                            <{AttachmentAction} aria-label="Remove workspace.png">
+                                <{XIcon} />
+                            </{AttachmentAction}>
+                        </{AttachmentActions}>
+                        <{AttachmentTrigger} render={a_4} />
+                    </{Attachment}>
+                    <{Attachment} orientation="vertical">
+                        <{AttachmentMedia} variant="image">
+                            <img
+                                src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?w=900&auto=format&fit=crop&q=80"
+                                alt="Desk"
+                            />
+                        </{AttachmentMedia}>
+                        <{AttachmentContent}>
+                            <{AttachmentTitle}>desk-reference.jpg</{AttachmentTitle}>
+                            <{AttachmentDescription}>JPG · 1.1 MB</{AttachmentDescription}>
+                        </{AttachmentContent}>
+                        <{AttachmentActions}>
+                            <{AttachmentAction} aria-label="Remove desk-reference.jpg">
+                                <{XIcon} />
+                            </{AttachmentAction}>
+                        </{AttachmentActions}>
+                        <{AttachmentTrigger} render={a_5} />
+                    </{Attachment}>
+                    <{Attachment} orientation="vertical">
+                        <{AttachmentMedia} variant="image">
+                            <img
+                                src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=900&auto=format&fit=crop&q=80"
+                                alt="Office"
+                            />
+                        </{AttachmentMedia}>
+                        <{AttachmentContent}>
+                            <{AttachmentTitle}>office-reference.jpg</{AttachmentTitle}>
+                            <{AttachmentDescription}>JPG · 940 KB</{AttachmentDescription}>
+                        </{AttachmentContent}>
+                        <{AttachmentActions}>
+                            <{AttachmentAction} aria-label="Remove office-reference.jpg">
+                                <{XIcon} />
+                            </{AttachmentAction}>
+                        </{AttachmentActions}>
+                        <{AttachmentTrigger} render={a_6} />
+                    </{Attachment}>
+                    <{Attachment} orientation="vertical">
+                        <{AttachmentMedia} variant="image">
+                            <img
+                                src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=900&auto=format&fit=crop&q=80"
+                                alt="Outdoor patio"
+                            />
+                        </{AttachmentMedia}>
+                        <{AttachmentContent}>
+                            <{AttachmentTitle}>patio-reference.jpg</{AttachmentTitle}>
+                            <{AttachmentDescription}>JPG · 1.6 MB</{AttachmentDescription}>
+                        </{AttachmentContent}>
+                        <{AttachmentActions}>
+                            <{AttachmentAction} aria-label="Remove patio-reference.jpg">
+                                <{XIcon} />
+                            </{AttachmentAction}>
+                        </{AttachmentActions}>
+                        <{AttachmentTrigger} render={a_7} />
+                    </{Attachment}>
+                    <{Attachment} orientation="vertical">
+                        <{AttachmentMedia} variant="image">
+                            <img
+                                src="https://images.unsplash.com/photo-1494526585095-c41746248156?w=900&auto=format&fit=crop&q=80"
+                                alt="House exterior"
+                            />
+                        </{AttachmentMedia}>
+                        <{AttachmentContent}>
+                            <{AttachmentTitle}>house-exterior.jpg</{AttachmentTitle}>
+                            <{AttachmentDescription}>JPG · 1.4 MB</{AttachmentDescription}>
+                        </{AttachmentContent}>
+                        <{AttachmentActions}>
+                            <{AttachmentAction} aria-label="Remove house-exterior.jpg">
+                                <{XIcon} />
+                            </{AttachmentAction}>
+                        </{AttachmentActions}>
+                        <{AttachmentTrigger} render={a_8} />
+                    </{Attachment}>
+                </{AttachmentGroup}>
+            </div>
+        </{Example}>
+    """
+
+
+def AttachmentImageStates():
+    return t"""
+        <{Example} title="Image States" class="gap-8">
+            <div class="flex w-full flex-col gap-3">
+                <div class="px-1 text-xs font-medium text-muted-foreground">Horizontal</div>
+                <div class="flex flex-col gap-2">
+                    <{Attachment} state="idle" class="w-full">
+                        <{AttachmentMedia} variant="image">
+                            <img
+                                src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=900&auto=format&fit=crop&q=80"
+                                alt="Office"
+                            />
+                        </{AttachmentMedia}>
+                        <{AttachmentContent}>
+                            <{AttachmentTitle}>office-reference.jpg</{AttachmentTitle}>
+                            <{AttachmentDescription}>Ready to upload</{AttachmentDescription}>
+                        </{AttachmentContent}>
+                        <{AttachmentActions}>
+                            <{AttachmentAction} aria-label="Remove office-reference.jpg">
+                                <{XIcon} />
+                            </{AttachmentAction}>
+                        </{AttachmentActions}>
+                    </{Attachment}>
+                    <{Attachment} state="uploading" class="w-full">
+                        <{AttachmentMedia} variant="image">
+                            <img
+                                src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=900&auto=format&fit=crop&q=80"
+                                alt="Workspace"
+                            />
+                        </{AttachmentMedia}>
+                        <{AttachmentContent}>
+                            <{AttachmentTitle}>workspace.png</{AttachmentTitle}>
+                            <{AttachmentDescription}>Uploading · 72%</{AttachmentDescription}>
+                        </{AttachmentContent}>
+                        <{AttachmentActions}>
+                            <{AttachmentAction} aria-label="Remove workspace.png">
+                                <{XIcon} />
+                            </{AttachmentAction}>
+                        </{AttachmentActions}>
+                    </{Attachment}>
+                    <{Attachment} state="processing" class="w-full">
+                        <{AttachmentMedia} variant="image">
+                            <img
+                                src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?w=900&auto=format&fit=crop&q=80"
+                                alt="Desk"
+                            />
+                        </{AttachmentMedia}>
+                        <{AttachmentContent}>
+                            <{AttachmentTitle}>desk-reference.jpg</{AttachmentTitle}>
+                            <{AttachmentDescription}>Processing image</{AttachmentDescription}>
+                        </{AttachmentContent}>
+                        <{AttachmentActions}>
+                            <{AttachmentAction} aria-label="Remove desk-reference.jpg">
+                                <{XIcon} />
+                            </{AttachmentAction}>
+                        </{AttachmentActions}>
+                    </{Attachment}>
+                    <{Attachment} state="error" class="w-full">
+                        <{AttachmentMedia} variant="image">
+                            <img
+                                src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=900&auto=format&fit=crop&q=80"
+                                alt="Office"
+                            />
+                        </{AttachmentMedia}>
+                        <{AttachmentContent}>
+                            <{AttachmentTitle}>office-reference.jpg</{AttachmentTitle}>
+                            <{AttachmentDescription}>Upload failed</{AttachmentDescription}>
+                        </{AttachmentContent}>
+                        <{AttachmentActions}>
+                            <{AttachmentAction} aria-label="Retry image upload">
+                                <{RefreshCwIcon} />
+                            </{AttachmentAction}>
+                            <{AttachmentAction} aria-label="Remove attachment">
+                                <{XIcon} />
+                            </{AttachmentAction}>
+                        </{AttachmentActions}>
+                    </{Attachment}>
+                    <{Attachment} state="done" class="w-full">
+                        <{AttachmentMedia} variant="image">
+                            <img
+                                src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=900&auto=format&fit=crop&q=80"
+                                alt="Workspace"
+                            />
+                        </{AttachmentMedia}>
+                        <{AttachmentContent}>
+                            <{AttachmentTitle}>workspace.png</{AttachmentTitle}>
+                            <{AttachmentDescription}>Uploaded · 1.2 MB</{AttachmentDescription}>
+                        </{AttachmentContent}>
+                        <{AttachmentActions}>
+                            <{AttachmentAction} aria-label="Remove workspace.png">
+                                <{XIcon} />
+                            </{AttachmentAction}>
+                        </{AttachmentActions}>
+                    </{Attachment}>
+                </div>
+            </div>
+            <div class="flex w-full flex-col gap-2">
+                <div class="px-1 text-xs font-medium text-muted-foreground">Vertical</div>
+                <{AttachmentGroup} class="w-full">
+                    <{Attachment} state="idle" orientation="vertical">
+                        <{AttachmentMedia} variant="image">
+                            <img
+                                src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=900&auto=format&fit=crop&q=80"
+                                alt="Office"
+                            />
+                        </{AttachmentMedia}>
+                        <{AttachmentContent}>
+                            <{AttachmentTitle}>office-reference.jpg</{AttachmentTitle}>
+                            <{AttachmentDescription}>Ready</{AttachmentDescription}>
+                        </{AttachmentContent}>
+                        <{AttachmentActions}>
+                            <{AttachmentAction} aria-label="Remove office-reference.jpg">
+                                <{XIcon} />
+                            </{AttachmentAction}>
+                        </{AttachmentActions}>
+                    </{Attachment}>
+                    <{Attachment} state="uploading" orientation="vertical">
+                        <{AttachmentMedia} variant="image">
+                            <img
+                                src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=900&auto=format&fit=crop&q=80"
+                                alt="Workspace"
+                            />
+                        </{AttachmentMedia}>
+                        <{AttachmentContent}>
+                            <{AttachmentTitle}>workspace.png</{AttachmentTitle}>
+                            <{AttachmentDescription}>Uploading</{AttachmentDescription}>
+                        </{AttachmentContent}>
+                        <{AttachmentActions}>
+                            <{AttachmentAction} aria-label="Remove workspace.png">
+                                <{XIcon} />
+                            </{AttachmentAction}>
+                        </{AttachmentActions}>
+                    </{Attachment}>
+                    <{Attachment} state="processing" orientation="vertical">
+                        <{AttachmentMedia} variant="image">
+                            <img
+                                src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?w=900&auto=format&fit=crop&q=80"
+                                alt="Desk"
+                            />
+                        </{AttachmentMedia}>
+                        <{AttachmentContent}>
+                            <{AttachmentTitle}>desk-reference.jpg</{AttachmentTitle}>
+                            <{AttachmentDescription}>Processing</{AttachmentDescription}>
+                        </{AttachmentContent}>
+                        <{AttachmentActions}>
+                            <{AttachmentAction} aria-label="Remove desk-reference.jpg">
+                                <{XIcon} />
+                            </{AttachmentAction}>
+                        </{AttachmentActions}>
+                    </{Attachment}>
+                    <{Attachment} state="error" orientation="vertical">
+                        <{AttachmentMedia} variant="image">
+                            <img
+                                src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=900&auto=format&fit=crop&q=80"
+                                alt="Office"
+                            />
+                        </{AttachmentMedia}>
+                        <{AttachmentContent}>
+                            <{AttachmentTitle}>office-reference.jpg</{AttachmentTitle}>
+                            <{AttachmentDescription}>Failed</{AttachmentDescription}>
+                        </{AttachmentContent}>
+                        <{AttachmentActions}>
+                            <{AttachmentAction} aria-label="Retry office-reference.jpg">
+                                <{RefreshCwIcon} />
+                            </{AttachmentAction}>
+                            <{AttachmentAction} aria-label="Remove office-reference.jpg">
+                                <{XIcon} />
+                            </{AttachmentAction}>
+                        </{AttachmentActions}>
+                    </{Attachment}>
+                    <{Attachment} state="done" orientation="vertical">
+                        <{AttachmentMedia} variant="image">
+                            <img
+                                src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=900&auto=format&fit=crop&q=80"
+                                alt="Workspace"
+                            />
+                        </{AttachmentMedia}>
+                        <{AttachmentContent}>
+                            <{AttachmentTitle}>workspace.png</{AttachmentTitle}>
+                            <{AttachmentDescription}>Done</{AttachmentDescription}>
+                        </{AttachmentContent}>
+                        <{AttachmentActions}>
+                            <{AttachmentAction} aria-label="Remove workspace.png">
+                                <{XIcon} />
+                            </{AttachmentAction}>
+                        </{AttachmentActions}>
+                    </{Attachment}>
+                </{AttachmentGroup}>
+            </div>
+        </{Example}>
+    """
+
+
+def AttachmentSizes():
+    return t"""
+        <{Example} title="Sizes" class="gap-3">
+            <{Attachment} size="default" class="w-full">
+                <{AttachmentMedia}>
+                    <{FileTextIcon} />
+                </{AttachmentMedia}>
+                <{AttachmentContent}>
+                    <{AttachmentTitle}>Default attachment</{AttachmentTitle}>
+                    <{AttachmentDescription}>PDF · 2.4 MB</{AttachmentDescription}>
+                </{AttachmentContent}>
+            </{Attachment}>
+            <{Attachment} size="sm" class="w-full">
+                <{AttachmentMedia}>
+                    <{FileTextIcon} />
+                </{AttachmentMedia}>
+                <{AttachmentContent}>
+                    <{AttachmentTitle}>Small attachment</{AttachmentTitle}>
+                    <{AttachmentDescription}>PDF · 2.4 MB</{AttachmentDescription}>
+                </{AttachmentContent}>
+            </{Attachment}>
+            <{Attachment} size="xs" class="w-full">
+                <{AttachmentMedia}>
+                    <{FileTextIcon} />
+                </{AttachmentMedia}>
+                <{AttachmentContent}>
+                    <{AttachmentTitle}>Extra small attachment</{AttachmentTitle}>
+                </{AttachmentContent}>
+            </{Attachment}>
+        </{Example}>
+    """
+
+
+def AttachmentScrollableGroup():
+    return t"""
+        <{Example} title="Scrollable Group" class="gap-4">
+            <{AttachmentGroup} class="w-full">
+                <{Attachment} class="w-64">
+                    <{AttachmentMedia}>
+                        <{FileTextIcon} />
+                    </{AttachmentMedia}>
+                    <{AttachmentContent}>
+                        <{AttachmentTitle}>briefing-notes.pdf</{AttachmentTitle}>
+                        <{AttachmentDescription}>PDF · 1.4 MB</{AttachmentDescription}>
+                    </{AttachmentContent}>
+                    <{AttachmentActions}>
+                        <{AttachmentAction} aria-label="Remove briefing-notes.pdf">
+                            <{XIcon} />
+                        </{AttachmentAction}>
+                    </{AttachmentActions}>
+                </{Attachment}>
+                <{Attachment} class="w-64">
+                    <{AttachmentMedia} variant="image">
+                        <img
+                            src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=900&auto=format&fit=crop&q=80"
+                            alt="Workspace"
+                        />
+                    </{AttachmentMedia}>
+                    <{AttachmentContent}>
+                        <{AttachmentTitle}>workspace.png</{AttachmentTitle}>
+                        <{AttachmentDescription}>PNG · 820 KB</{AttachmentDescription}>
+                    </{AttachmentContent}>
+                    <{AttachmentActions}>
+                        <{AttachmentAction} aria-label="Remove workspace.png">
+                            <{XIcon} />
+                        </{AttachmentAction}>
+                    </{AttachmentActions}>
+                </{Attachment}>
+                <{Attachment} class="w-64">
+                    <{AttachmentMedia}>
+                        <{TableIcon} />
+                    </{AttachmentMedia}>
+                    <{AttachmentContent}>
+                        <{AttachmentTitle}>customers.csv</{AttachmentTitle}>
+                        <{AttachmentDescription}>CSV · 18 KB</{AttachmentDescription}>
+                    </{AttachmentContent}>
+                    <{AttachmentActions}>
+                        <{AttachmentAction} aria-label="Remove customers.csv">
+                            <{XIcon} />
+                        </{AttachmentAction}>
+                    </{AttachmentActions}>
+                </{Attachment}>
+                <{Attachment} class="w-64">
+                    <{AttachmentMedia}>
+                        <{FileCodeIcon} />
+                    </{AttachmentMedia}>
+                    <{AttachmentContent}>
+                        <{AttachmentTitle}>renderer.tsx</{AttachmentTitle}>
+                        <{AttachmentDescription}>TSX · 12 KB</{AttachmentDescription}>
+                    </{AttachmentContent}>
+                    <{AttachmentActions}>
+                        <{AttachmentAction} aria-label="Remove renderer.tsx">
+                            <{XIcon} />
+                        </{AttachmentAction}>
+                    </{AttachmentActions}>
+                </{Attachment}>
+            </{AttachmentGroup}>
+            <{AttachmentGroup} class="w-full">
+                <{Attachment} orientation="vertical">
+                    <{AttachmentMedia}>
+                        <{FileTextIcon} />
+                    </{AttachmentMedia}>
+                    <{AttachmentContent}>
+                        <{AttachmentTitle}>invoice.pdf</{AttachmentTitle}>
+                        <{AttachmentDescription}>PDF</{AttachmentDescription}>
+                    </{AttachmentContent}>
+                    <{AttachmentActions}>
+                        <{AttachmentAction} aria-label="Remove invoice.pdf">
+                            <{XIcon} />
+                        </{AttachmentAction}>
+                    </{AttachmentActions}>
+                </{Attachment}>
+                <{Attachment} orientation="vertical">
+                    <{AttachmentMedia} variant="image" class="aspect-square w-full">
+                        <img
+                            src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?w=900&auto=format&fit=crop&q=80"
+                            alt="Desk"
+                        />
+                    </{AttachmentMedia}>
+                    <{AttachmentContent}>
+                        <{AttachmentTitle}>desk.jpg</{AttachmentTitle}>
+                        <{AttachmentDescription}>JPG</{AttachmentDescription}>
+                    </{AttachmentContent}>
+                    <{AttachmentActions}>
+                        <{AttachmentAction} aria-label="Remove desk.jpg">
+                            <{XIcon} />
+                        </{AttachmentAction}>
+                    </{AttachmentActions}>
+                </{Attachment}>
+                <{Attachment} orientation="vertical">
+                    <{AttachmentMedia}>
+                        <{FileArchiveIcon} />
+                    </{AttachmentMedia}>
+                    <{AttachmentContent}>
+                        <{AttachmentTitle}>assets.zip</{AttachmentTitle}>
+                        <{AttachmentDescription}>ZIP</{AttachmentDescription}>
+                    </{AttachmentContent}>
+                    <{AttachmentActions}>
+                        <{AttachmentAction} aria-label="Remove assets.zip">
+                            <{XIcon} />
+                        </{AttachmentAction}>
+                    </{AttachmentActions}>
+                </{Attachment}>
+                <{Attachment} orientation="vertical">
+                    <{AttachmentMedia} variant="image" class="aspect-square w-full">
+                        <img
+                            src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=900&auto=format&fit=crop&q=80"
+                            alt="Office"
+                        />
+                    </{AttachmentMedia}>
+                    <{AttachmentContent}>
+                        <{AttachmentTitle}>office.jpg</{AttachmentTitle}>
+                        <{AttachmentDescription}>JPG</{AttachmentDescription}>
+                    </{AttachmentContent}>
+                    <{AttachmentActions}>
+                        <{AttachmentAction} aria-label="Remove office.jpg">
+                            <{XIcon} />
+                        </{AttachmentAction}>
+                    </{AttachmentActions}>
+                </{Attachment}>
+                <{Attachment} orientation="vertical">
+                    <{AttachmentMedia}>
+                        <{FileTextIcon} />
+                    </{AttachmentMedia}>
+                    <{AttachmentContent}>
+                        <{AttachmentTitle}>notes.pdf</{AttachmentTitle}>
+                        <{AttachmentDescription}>PDF</{AttachmentDescription}>
+                    </{AttachmentContent}>
+                    <{AttachmentActions}>
+                        <{AttachmentAction} aria-label="Remove notes.pdf">
+                            <{XIcon} />
+                        </{AttachmentAction}>
+                    </{AttachmentActions}>
+                </{Attachment}>
+            </{AttachmentGroup}>
+        </{Example}>
+    """
+
+
+def AttachmentTriggers():
+    is_visible, set_is_visible = use_state(True)
+
+    return t"""
+        <{Example} title="Triggers" class="gap-3">
+            {t'''
+                <{Attachment} class="w-full">
+                    <{AttachmentMedia}>
+                        <{FileTextIcon} />
+                    </{AttachmentMedia}>
+                    <{AttachmentContent}>
+                        <{AttachmentTitle}>contract-review.pdf</{AttachmentTitle}>
+                        <{AttachmentDescription}>PDF · 820 KB</{AttachmentDescription}>
+                    </{AttachmentContent}>
+                    <{AttachmentActions}>
+                        <{AttachmentAction} aria-label="Download attachment">
+                            <{DownloadIcon} />
+                        </{AttachmentAction}>
+                        <{AttachmentAction} aria-label="Remove attachment" onClick={(lambda: set_is_visible(False))}>
+                            <{XIcon} />
+                        </{AttachmentAction}>
+                    </{AttachmentActions}>
+                    <{AttachmentTrigger} render={t"""
+                        <a
+                            href="#"
+                            target="_blank"
+                            rel="noreferrer"
+                            aria-label="Open contract-review.pdf"
+                        />
+                    """} />
+                </{Attachment}>
+            ''' if is_visible else t'''
+                <{Button}
+                    variant="outline"
+                    onClick={(lambda: set_is_visible(True))}
+                >
+                    Restore attachment
+                </{Button}>
+            '''}
+            <{Dialog}>
+                <{Attachment} class="w-full">
+                    <{AttachmentMedia}>
+                        <{FileSearchIcon} />
+                    </{AttachmentMedia}>
+                    <{AttachmentContent}>
+                        <{AttachmentTitle}>research-summary.pdf</{AttachmentTitle}>
+                        <{AttachmentDescription}>Open preview dialog</{AttachmentDescription}>
+                    </{AttachmentContent}>
+                    <{AttachmentActions}>
+                        <{AttachmentAction} aria-label="Copy link">
+                            <{CopyIcon} />
+                        </{AttachmentAction}>
+                        <{AttachmentAction} aria-label="Remove research-summary.pdf">
+                            <{XIcon} />
+                        </{AttachmentAction}>
+                    </{AttachmentActions}>
+                    <{DialogTrigger} render={t'<{AttachmentTrigger} aria-label="Preview research-summary.pdf" />'} />
+                </{Attachment}>
+                <{DialogContent} class="sm:max-w-md">
+                    <{DialogHeader}>
+                        <{DialogTitle}>research-summary.pdf</{DialogTitle}>
+                        <{DialogDescription}>
+                            Attachment triggers can open dialogs while actions remain independently reachable.
+                        </{DialogDescription}>
+                    </{DialogHeader}>
+                </{DialogContent}>
+            </{Dialog}>
+        </{Example}>
+    """

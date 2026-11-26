@@ -1,0 +1,303 @@
+from reacthon import use_state
+from avatar import Avatar, AvatarFallback, AvatarImage
+from button import Button
+from collapsible import Collapsible, CollapsibleContent, CollapsibleTrigger
+from dropdown_menu import (
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuGroup,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+)
+from item import Item, ItemContent, ItemDescription, ItemMedia, ItemTitle
+from sidebar import (
+    Sidebar,
+    SidebarContent,
+    SidebarFooter,
+    SidebarGroup,
+    SidebarGroupLabel,
+    SidebarHeader,
+    SidebarInset,
+    SidebarMenu,
+    SidebarMenuButton,
+    SidebarMenuItem,
+    SidebarMenuSub,
+    SidebarMenuSubButton,
+    SidebarMenuSubItem,
+    SidebarProvider,
+    SidebarRail,
+    SidebarTrigger,
+)
+
+__js__ = {
+    "lucide-react": [
+        "TerminalSquareIcon",
+        "BotIcon",
+        "BookOpen",
+        "Settings2Icon",
+        "FrameIcon",
+        "PieChartIcon",
+        "MapIcon",
+        "ChevronsUpDownIcon",
+        "ChevronRightIcon",
+    ],
+}
+
+
+def SidebarIconExample():
+    data = {
+        "user": {"name": "shadcn", "email": "m@example.com", "avatar": "/avatars/shadcn.jpg"},
+        "teams": [
+            {"name": "Acme Inc", "plan": "Enterprise"},
+            {"name": "Acme Corp.", "plan": "Startup"},
+            {"name": "Evil Corp.", "plan": "Free"},
+        ],
+        "navMain": [
+            {
+                "title": "Playground",
+                "url": "#",
+                "icon": t"<{TerminalSquareIcon} />",
+                "isActive": True,
+                "items": [
+                    {"title": "History", "url": "#"},
+                    {"title": "Starred", "url": "#"},
+                    {"title": "Settings", "url": "#"},
+                ],
+            },
+            {
+                "title": "Models",
+                "url": "#",
+                "icon": t"<{BotIcon} />",
+                "items": [
+                    {"title": "Genesis", "url": "#"},
+                    {"title": "Explorer", "url": "#"},
+                    {"title": "Quantum", "url": "#"},
+                ],
+            },
+            {
+                "title": "Documentation",
+                "url": "#",
+                "icon": t"<{BookOpen} />",
+                "items": [
+                    {"title": "Introduction", "url": "#"},
+                    {"title": "Get Started", "url": "#"},
+                    {"title": "Tutorials", "url": "#"},
+                    {"title": "Changelog", "url": "#"},
+                ],
+            },
+            {
+                "title": "Settings",
+                "url": "#",
+                "icon": t"<{Settings2Icon} />",
+                "items": [
+                    {"title": "General", "url": "#"},
+                    {"title": "Team", "url": "#"},
+                    {"title": "Billing", "url": "#"},
+                    {"title": "Limits", "url": "#"},
+                ],
+            },
+        ],
+        "projects": [
+            {"name": "Design Engineering", "url": "#", "icon": t"<{FrameIcon} />"},
+            {"name": "Sales & Marketing", "url": "#", "icon": t"<{PieChartIcon} />"},
+            {"name": "Travel", "url": "#", "icon": t"<{MapIcon} />"},
+        ],
+    }
+
+    active_team, set_active_team = use_state(data["teams"][0])
+
+    def render_team(team):
+        return t"""
+            <{DropdownMenuItem}
+                key={team["name"]}
+                onClick={(lambda: set_active_team(team))}
+            >
+                {team["name"]}
+            </{DropdownMenuItem}>
+        """
+
+    return t"""
+        <{SidebarProvider}>
+            <{Sidebar} collapsible="icon">
+                <{SidebarHeader}>
+                    <{SidebarMenu}>
+                        <{SidebarMenuItem}>
+                            <{DropdownMenu}>
+                                <{DropdownMenuTrigger} asChild>
+                                    <{SidebarMenuButton}
+                                        size="lg"
+                                        class="data-open:bg-sidebar-accent data-open:text-sidebar-accent-foreground"
+                                    >
+                                        <{Button} size="icon-sm" asChild class="size-8">
+                                            <span>
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+                                                    <rect width="256" height="256" fill="none"></rect>
+                                                    <line
+                                                        x1="208"
+                                                        y1="128"
+                                                        x2="128"
+                                                        y2="208"
+                                                        fill="none"
+                                                        stroke="currentColor"
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        strokeWidth="32"
+                                                    ></line>
+                                                    <line
+                                                        x1="192"
+                                                        y1="40"
+                                                        x2="40"
+                                                        y2="192"
+                                                        fill="none"
+                                                        stroke="currentColor"
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        strokeWidth="32"
+                                                    ></line>
+                                                </svg>
+                                            </span>
+                                        </{Button}>
+                                        <div class="grid flex-1 text-left text-sm leading-tight">
+                                            <span class="truncate font-medium">{active_team["name"]}</span>
+                                            <span class="truncate text-xs">{active_team["plan"]}</span>
+                                        </div>
+                                        <{ChevronsUpDownIcon} />
+                                    </{SidebarMenuButton}>
+                                </{DropdownMenuTrigger}>
+                                <{DropdownMenuContent}>
+                                    <{DropdownMenuGroup}>
+                                        <{DropdownMenuLabel}>Teams</{DropdownMenuLabel}>
+                                        {[render_team(team) for team in data["teams"]]}
+                                    </{DropdownMenuGroup}>
+                                </{DropdownMenuContent}>
+                            </{DropdownMenu}>
+                        </{SidebarMenuItem}>
+                    </{SidebarMenu}>
+                </{SidebarHeader}>
+                <{SidebarContent}>
+                    <{SidebarGroup}>
+                        <{SidebarGroupLabel}>Platform</{SidebarGroupLabel}>
+                        <{SidebarMenu}>
+                            {[t'''
+                                <{Collapsible}
+                                    key={item["title"]}
+                                    asChild
+                                    defaultOpen={item.get("isActive")}
+                                    class="group/collapsible"
+                                >
+                                    <{SidebarMenuItem}>
+                                        <{SidebarMenuButton} tooltip={item["title"]} asChild>
+                                            <{CollapsibleTrigger}>
+                                                {item["icon"]}
+                                                <span>{item["title"]}</span>
+                                                <{ChevronRightIcon} class="ml-auto transition-transform duration-100 group-data-open/collapsible:rotate-90" />
+                                            </{CollapsibleTrigger}>
+                                        </{SidebarMenuButton}>
+                                        <{CollapsibleContent}>
+                                            <{SidebarMenuSub}>
+                                                {item["items"].map(lambda sub_item: t"""
+                                                    <{SidebarMenuSubItem} key={sub_item["title"]}>
+                                                        <{SidebarMenuSubButton} asChild>
+                                                            <a href={sub_item["url"]}>{sub_item["title"]}</a>
+                                                        </{SidebarMenuSubButton}>
+                                                    </{SidebarMenuSubItem}>
+                                                """)}
+                                            </{SidebarMenuSub}>
+                                        </{CollapsibleContent}>
+                                    </{SidebarMenuItem}>
+                                </{Collapsible}>
+                            ''' for item in data["navMain"]]}
+                        </{SidebarMenu}>
+                    </{SidebarGroup}>
+                    <{SidebarGroup} class="group-data-[collapsible=icon]:hidden">
+                        <{SidebarGroupLabel}>Projects</{SidebarGroupLabel}>
+                        <{SidebarMenu}>
+                            {[t'''
+                                <{SidebarMenuItem} key={item["name"]}>
+                                    <{SidebarMenuButton} asChild>
+                                        <a href={item["url"]}>
+                                            {item["icon"]}
+                                            {item["name"]}
+                                        </a>
+                                    </{SidebarMenuButton}>
+                                </{SidebarMenuItem}>
+                            ''' for item in data["projects"]]}
+                        </{SidebarMenu}>
+                    </{SidebarGroup}>
+                </{SidebarContent}>
+                <{SidebarFooter}>
+                    <{SidebarMenu}>
+                        <{SidebarMenuItem}>
+                            <{DropdownMenu}>
+                                <{DropdownMenuTrigger} asChild>
+                                    <{SidebarMenuButton}
+                                        size="lg"
+                                        class="data-open:bg-sidebar-accent data-open:text-sidebar-accent-foreground"
+                                    >
+                                        <{Avatar}>
+                                            <{AvatarImage} src={data["user"]["avatar"]} alt={data["user"]["name"]} />
+                                            <{AvatarFallback} class="rounded-lg">CN</{AvatarFallback}>
+                                        </{Avatar}>
+                                        <div class="grid flex-1 text-left text-sm leading-tight">
+                                            <span class="truncate font-medium">{data["user"]["name"]}</span>
+                                            <span class="truncate text-xs">{data["user"]["email"]}</span>
+                                        </div>
+                                        <{ChevronsUpDownIcon} />
+                                    </{SidebarMenuButton}>
+                                </{DropdownMenuTrigger}>
+                                <{DropdownMenuContent}>
+                                    <{DropdownMenuGroup}>
+                                        <{DropdownMenuLabel}>
+                                            <{Item} size="xs">
+                                                <{ItemMedia}>
+                                                    <{Avatar}>
+                                                        <{AvatarImage}
+                                                            src={data["user"]["avatar"]}
+                                                            alt={data["user"]["name"]}
+                                                        />
+                                                        <{AvatarFallback}>CN</{AvatarFallback}>
+                                                    </{Avatar}>
+                                                </{ItemMedia}>
+                                                <{ItemContent}>
+                                                    <{ItemTitle}>{data["user"]["name"]}</{ItemTitle}>
+                                                    <{ItemDescription}> {data["user"]["email"]}</{ItemDescription}>
+                                                </{ItemContent}>
+                                            </{Item}>
+                                        </{DropdownMenuLabel}>
+                                    </{DropdownMenuGroup}>
+                                    <{DropdownMenuSeparator} />
+                                    <{DropdownMenuGroup}>
+                                        <{DropdownMenuItem}>Account</{DropdownMenuItem}>
+                                        <{DropdownMenuItem}>Billing</{DropdownMenuItem}>
+                                        <{DropdownMenuItem}>Settings</{DropdownMenuItem}>
+                                    </{DropdownMenuGroup}>
+                                    <{DropdownMenuSeparator} />
+                                    <{DropdownMenuGroup}>
+                                        <{DropdownMenuItem}>Log out</{DropdownMenuItem}>
+                                    </{DropdownMenuGroup}>
+                                </{DropdownMenuContent}>
+                            </{DropdownMenu}>
+                        </{SidebarMenuItem}>
+                    </{SidebarMenu}>
+                </{SidebarFooter}>
+                <{SidebarRail} />
+            </{Sidebar}>
+            <{SidebarInset}>
+                <header class="flex h-16 shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
+                    <div class="flex items-center gap-2 px-4">
+                        <{SidebarTrigger} class="-ml-1" />
+                    </div>
+                </header>
+                <div class="flex flex-1 flex-col gap-4 p-4">
+                    <div class="grid auto-rows-min gap-4 md:grid-cols-3">
+                        <div class="aspect-video rounded-xl bg-muted/50" />
+                        <div class="aspect-video rounded-xl bg-muted/50" />
+                        <div class="aspect-video rounded-xl bg-muted/50" />
+                    </div>
+                    <div class="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
+                </div>
+            </{SidebarInset}>
+        </{SidebarProvider}>
+    """
