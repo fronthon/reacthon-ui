@@ -3,6 +3,8 @@ winning over an earlier one it conflicts with, cva() names a component's
 classes after its variants, closest() finds an element's ancestor and sort()
 sorts by a function that compares two items."""
 
+from browser import window
+
 __js__ = {"cn": ["cn"]}
 
 
@@ -57,14 +59,12 @@ def closest(element, selector):
 
 def sort(items, compare):
     """JavaScript's sort(): the list sorted in place by a function that compares
-    two items, negative where the first comes first, and handed back."""
-
-    class Key:
-        def __init__(self, item):
-            self.item = item
-
-        def __lt__(self, other):
-            return compare(self.item, other.item) < 0
-
-    items.sort(key=Key)
+    two items, negative where the first comes first, and handed back. Sorted by
+    JavaScript's own, on the items' places: a function that answers at random,
+    a shuffle, leaves them as JavaScript leaves them."""
+    order = window.Array.new()
+    for at in range(len(items)):
+        order.push(at)
+    order.sort(lambda one, other: compare(items[one], items[other]))
+    items[:] = [items[at] for at in order]
     return items
