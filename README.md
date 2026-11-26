@@ -52,9 +52,10 @@ from dialog import Dialog, DialogTrigger, DialogContent, DialogTitle
 ## Translated from shadcn/ui's own
 
 A preset of shadcn/ui is a style on a base, the library its components behave
-by. The Nova style on each of the three bases so far: `radix-nova` on Radix,
-`base-nova` on Base UI, the preset `npx shadcn init --defaults` makes, and
-`aria-nova` on React Aria. Each
+by. Ten so far: the Nova style on each of the three bases, `radix-nova` on
+Radix, `base-nova` on Base UI, the preset `npx shadcn init --defaults` makes,
+and `aria-nova` on React Aria; and the seven other styles on Radix, Vega,
+Maia, Lyra, Mira, Luma, Rhea and Sera, their icons Lucide's. Each
 stands in its own folder of `src/presets`, laid out as a project of that
 preset: `components/ui`, `hooks`, `lib` and the blocks, the helpers of
 `src/lib` aside, which every preset shares. `tools/preset.js` fetches its TSX
@@ -84,7 +85,7 @@ TanStack's with rows dragged by dnd-kit.
 ## Tested against shadcn/ui's own
 
 The twins run on each preset, a Vitest project of its own, where `@` is the
-preset's folder: 604 of them. The trees and the scenes were written for
+preset's folder: 2,025 of them. The trees and the scenes were written for
 Radix's components; one that React Aria's TSX cannot render either, a dialog
 of other parts, a calendar not react-day-picker's, says nothing of the Python,
 and is skipped as such: 3 of them.
